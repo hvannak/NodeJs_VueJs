@@ -7,7 +7,15 @@ router.get('/',(req,res) => {
 });
 
 router.post('/',(req,res)=> {
-    console.log(req.body);
+    const postsave = new post({
+        title: req.body.title,
+        description:req.body.description
+    });
+    postsave.save().then(data => {
+        res.json(data);
+    }).catch(err => {
+        res.json({message: err});
+    });
 });
 
 module.exports = router;
