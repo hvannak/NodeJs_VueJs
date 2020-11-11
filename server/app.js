@@ -7,12 +7,15 @@ const cors = require('cors');
 require('dotenv/config');
 //Middleware
 app.use(cors());
+app.use(express.json());
 
 app.use(bodyParser.json());
 //Import Routes
 const postsRoute = require('./routes/posts');
+const authRoute = require('./routes/auth');
 
-app.use('/posts',postsRoute);
+app.use('/api/posts',postsRoute);
+app.use('/api/user',authRoute);
 
 app.get('/',(req,res) => {
     res.json({
@@ -21,7 +24,7 @@ app.get('/',(req,res) => {
     });
 });
 
-mongoose.connect(process.env.DB_CONNECTION,{useNewUrlParser:true},()=>{
+mongoose.connect(process.env.DB_CONNECTION,{useNewUrlParser:true,useUnifiedTopology: true},()=>{
     console.log('connected to DB')
 });
 
