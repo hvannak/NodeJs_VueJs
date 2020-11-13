@@ -30,6 +30,7 @@ router.post('/register', async (req,res) => {
 });
 
 router.post('/login', async (req,res) => {
+    console.log(req.body);
     const { error } = loginValidation(req.body);
     if(error) return res.status(400).send(error.details[0].message);
     const user = await User.findOne({email: req.body.email});

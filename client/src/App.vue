@@ -28,7 +28,7 @@
       <v-spacer></v-spacer>
 
       <v-btn
-        href=""
+        href="/login"
         target="_blank"
         text
       >
@@ -51,6 +51,6 @@ export default {
 
   data: () => ({
     //
-  }),
+  })
 };
 </script>

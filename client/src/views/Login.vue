@@ -11,7 +11,7 @@
                     cols="6"
                     sm="6">
                     <v-text-field
-                        v-model="email"
+                        v-model="user.email"
                         :rules="emailRules"
                         label="Your username"
                         persistent-hint
@@ -23,7 +23,7 @@
                     cols="6"
                     sm="6">
                     <v-text-field
-                        v-model="password"
+                        v-model="user.password"
                         :rules="passwordRules"
                         :type="'password'"
                         label="Your password"
@@ -40,7 +40,7 @@
                         :disabled="!valid"
                         color="success"
                         class="mr-4" large
-                        @click="validate"
+                        @click="login()"
                         >
                         LOGIN
                         </v-btn>
@@ -55,11 +55,14 @@
 </template>
 
 <script>
+  import axios from 'axios';
+
   export default {
     data: () => ({
       valid: true,
-      password: '',
-      email: '',
+      // password: '',
+      // email: '',
+      user:{},
       emailRules: [
         v => !!v || 'E-mail is required',
         v => /.+@.+\..+/.test(v) || 'E-mail must be valid',
@@ -79,6 +82,14 @@
       resetValidation () {
         this.$refs.form.resetValidation()
       },
+      login(){
+        // let uri = 'http://localhost:3000/api/user/login'
+        axios.post('http://localhost:3000/api/user/login',this.user).then(res => {
+            if(res.status == 200){
+              this.$router.push({ name: 'Home'})
+            }
+        })
+      }
     },
   }
 </script>
