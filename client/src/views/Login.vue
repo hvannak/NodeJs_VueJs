@@ -6,14 +6,15 @@
                 v-model="valid"
                 lazy-validation>
                 <v-row>
-                <v-col cols="8" offset="4">
+                <v-col cols="8" sm="12" offset="4" offset-sm="3">
                     <v-col
                     cols="6"
                     sm="6">
                     <v-text-field
                         v-model="user.email"
                         :rules="emailRules"
-                        label="Your username"
+                        hint="You must input the valid email"
+                        label="Your email"
                         persistent-hint
                         outlined
                         required
@@ -26,6 +27,7 @@
                         v-model="user.password"
                         :rules="passwordRules"
                         :type="'password'"
+                        hint="Your must input 6 characters password"
                         label="Your password"
                         persistent-hint
                         outlined
@@ -68,13 +70,13 @@
         v => /.+@.+\..+/.test(v) || 'E-mail must be valid',
       ],
       passwordRules:[
-        v => !!v || 'Password must be 6 characters'
+        v => !!v || 'Password is required',
       ]
     }),
 
     methods: {
       validate () {
-        this.$refs.form.validate()
+        return this.$refs.form.validate()
       },
       reset () {
         this.$refs.form.reset()
@@ -83,12 +85,13 @@
         this.$refs.form.resetValidation()
       },
       login(){
-        // let uri = 'http://localhost:3000/api/user/login'
-        axios.post('http://localhost:3000/api/user/login',this.user).then(res => {
+        if(this.validate()){
+          axios.post('http://localhost:3000/api/user/login',this.user).then(res => {
             if(res.status == 200){
-              this.$router.push({ name: 'Home'})
+              this.$router.push({ name: 'ControlPanel'})
             }
         })
+        }
       }
     },
   }
