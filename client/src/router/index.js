@@ -38,4 +38,17 @@ const router = new VueRouter({
   routes
 })
 
+router.beforeEach((to, from, next) => {
+  console.log(localStorage.getItem('token'));
+  if (to.name !== 'Login' && localStorage.getItem('token') == null) {
+    if(to.name == 'Home') next()
+    else next({ name: 'Login' })
+  }
+  else if((to.name == 'Login' && localStorage.getItem('token') != null) || 
+  (to.name == 'Home' && localStorage.getItem('token') != null)){
+    next({name:'ControlPanel'})
+  }
+  else next()
+})
+
 export default router

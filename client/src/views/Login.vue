@@ -62,8 +62,6 @@
   export default {
     data: () => ({
       valid: true,
-      // password: '',
-      // email: '',
       user:{},
       emailRules: [
         v => !!v || 'E-mail is required',
@@ -71,6 +69,7 @@
       ],
       passwordRules:[
         v => !!v || 'Password is required',
+        v => (v && v.length >= 6) || 'Password must have 6+ characters'
       ]
     }),
 
@@ -88,6 +87,7 @@
         if(this.validate()){
           axios.post('http://localhost:3000/api/user/login',this.user).then(res => {
             if(res.status == 200){
+              localStorage.setItem('token',res);
               this.$router.push({ name: 'ControlPanel'})
             }
         })
