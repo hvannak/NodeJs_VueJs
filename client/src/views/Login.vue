@@ -53,6 +53,21 @@
                 </v-row>
             </v-form>
         </v-main>
+        <div class="text-center ma-2">
+        <v-snackbar
+          v-model="snackbar">
+          {{ text }}
+          <template v-slot:action="{ attrs }">
+            <v-btn
+              color="pink"
+              text
+              v-bind="attrs"
+              @click="snackbar = false">
+              Close
+            </v-btn>
+          </template>
+        </v-snackbar>
+      </div>
     </v-app>
 </template>
 
@@ -63,6 +78,8 @@
     data: () => ({
       valid: true,
       user:{},
+      snackbar: false,
+      text: '',
       emailRules: [
         v => !!v || 'E-mail is required',
         v => /.+@.+\..+/.test(v) || 'E-mail must be valid',
@@ -90,6 +107,8 @@
               localStorage.setItem('token',res);
               this.$router.push({ name: 'ControlPanel'})
             }
+        }).catch(err => {
+          console.log(err.response.data);
         })
         }
       }
