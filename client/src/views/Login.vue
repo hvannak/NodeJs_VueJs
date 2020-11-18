@@ -56,7 +56,7 @@
         <div class="text-center ma-2">
         <v-snackbar
           v-model="snackbar">
-          {{ text }}
+          {{ snakbartext }}
           <template v-slot:action="{ attrs }">
             <v-btn
               color="pink"
@@ -79,7 +79,7 @@
       valid: true,
       user:{},
       snackbar: false,
-      text: '',
+      snakbartext: '',
       emailRules: [
         v => !!v || 'E-mail is required',
         v => /.+@.+\..+/.test(v) || 'E-mail must be valid',
@@ -109,6 +109,8 @@
             }
         }).catch(err => {
           console.log(err.response.data);
+          this.snackbar = true;
+          this.snakbartext = err.response.data;
         })
         }
       }
