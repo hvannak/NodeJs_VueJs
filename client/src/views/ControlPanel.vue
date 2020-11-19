@@ -3,24 +3,21 @@
     <v-app>
     <v-navigation-drawer app>
 
-    <v-card
-        class="mx-auto"
-        width="256"
-        tile>
+    <v-card class="mx-auto" width="256" tile>
         <v-system-bar height="10"></v-system-bar>
         <v-list>
             <v-list-item>
             <v-list-item-avatar>
-                <v-img src="https://cdn.vuetifyjs.com/images/john.png"></v-img>
+                <v-icon size="42" color="blue-grey darken-2">mdi-account-lock</v-icon>
             </v-list-item-avatar>
             </v-list-item>
 
             <v-list-item link>
             <v-list-item-content>
                 <v-list-item-title class="title">
-                John Leider
+                {{user.name}}
                 </v-list-item-title>
-                <v-list-item-subtitle>john@vuetifyjs.com</v-list-item-subtitle>
+                <v-list-item-subtitle>{{user.email}}</v-list-item-subtitle>
             </v-list-item-content>
 
             <v-list-item-action>
@@ -76,9 +73,13 @@
 </template>
 
 <script>
+import axios from 'axios';
+import jwt_decode from "jwt-decode";
+
   export default {
     data: () => ({
       selectedItem: 0,
+      user:{},
       items: [
         { text: 'My Files', icon: 'mdi-folder' },
         { text: 'Shared with me', icon: 'mdi-account-multiple' },
@@ -89,5 +90,29 @@
         { text: 'Backups', icon: 'mdi-cloud-upload' },
       ],
     }),
+    created (){
+        let token = localStorage.getItem('token');
+        console.log(token);
+        if(token != null){
+            var decoded = jwt_decode(localStorage.getItem('token'));
+            console.log(decoded);
+            // let uri = process.env.MIX_APP_URL + ':' + process.env.MIX_APP_PORT + '/api/user/';
+            const config = {
+                headers: { 
+                    // Authorization: 'Bearer ' + localStorage.getItem('token'),
+                    'auth-token': token,
+                    Accept: 'application/json'
+                    }
+            };
+            axios.get('http://localhost:3000/api/user/' + decoded._id,config).then(res => {
+                if(res.status == 200){
+                    console.log(res.data);
+                    this.user = res.data;
+                }
+            }).catch(err => {
+            console.log(err.response.data);
+            })
+        }
+    }
   }
 </script>

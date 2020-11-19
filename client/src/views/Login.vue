@@ -104,7 +104,8 @@
         if(this.validate()){
           axios.post('http://localhost:3000/api/user/login',this.user).then(res => {
             if(res.status == 200){
-              localStorage.setItem('token',res);
+              console.log(res.data);
+              localStorage.setItem('token',res.data);
               this.$router.push({ name: 'ControlPanel'})
             }
         }).catch(err => {
