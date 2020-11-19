@@ -1,5 +1,7 @@
 <template>
     <v-app>
+      <v-card width="60%" class="mx-auto my-auto">
+        <v-system-bar>Application Autherization</v-system-bar>
         <v-main>
             <v-form
                 ref="form"
@@ -17,8 +19,8 @@
                         label="Your email"
                         persistent-hint
                         outlined
-                        required
-                    ></v-text-field>
+                        required>
+                    </v-text-field>
                     </v-col>
                     <v-col
                     cols="6"
@@ -53,6 +55,7 @@
                 </v-row>
             </v-form>
         </v-main>
+      </v-card>
         <div class="text-center ma-2">
         <v-snackbar
           v-model="snackbar">

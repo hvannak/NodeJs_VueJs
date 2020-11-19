@@ -1,7 +1,8 @@
 <template>
     <!-- App.vue -->
     <v-app>
-    <v-navigation-drawer app>
+    <v-navigation-drawer
+    v-model="drawer" app>
 
     <v-card class="mx-auto" width="256" tile>
         <v-system-bar height="10"></v-system-bar>
@@ -21,7 +22,34 @@
             </v-list-item-content>
 
             <v-list-item-action>
-                <v-icon>mdi-menu-down</v-icon>
+                <div class="text-center">
+                    <v-menu top>
+                    <template v-slot:activator="{ on, attrs }">
+                        <v-icon
+                        v-bind="attrs"
+                        v-on="on">mdi-menu-down</v-icon>
+                    </template>
+
+                    <v-list>
+                        <v-list-item>
+                            <v-row
+                                align="center"
+                                justify="space-around">
+                                <v-btn
+                                class="ma-2"
+                                outlined
+                                large
+                                fab
+                                color="indigo"
+                                @click="logout()">
+                                Logout
+                                </v-btn>
+                            </v-row>
+                        </v-list-item>
+                    </v-list>
+                    </v-menu>
+                </div>
+
             </v-list-item-action>
             </v-list-item>
         </v-list>
@@ -52,7 +80,7 @@
     </v-navigation-drawer>
 
     <v-app-bar app>
-        <v-app-bar-nav-icon></v-app-bar-nav-icon>   
+        <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon>   
     </v-app-bar>
 
     <!-- Sizes your content based upon application components -->
@@ -79,6 +107,7 @@ import jwt_decode from "jwt-decode";
   export default {
     data: () => ({
       selectedItem: 0,
+      drawer: true,
       user:{},
       items: [
         { text: 'My Files', icon: 'mdi-folder' },
@@ -90,12 +119,22 @@ import jwt_decode from "jwt-decode";
         { text: 'Backups', icon: 'mdi-cloud-upload' },
       ],
     }),
+    mounted () {
+        this.$router.options.routes.forEach(route => {
+            console.log(route.name);
+            console.log(route.path);
+        })
+    },
+    methods: {
+        logout(){
+            localStorage.removeItem('token');
+            this.$router.push({name:'Login'});
+        }
+    },
     created (){
         let token = localStorage.getItem('token');
-        console.log(token);
         if(token != null){
             var decoded = jwt_decode(localStorage.getItem('token'));
-            console.log(decoded);
             // let uri = process.env.MIX_APP_URL + ':' + process.env.MIX_APP_PORT + '/api/user/';
             const config = {
                 headers: { 
@@ -106,11 +145,10 @@ import jwt_decode from "jwt-decode";
             };
             axios.get('http://localhost:3000/api/user/' + decoded._id,config).then(res => {
                 if(res.status == 200){
-                    console.log(res.data);
                     this.user = res.data;
                 }
             }).catch(err => {
-            console.log(err.response.data);
+                console.log(err.response.data);
             })
         }
     }
