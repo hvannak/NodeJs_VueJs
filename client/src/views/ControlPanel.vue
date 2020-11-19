@@ -69,14 +69,16 @@
                 v-model="selectedItem"
                 color="primary" class="ml-3">
                 <v-list-item
-                    v-for="(child, i) in item.children"
+                    v-for="(child, i) in item.children.filter(x=>x.meta.back == true)"
                     :key="i">
                     <v-list-item-icon>
                     <v-icon v-text="child.meta.icon"></v-icon>
                     </v-list-item-icon>
 
                     <v-list-item-content>
-                    <v-list-item-title v-text="child.name"></v-list-item-title>
+                        <router-link :to="item.path + '/' + child.path">
+                            <v-list-item-title v-text="child.name"></v-list-item-title>
+                        </router-link>
                     </v-list-item-content>
                 </v-list-item>
                 </v-list-item-group>
@@ -98,7 +100,7 @@
         <v-container fluid>
 
         <!-- If using vue-router -->
-        <router-view></router-view>
+        <router-view name="panel"></router-view>
         </v-container>
     </v-main>
 

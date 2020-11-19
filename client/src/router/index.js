@@ -5,6 +5,7 @@ import Login from '../views/Login.vue'
 import ControlPanel from '../views/ControlPanel.vue'
 import Users from '../views/Users.vue'
 import Register from '../views/Register.vue'
+import Account from '../views/Account.vue'
 
 Vue.use(VueRouter)
 
@@ -45,12 +46,18 @@ const routes = [
     meta: { back: true,icon: 'mdi-account-group' },
     children: [
         {
-          // UserPosts will be rendered inside User's <router-view>
+          // Register will be rendered inside User's <router-view>
           // when /users/register is matched
           path: 'register',
           name: 'Register',
           meta: { back: true,icon: 'mdi-account-plus' },
           component: Register
+        },
+        {
+          path: 'account/:userId',
+          name: 'Account',
+          meta: { back: false,icon: 'mdi-account-cog' },
+          component: Account
         }
       ]
     }
