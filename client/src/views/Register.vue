@@ -1,14 +1,12 @@
 <template>
     <v-app>
-      <v-card width="60%" class="mx-auto my-auto">
-        <v-system-bar>Application Autherization</v-system-bar>
-        <v-main>
+      <v-container fluid>
             <v-form
                 ref="form"
                 v-model="valid"
                 lazy-validation>
                 <v-row>
-                <v-col cols="8" sm="12" offset="4" offset-sm="3">
+                <v-col cols="12" sm="12">
                     <v-col
                     cols="6"
                     sm="6">
@@ -54,8 +52,7 @@
                 </v-col>
                 </v-row>
             </v-form>
-        </v-main>
-      </v-card>
+      </v-container>
         <div class="text-center ma-2">
         <v-snackbar
           v-model="snackbar">

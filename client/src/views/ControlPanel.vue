@@ -90,7 +90,8 @@
     </v-navigation-drawer>
 
     <v-app-bar app>
-        <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon>   
+        <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
+        <p>title</p>   
     </v-app-bar>
 
     <!-- Sizes your content based upon application components -->
