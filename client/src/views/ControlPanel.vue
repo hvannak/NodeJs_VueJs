@@ -55,13 +55,13 @@
         </v-list>
         <v-divider></v-divider>
         <v-list-group  
-        v-for="(item, i) in items" :key="i">
+        v-for="(item, i) in itemGroups" :key="i">
             <template v-slot:activator>
                 <v-list-item-icon>
-                    <v-icon v-text="item.meta.icon"></v-icon>
+                    <v-icon v-text="item.icon"></v-icon>
                 </v-list-item-icon>
                 <v-list-item-content>
-                    <v-list-item-title v-text="item.name"></v-list-item-title>
+                    <v-list-item-title v-text="item.group"></v-list-item-title>
                 </v-list-item-content>
             </template>
 
@@ -69,7 +69,7 @@
                 v-model="selectedItem"
                 color="primary" class="ml-3">
                 <v-list-item
-                    v-for="(child, i) in item.children.filter(x=>x.meta.back == true)"
+                    v-for="(child, i) in itemChild.filter(x=>x.meta.group == item.group)"
                     :key="i">
                     <v-list-item-icon>
                     <v-icon v-text="child.meta.icon"></v-icon>
@@ -81,7 +81,7 @@
                         </router-link>
                     </v-list-item-content>
                 </v-list-item>
-                </v-list-item-group>
+            </v-list-item-group>
         </v-list-group>
 
         
@@ -100,7 +100,7 @@
         <v-container fluid>
 
         <!-- If using vue-router -->
-        <router-view name="panel"></router-view>
+        <router-view></router-view>
         </v-container>
     </v-main>
 
@@ -120,11 +120,24 @@ import jwt_decode from "jwt-decode";
       drawer: true,
       user:{},
       items: [],
+      itemChild:[],
+      itemGroups:[]
     }),
     mounted () {
         this.$router.options.routes.filter(x=>x.meta.back == true).forEach(route => {
-            this.items.push(route);
-        })
+            route.children.filter(x=>x.meta.back == true).forEach(c => {
+                this.itemChild.push(c);
+                let index = this.itemGroups.findIndex(x=>x.group == c.group);
+                if(index == -1){
+                    this.itemGroups.push({
+                        name: c.name,
+                        icon: c.meta.gicon,
+                        path: route.path,
+                        group: c.meta.group
+                    })
+                }
+            })
+        });
     },
     methods: {
         logout(){
