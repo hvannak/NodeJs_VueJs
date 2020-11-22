@@ -77,7 +77,7 @@
 
                     <v-list-item-content>
                         <router-link :to="item.path + '/' + child.path">
-                            <v-list-item-title v-text="child.name"></v-list-item-title>
+                            <v-list-item-title v-text="child.name" @click="showAppname(child.name)"></v-list-item-title>
                         </router-link>
                     </v-list-item-content>
                 </v-list-item>
@@ -91,7 +91,7 @@
 
     <v-app-bar app>
         <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
-        <p>title</p>   
+        <v-toolbar-title>{{appname}}</v-toolbar-title>  
     </v-app-bar>
 
     <!-- Sizes your content based upon application components -->
@@ -118,6 +118,7 @@ import jwt_decode from "jwt-decode";
   export default {
     data: () => ({
       selectedItem: 0,
+      appname: '',
       drawer: true,
       user:{},
       items: [],
@@ -144,6 +145,9 @@ import jwt_decode from "jwt-decode";
         logout(){
             localStorage.removeItem('token');
             this.$router.push({name:'Login'});
+        },
+        showAppname(appname){
+            this.appname = appname;
         }
     },
     created (){

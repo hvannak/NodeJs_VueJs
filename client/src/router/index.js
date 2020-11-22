@@ -40,7 +40,7 @@ Vue.use(VueRouter)
         {
           path: 'account/:userId',
           name: 'Account',
-          meta: { back: false,icon: 'mdi-account-cog',group:'Users',gicon:'mdi-folder' },
+          meta: { back: true,icon: 'mdi-account-cog',group:'Users',gicon:'mdi-folder' },
           component: Account
         }
       ],

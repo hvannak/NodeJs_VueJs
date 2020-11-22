@@ -11,6 +11,19 @@
                     cols="6"
                     sm="6">
                     <v-text-field
+                        v-model="user.name"
+                        :rules="nameRules"
+                        hint="You must input the name"
+                        label="Your name"
+                        persistent-hint
+                        outlined
+                        required>
+                    </v-text-field>
+                    </v-col>
+                    <v-col
+                    cols="6"
+                    sm="6">
+                    <v-text-field
                         v-model="user.email"
                         :rules="emailRules"
                         hint="You must input the valid email"
@@ -42,9 +55,9 @@
                         :disabled="!valid"
                         color="success"
                         class="mr-4" large
-                        @click="login()"
+                        @click="register()"
                         >
-                        LOGIN
+                        Register
                         </v-btn>
                     </div>
 
@@ -87,6 +100,9 @@
       passwordRules:[
         v => !!v || 'Password is required',
         v => (v && v.length >= 6) || 'Password must have 6+ characters'
+      ],
+      nameRules:[
+        v => !!v || 'Name is required'
       ]
     }),
 
@@ -100,13 +116,14 @@
       resetValidation () {
         this.$refs.form.resetValidation()
       },
-      login(){
+      register(){
         if(this.validate()){
-          axios.post('http://localhost:3000/api/user/login',this.user).then(res => {
+          axios.post('http://localhost:3000/api/user/register',this.user).then(res => {
             if(res.status == 200){
               console.log(res.data);
-              localStorage.setItem('token',res.data);
-              this.$router.push({ name: 'ControlPanel'})
+              this.snackbar = true;
+              this.snakbartext = res.data.message;
+              this.reset();
             }
         }).catch(err => {
           console.log(err.response.data);
