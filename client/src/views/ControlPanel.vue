@@ -129,7 +129,8 @@ import jwt_decode from "jwt-decode";
         this.$router.options.routes.filter(x=>x.meta.back == true).forEach(route => {
             route.children.filter(x=>x.meta.back == true).forEach(c => {
                 this.itemChild.push(c);
-                let index = this.itemGroups.findIndex(x=>x.group == c.group);
+                let index = this.itemGroups.findIndex(x=>x.group == c.meta.group);
+                console.log(index);
                 if(index == -1){
                     this.itemGroups.push({
                         name: c.name,
