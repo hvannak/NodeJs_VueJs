@@ -3,7 +3,7 @@
     :headers="headers"
     :items="users"
     :search="search"
-    sort-by="calories"
+    sort-by="name"
     class="elevation-1"
   >
     <template v-slot:top>
@@ -21,10 +21,10 @@
           single-line
           hide-details>
         </v-text-field>
-        <v-spacer size="1"></v-spacer>
+        <v-spacer></v-spacer>
         <v-dialog
           v-model="dialog"
-          max-width="900px">
+          max-width="90%">
           <template v-slot:activator="{ on, attrs }">
             <v-btn
               color="red lighten-2"
@@ -82,7 +82,7 @@
             </v-card-actions>
           </v-card>
         </v-dialog>
-        <v-dialog v-model="dialogDelete" max-width="500px">
+        <v-dialog v-model="dialogDelete" max-width="50%">
           <v-card>
             <v-card-title class="headline">Are you sure you want to delete this item?</v-card-title>
             <v-card-actions>
@@ -132,9 +132,7 @@
       ],
       user:{},
       users: [],
-      editedIndex: -1,
-      editedItem: {},
-      defaultItem: {},
+      editedIndex: -1
     }),
 
     computed: {
@@ -177,15 +175,14 @@
       },
 
       editItem (item) {
-        // this.editedIndex = this.users.indexOf(item)
-        // this.editedItem = Object.assign({}, item)
+        this.editedIndex = this.users.indexOf(item);
         this.user = Object.assign({},item);
         this.dialog = true
       },
 
       deleteItem (item) {
         this.editedIndex = this.users.indexOf(item)
-        this.editedItem = Object.assign({}, item)
+        this.user = Object.assign({}, item)
         this.dialogDelete = true
       },
 
@@ -197,7 +194,7 @@
       close () {
         this.dialog = false
         this.$nextTick(() => {
-          this.editedItem = Object.assign({}, this.defaultItem)
+          this.user = Object.assign({},{});
           this.editedIndex = -1
         })
       },
@@ -205,16 +202,16 @@
       closeDelete () {
         this.dialogDelete = false
         this.$nextTick(() => {
-          this.editedItem = Object.assign({}, this.defaultItem)
+          this.user = Object.assign({},{});
           this.editedIndex = -1
         })
       },
 
       save () {
         if (this.editedIndex > -1) {
-          Object.assign(this.users[this.editedIndex], this.editedItem)
+          Object.assign(this.users[this.editedIndex], this.user)
         } else {
-          this.users.push(this.editedItem)
+          this.users.push(this.user)
         }
         this.close()
       },
