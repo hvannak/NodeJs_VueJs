@@ -53,4 +53,14 @@ router.get('/:userId',verify,async (req,res) => {
     }
 });
 
+router.get('/',verify,async (req,res) => {
+    try{
+        const result = await User.find();
+        res.json(result);
+    }catch(err){
+        console.log(err);
+        res.json({message: err});
+    }
+});
+
 module.exports = router;

@@ -1,6 +1,6 @@
 <template>
     <v-app>
-      <v-container fluid>
+      <v-card>
             <v-form
                 ref="form"
                 v-model="valid"
@@ -65,7 +65,7 @@
                 </v-col>
                 </v-row>
             </v-form>
-      </v-container>
+      </v-card>
         <div class="text-center ma-2">
         <v-snackbar
           v-model="snackbar">

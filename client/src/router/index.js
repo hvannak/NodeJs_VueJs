@@ -38,8 +38,8 @@ Vue.use(VueRouter)
           component: Register
         },
         {
-          path: 'account/:userId',
-          name: 'Account',
+          path: 'accounts',
+          name: 'Accounts',
           meta: { back: true,icon: 'mdi-account-cog',group:'Users',gicon:'mdi-folder' },
           component: Account
         }
