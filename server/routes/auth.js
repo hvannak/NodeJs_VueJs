@@ -46,20 +46,53 @@ router.post('/login', async (req,res) => {
 
 router.get('/:userId',verify,async (req,res) => {
     try{
-        const result = await User.findById(req.params.userId);
-        res.json(result);
+        const docObj = await User.findById(req.params.userId);
+        res.json(docObj);
     }catch(err){
-        res.json({message: err})
+        res.json(err)
     }
 });
 
 router.get('/',verify,async (req,res) => {
     try{
-        const result = await User.find();
-        res.json(result);
+        const docObj = await User.find();
+        res.json(docObj);
     }catch(err){
         console.log(err);
-        res.json({message: err});
+        res.json(err);
+    }
+});
+
+router.put('/:userId',verify, async (req,res) => {
+    //Checking if the user is already exist
+    const emailExist = await User.findOne({email: req.body.email});
+    if(emailExist) return res.status(400).send('Email already exist');
+    //Hash password
+    const salt = await bcrypt.genSalt(10);
+    const hashPassword = await bcrypt.hash(req.body.password,salt);
+    try{
+        const filter = { _id: req.params.userId };
+        const update = { 
+            name: req.body.name,
+            email:req.body.email,
+            password: hashPassword         
+        };
+        let docObj = await User.findOneAndUpdate(filter, update, {
+            new: true
+          });
+        res.json(docObj);
+    } catch(err) {
+        res.json(err)
+    }
+});
+
+router.delete('/:userId',verify, async (req,res) => {
+    try{
+        const docObj = await User.remove({_id: req.params.userId});
+        console.log(docObj);
+        res.json(docObj);
+    }catch(err){
+        res.json(err)
     }
 });
 

@@ -1,7 +1,7 @@
 <template>
   <v-data-table
     :headers="headers"
-    :items="users"
+    :items="allUsers"
     :search="search"
     sort-by="name"
     class="elevation-1"
@@ -24,7 +24,7 @@
         <v-spacer></v-spacer>
         <v-dialog
           v-model="dialog"
-          max-width="90%">
+          max-width="70%">
           <template v-slot:activator="{ on, attrs }">
             <v-btn
               color="red lighten-2"
@@ -38,6 +38,8 @@
           <v-card>
             <v-card-title class="headline grey lighten-2">
               <span class="headline">{{ formTitle }}</span>
+              <v-spacer></v-spacer>
+              <span class="headline font-weight-thin">{{getMessage}}</span>
             </v-card-title>
 
             <v-card-text>
@@ -46,7 +48,7 @@
                   <v-col
                     cols="12"
                     sm="6"
-                    md="4">
+                    md="6">
                     <v-text-field
                       v-model="user.name"
                       label="Name">
@@ -55,10 +57,28 @@
                   <v-col
                     cols="12"
                     sm="6"
-                    md="4">
+                    md="6">
                     <v-text-field
                       v-model="user.email"
                       label="Email">
+                    </v-text-field>
+                  </v-col>
+                  <v-col
+                    cols="12"
+                    sm="6"
+                    md="6">
+                    <v-text-field
+                      v-model="user.password"
+                      label="Password">
+                    </v-text-field>
+                  </v-col>
+                  <v-col
+                    cols="12"
+                    sm="6"
+                    md="6">
+                    <v-text-field
+                      v-model="confirmPassword"
+                      label="Confirm Password">
                     </v-text-field>
                   </v-col>
                 </v-row>
@@ -111,19 +131,21 @@
     <template v-slot:no-data>
       <v-btn
         color="primary"
-        @click="initialize">
+        @click="fetchUsers">
         Reset
       </v-btn>
     </template>
   </v-data-table>
 </template>
 <script>
-  import axios from 'axios';
+  import { mapGetters, mapActions } from "vuex";
+
   export default {
     data: () => ({
       dialog: false,
       dialogDelete: false,
       search: '',
+      confirmPassword: '',
       headers: [
         { text: 'Name', value: 'name' },
         { text: 'Email', value: 'email' },
@@ -134,13 +156,12 @@
       users: [],
       editedIndex: -1
     }),
-
-    computed: {
+    computed:{
+      ...mapGetters(["allUsers","getMessage"]),
       formTitle () {
         return this.editedIndex === -1 ? 'New Item' : 'Edit Item'
-      },
-    },
-
+      }
+    }, 
     watch: {
       dialog (val) {
         val || this.close()
@@ -149,45 +170,27 @@
         val || this.closeDelete()
       },
     },
-
     created () {
-      this.initialize()
+      this.fetchUsers();
     },
 
     methods: {
-      initialize () {
-        let token = localStorage.getItem('token');
-        if(token != null){
-          const config = {
-            headers: { 
-                'auth-token': token,
-                Accept: 'application/json'
-              }
-          };
-          axios.get('http://localhost:3000/api/user',config).then(res => {
-              if(res.status == 200){
-                this.users = res.data;
-              }
-          }).catch(err => {
-            console.log(err.response.data);
-          })
-        }
-      },
+      ...mapActions(["fetchUsers", "deleteUser", "updateUser"]),
 
       editItem (item) {
-        this.editedIndex = this.users.indexOf(item);
-        this.user = Object.assign({},item);
+        this.editedIndex = this.allUsers.indexOf(item);
+        this.user = Object.assign({},{_id:item._id,name:item.name,email:item.email});
         this.dialog = true
       },
 
       deleteItem (item) {
-        this.editedIndex = this.users.indexOf(item)
+        this.editedIndex = this.allUsers.indexOf(item)
         this.user = Object.assign({}, item)
         this.dialogDelete = true
       },
 
       deleteItemConfirm () {
-        this.users.splice(this.editedIndex, 1)
+        this.deleteUser(this.user._id);
         this.closeDelete()
       },
 
@@ -196,7 +199,8 @@
         this.$nextTick(() => {
           this.user = Object.assign({},{});
           this.editedIndex = -1
-        })
+        });
+        this.$store.commit("updateMessage",'');
       },
 
       closeDelete () {
@@ -208,12 +212,15 @@
       },
 
       save () {
-        if (this.editedIndex > -1) {
-          Object.assign(this.users[this.editedIndex], this.user)
+        if(this.editedIndex > -1){
+          this.updateUser(this.user);
         } else {
-          this.users.push(this.user)
+          console.log('add user');
         }
-        this.close()
+        console.log(this.$store.state.message);     
+        if(this.$store.state.message == ''){
+          this.close();
+        }
       },
     },
   }
