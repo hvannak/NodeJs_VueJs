@@ -1,4 +1,5 @@
 import axios from 'axios';
+import * as apihelper from './api-helper';
 
 const state = {
   users: [],
@@ -12,67 +13,28 @@ const getters = {
 
 const actions = {
   async fetchUsers({ commit }) {
-    let token = localStorage.getItem('token');
-    if(token != null){
-      const config = {
-        headers: { 
-            'auth-token': token,
-            Accept: 'application/json'
-          }
-      };
-      const response = await axios.get('http://localhost:3000/api/user',config);
-      console.log(response.data);
+      const response = await axios.get(`${apihelper.api_url}/user`,apihelper.config);
       commit('setUsers',response.data);
-    }
   },
-  async addTodo({ commit }, title) {
+
+  async addUser({ commit }, userObj) {
     const response = await axios.post(
-      'https://jsonplaceholder.typicode.com/todos',
-      { title, completed: false }
-    );
-
-    commit('newTodo', response.data);
+      `${apihelper.api_url}/user`,userObj,apihelper.config);
+    commit('newUsers', response.data.obj);
+    commit('updateMessage',response.data.message);
   },
+
   async deleteUser({ commit }, _id) {
-    let token = localStorage.getItem('token');
-    if(token != null){
-      const config = {
-        headers: { 
-            'auth-token': token,
-            Accept: 'application/json'
-          }
-      };
-      await axios.delete(`http://localhost:3000/api/user/${_id}`,config);
+      await axios.delete(`${apihelper.api_url}/user/${_id}`,apihelper.config);
       commit('removeUser', _id);
-    }
-  },
-  async filterTodos({ commit }, e) {
-    // Get selected number
-    const limit = parseInt(
-      e.target.options[e.target.options.selectedIndex].innerText
-    );
-
-    const response = await axios.get(
-      `https://jsonplaceholder.typicode.com/todos?_limit=${limit}`
-    );
-
-    commit('setTodos', response.data);
   },
 
   async updateUser({ commit }, userObj) {
     try {
-        let token = localStorage.getItem('token');
-        if(token != null){
-            const config = {
-                headers: { 
-                    'auth-token': token,
-                    Accept: 'application/json'
-                }
-            };
-            const response = await axios.put(
-            `http://localhost:3000/api/user/${userObj._id}`,userObj,config);
-            commit('updateUserObj', response.data);
-        }
+        const response = await axios.put(
+        `${apihelper.api_url}/user/${userObj._id}`,userObj,apihelper.config);
+        commit('updateUserObj', response.data.obj);
+        commit('updateMessage',response.data.message);
     } catch (err) {
         commit('updateMessage',err.response.data);
     }
@@ -81,8 +43,8 @@ const actions = {
 
 const mutations = {
     updateMessage:(state,message) => (state.message = message),
-    setUsers: (state, users) => (state.users = users),
-    newTodo: (state, todo) => state.todos.unshift(todo),
+    setUsers: (state, user) => (state.users = user),
+    newUsers: (state, user) => state.users.unshift(user),
     removeUser: (state, _id) =>
         (state.users = state.users.filter(user => user._id !== _id)),
     updateUserObj: (state, userObj) => {

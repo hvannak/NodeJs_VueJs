@@ -44,6 +44,11 @@
 
             <v-card-text>
               <v-container>
+                <v-form
+                ref="form"
+                v-model="valid"
+                lazy-validation>
+
                 <v-row>
                   <v-col
                     cols="12"
@@ -51,6 +56,7 @@
                     md="6">
                     <v-text-field
                       v-model="user.name"
+                      :rules="nameRules"
                       label="Name">
                     </v-text-field>
                   </v-col>
@@ -60,6 +66,7 @@
                     md="6">
                     <v-text-field
                       v-model="user.email"
+                      :rules="emailRules"
                       label="Email">
                     </v-text-field>
                   </v-col>
@@ -69,6 +76,8 @@
                     md="6">
                     <v-text-field
                       v-model="user.password"
+                      :rules="passwordRules"
+                      :type="'password'"
                       label="Password">
                     </v-text-field>
                   </v-col>
@@ -78,10 +87,13 @@
                     md="6">
                     <v-text-field
                       v-model="confirmPassword"
+                      :rules="confirmPasswordRules"
+                      :type="'password'"
                       label="Confirm Password">
                     </v-text-field>
                   </v-col>
                 </v-row>
+                </v-form>
               </v-container>
             </v-card-text>
 
@@ -95,6 +107,7 @@
               </v-btn>
               <v-btn
                 color="blue darken-1"
+                :disabled="!valid"
                 text
                 @click="save">
                 Save
@@ -138,10 +151,11 @@
   </v-data-table>
 </template>
 <script>
-  import { mapGetters, mapActions } from "vuex";
+  import { mapGetters, mapActions  } from "vuex";
 
   export default {
     data: () => ({
+      valid: true,
       dialog: false,
       dialogDelete: false,
       search: '',
@@ -154,7 +168,21 @@
       ],
       user:{},
       users: [],
-      editedIndex: -1
+      editedIndex: -1,
+      emailRules: [
+        v => !!v || 'E-mail is required',
+        v => /.+@.+\..+/.test(v) || 'E-mail must be valid',
+      ],
+      passwordRules:[
+        v => !!v || 'Password is required',
+        v => (v && v.length >= 6) || 'Password must have 6+ characters'
+      ],
+      confirmPasswordRules:[
+        v => !v || 'Confirm password is required'
+      ],
+      nameRules:[
+        v => !!v || 'Name is required'
+      ]
     }),
     computed:{
       ...mapGetters(["allUsers","getMessage"]),
@@ -175,7 +203,7 @@
     },
 
     methods: {
-      ...mapActions(["fetchUsers", "deleteUser", "updateUser"]),
+      ...mapActions(["fetchUsers", "deleteUser","addUser", "updateUser"]),
 
       editItem (item) {
         this.editedIndex = this.allUsers.indexOf(item);
@@ -215,12 +243,8 @@
         if(this.editedIndex > -1){
           this.updateUser(this.user);
         } else {
-          console.log('add user');
-        }
-        console.log(this.$store.state.message);     
-        if(this.$store.state.message == ''){
-          this.close();
-        }
+          this.addUser(this.user);
+        }    
       },
     },
   }

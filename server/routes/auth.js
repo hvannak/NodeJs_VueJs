@@ -4,6 +4,7 @@ const bcrypt = require('bcryptjs');
 var jwt = require('jsonwebtoken');
 const verify = require('../routes/verifyToken');
 const {registerValidation,loginValidation} = require('../validation');
+const {updatemessage, savemessage} = require('../helper');
 
 router.post('/register', async (req,res) => {
     //LETS VALIDATE THE DATA BEFORE WE A USER
@@ -80,9 +81,34 @@ router.put('/:userId',verify, async (req,res) => {
         let docObj = await User.findOneAndUpdate(filter, update, {
             new: true
           });
-        res.json(docObj);
+        res.json({obj:docObj,message:updatemessage});
     } catch(err) {
         res.json(err)
+    }
+});
+
+router.post('/', async (req,res) => {
+    //LETS VALIDATE THE DATA BEFORE WE A USER
+    const { error } = registerValidation(req.body);
+    if(error) return res.status(400).send(error.details[0].message);
+    //Checking if the user is already exist
+    const emailExist = await User.findOne({email: req.body.email});
+    if(emailExist) return res.status(400).send('Email already exist');
+    //Hash password
+    const salt = await bcrypt.genSalt(10);
+    const hashPassword = await bcrypt.hash(req.body.password,salt);
+
+
+    const docObj = new User({
+        name: req.body.name,
+        email: req.body.email,
+        password: hashPassword,      
+    });
+    try{
+        const saveUser = await docObj.save();
+        res.send({obj:docObj,message:savemessage});
+    }catch(err){
+        res.status(400).send(err);
     }
 });
 
