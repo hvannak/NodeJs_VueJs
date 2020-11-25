@@ -44,6 +44,7 @@
 
             <v-card-text>
               <v-container>
+                <ValidationObserver>
                 <v-form
                 ref="form"
                 v-model="valid"
@@ -70,32 +71,59 @@
                       label="Email">
                     </v-text-field>
                   </v-col>
-                  <v-col
+                  <!-- <v-col
                     cols="12"
                     sm="6"
                     md="6">
                     <v-text-field
                       v-model="user.password"
-                      :rules="passwordRules"
                       :type="'password'"
                       label="Password">
                     </v-text-field>
+                    <span>{{ errors[0] }}</span>
                   </v-col>
                   <v-col
                     cols="12"
                     sm="6"
                     md="6">
-                    <ValidationProvider rules="confirmPasswordRules" v-slot="{ errors }">
                     <v-text-field
                       v-model="confirmPassword"
                       :type="'password'"
                       label="Confirm Password">
                     </v-text-field>
                     <span>{{ errors[0] }}</span>
+                  </v-col> -->
+                  
+                    <v-col
+                      cols="12"
+                      sm="6"
+                      md="6">
+                    <ValidationProvider rules="required|password:@confirm" v-slot="{ errors }">
+                        <v-text-field 
+                        :type="'password'"
+                        label="Password"
+                        v-model="user.password">
+                        </v-text-field>
+                        <span>{{ errors[0] }}</span>
                     </ValidationProvider>
-                  </v-col>
+                    </v-col>
+                    <v-col
+                      cols="12"
+                      sm="6"
+                      md="6">
+                    <ValidationProvider name="confirm" rules="required" v-slot="{ errors }">
+                        <v-text-field  
+                        :type="'password'" 
+                        label="Confirm Password"
+                        v-model="confirmPassword">
+                        </v-text-field>
+                        <span>{{ errors[0] }}</span>
+                    </ValidationProvider>
+                    </v-col>
+
                 </v-row>
                 </v-form>
+                </ValidationObserver>
               </v-container>
             </v-card-text>
 
@@ -155,10 +183,16 @@
 <script>
   import { mapGetters, mapActions  } from "vuex";
   import { extend } from 'vee-validate';
+  import { required } from 'vee-validate/dist/rules';
 
-  extend('confirmPasswordRules', value => {
-    console.log(this.user.password);
-    return value == this.user.password
+  extend('required', required);
+
+  extend('password', {
+    params: ['target'],
+    validate(value, { target }) {
+      return value === target;
+    },
+    message: 'Password confirmation does not match'
   });
 
   export default {
