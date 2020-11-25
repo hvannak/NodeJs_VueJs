@@ -85,12 +85,14 @@
                     cols="12"
                     sm="6"
                     md="6">
+                    <ValidationProvider rules="confirmPasswordRules" v-slot="{ errors }">
                     <v-text-field
                       v-model="confirmPassword"
-                      :rules="confirmPasswordRules"
                       :type="'password'"
                       label="Confirm Password">
                     </v-text-field>
+                    <span>{{ errors[0] }}</span>
+                    </ValidationProvider>
                   </v-col>
                 </v-row>
                 </v-form>
@@ -152,6 +154,12 @@
 </template>
 <script>
   import { mapGetters, mapActions  } from "vuex";
+  import { extend } from 'vee-validate';
+
+  extend('confirmPasswordRules', value => {
+    console.log(this.user.password);
+    return value == this.user.password
+  });
 
   export default {
     data: () => ({
