@@ -56,7 +56,11 @@ router.get('/:userId',verify,async (req,res) => {
 
 router.get('/',verify,async (req,res) => {
     try{
-        const docObj = await User.find();
+        var perPage = 1, page = 2;
+        const docObj = await User.find().limit(perPage).skip(perPage*page).sort({
+            _id: 'asc'
+        });
+        console.log(docObj);
         res.json(docObj);
     }catch(err){
         console.log(err);
