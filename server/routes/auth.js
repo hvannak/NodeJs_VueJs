@@ -67,7 +67,7 @@ router.get('/',verify,async (req,res) => {
 router.put('/:userId',verify, async (req,res) => {
     //Checking if the user is already exist
     const emailExist = await User.findOne({email: req.body.email});
-    if(emailExist) return res.status(400).send('Email already exist');
+    if(emailExist !=null && req.params.userId != emailExist._id) return res.status(400).send('Email already exist');
     //Hash password
     const salt = await bcrypt.genSalt(10);
     const hashPassword = await bcrypt.hash(req.body.password,salt);

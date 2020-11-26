@@ -39,7 +39,7 @@
             <ValidationObserver v-slot="{ invalid }">
               <v-card-text>
                 <v-container>
-                  <v-form ref="form" v-model="valid" lazy-validation>
+                  <v-form @submit.prevent="submit" ref="form" lazy-validation>
                     <v-row>
                       <v-col cols="12" sm="6" md="6">
                         <ValidationProvider
@@ -182,16 +182,15 @@ extend("email", {
 
 export default {
   data: () => ({
-    valid: true,
     dialog: false,
     dialogDelete: false,
     search: "",
     confirmPassword: "",
     headers: [
-      { text: "Name", value: "name" },
-      { text: "Email", value: "email" },
-      { text: "Date", value: "date" },
-      { text: "Actions", value: "actions", sortable: false },
+      { text: "Name", value: "name", class: "text-success indigo darken-5" },
+      { text: "Email", value: "email", class: "text-success indigo darken-5" },
+      { text: "Date", value: "date",class: "text-success indigo darken-5" },
+      { text: "Actions", value: "actions", sortable: false, class: "text-success indigo darken-5"},
     ],
     user: {},
     users: [],
@@ -242,6 +241,7 @@ export default {
       this.dialog = false;
       this.$nextTick(() => {
         this.user = Object.assign({}, {});
+        this.confirmPassword = "";
         this.editedIndex = -1;
       });
       this.$store.commit("updateMessage", "");

@@ -1,7 +1,7 @@
 <template>
     <!-- App.vue -->
     <v-app>
-    <v-navigation-drawer
+    <v-navigation-drawer dark
     v-model="drawer" app>
 
     <v-card class="mx-auto" width="256" tile>
