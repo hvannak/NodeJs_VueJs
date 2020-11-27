@@ -17,6 +17,11 @@ const actions = {
       commit('setUsers',response.data);
   },
 
+  async fetchUserPages({ commit },pageObj) {
+    const response = await axios.post(`${apihelper.api_url}/user`,pageObj,apihelper.config);
+    commit('setUsers',response.data);
+  },
+
   async addUser({ commit }, userObj) {
     const response = await axios.post(
       `${apihelper.api_url}/user`,userObj,apihelper.config);

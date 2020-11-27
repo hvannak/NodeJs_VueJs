@@ -56,14 +56,22 @@ router.get('/:userId',verify,async (req,res) => {
 
 router.get('/',verify,async (req,res) => {
     try{
-        var perPage = 1, page = 2;
-        const docObj = await User.find().limit(perPage).skip(perPage*page).sort({
-            _id: 'asc'
-        });
-        console.log(docObj);
+        const docObj = await User.find();
         res.json(docObj);
     }catch(err){
         console.log(err);
+        res.json(err);
+    }
+});
+
+router.post('/page',verify,async (req,res) => {
+    try{
+        var pageSize = 1, currentPage = 2;
+        const docObj = await User.find().limit(perPage).skip(pageSize*currentPage).sort({
+            _id: 'asc'
+        });
+        res.json(docObj);
+    }catch(err){
         res.json(err);
     }
 });
