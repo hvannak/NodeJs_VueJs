@@ -3,12 +3,14 @@ import * as apihelper from './api-helper';
 
 const state = {
   users: [],
+  totalItems:0,
   message:''
 };
 
 const getters = {
   allUsers: state => state.users,
-  getMessage: state => state.message
+  getMessage: state => state.message,
+  gettotalItems: state => state.totalItems
 };
 
 const actions = {
@@ -18,8 +20,9 @@ const actions = {
   },
 
   async fetchUserPages({ commit },pageObj) {
-    const response = await axios.post(`${apihelper.api_url}/user`,pageObj,apihelper.config);
-    commit('setUsers',response.data);
+    const response = await axios.post(`${apihelper.api_url}/user/page`,pageObj,apihelper.config);
+    commit('setUserPages',response.data.objList);
+    commit('setTotalItems',response.data.totalDoc);
   },
 
   async addUser({ commit }, userObj) {
@@ -48,6 +51,8 @@ const actions = {
 
 const mutations = {
     updateMessage:(state,message) => (state.message = message),
+    setTotalItems:(state,total) => (state.totalItems = total),
+    setUserPages:(state,user) => (state.users = user),
     setUsers: (state, user) => (state.users = user),
     newUsers: (state, user) => state.users.unshift(user),
     removeUser: (state, _id) =>

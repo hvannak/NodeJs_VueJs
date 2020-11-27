@@ -66,11 +66,15 @@ router.get('/',verify,async (req,res) => {
 
 router.post('/page',verify,async (req,res) => {
     try{
-        var pageSize = 1, currentPage = 2;
-        const docObj = await User.find().limit(perPage).skip(pageSize*currentPage).sort({
+        // var pageSize = 1, currentPage = 2;
+        var pageSize = req.body.pageSize;
+        var currentPage = req.body.currentPage;
+        const docObj = await User.find().limit(pageSize).skip(pageSize*(currentPage-1)).sort({
             _id: 'asc'
         });
-        res.json(docObj);
+        var totalItems = await User.count();
+        res.json({objList:docObj,totalDoc:totalItems});
+
     }catch(err){
         res.json(err);
     }

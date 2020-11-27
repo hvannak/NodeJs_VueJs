@@ -3,6 +3,9 @@
     :headers="headers"
     :items="allUsers"
     :search="search"
+    :options.sync="options"
+    :server-items-length="gettotalItems"
+    :loading="loading"
     sort-by="name"
     class="elevation-1"
   >
@@ -184,6 +187,8 @@ export default {
   data: () => ({
     dialog: false,
     dialogDelete: false,
+    loading: true,
+    options: {},
     search: "",
     confirmPassword: "",
     headers: [
@@ -194,10 +199,11 @@ export default {
     ],
     user: {},
     users: [],
+    pagination:{},
     editedIndex: -1,
   }),
   computed: {
-    ...mapGetters(["allUsers", "getMessage"]),
+    ...mapGetters(["allUsers", "getMessage","gettotalItems"]),
     formTitle() {
       return this.editedIndex === -1 ? "New Item" : "Edit Item";
     },
@@ -211,11 +217,18 @@ export default {
     },
   },
   created() {
-    this.fetchUsers();
+    // this.fetchUsers();
+    this.loading = true
+    this.pagination = {
+      pageSize: 2,
+      currentPage: 1
+    };
+    this.fetchUserPages(this.pagination);
+    this.loading = false;
   },
 
   methods: {
-    ...mapActions(["fetchUsers", "deleteUser", "addUser", "updateUser"]),
+    ...mapActions(["fetchUsers","fetchUserPages", "deleteUser", "addUser", "updateUser"]),
 
     editItem(item) {
       this.editedIndex = this.allUsers.indexOf(item);
