@@ -66,9 +66,8 @@ router.get('/',verify,async (req,res) => {
 
 router.post('/page',verify,async (req,res) => {
     try{
-        // var pageSize = 1, currentPage = 2;
-        var pageSize = req.body.pageSize;
-        var currentPage = req.body.currentPage;
+        var pageSize = req.body.itemsPerPage;
+        var currentPage = req.body.page;
         const docObj = await User.find().limit(pageSize).skip(pageSize*(currentPage-1)).sort({
             _id: 'asc'
         });

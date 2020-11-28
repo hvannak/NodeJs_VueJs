@@ -6,7 +6,8 @@
     :options.sync="options"
     :server-items-length="gettotalItems"
     :loading="loading"
-    sort-by="name"
+    :footer-props="{'items-per-page-options': items_per_page}"
+    @update:options="updateOpt()"
     class="elevation-1"
   >
     <template v-slot:top>
@@ -189,6 +190,7 @@ export default {
     dialogDelete: false,
     loading: true,
     options: {},
+    items_per_page:[2,3,50,100,500,1000,-1],
     search: "",
     confirmPassword: "",
     headers: [
@@ -215,20 +217,26 @@ export default {
     dialogDelete(val) {
       val || this.closeDelete();
     },
+    options: {
+        handler () {
+          this.fetchUserPages(this.options);
+        },
+        deep: true,
+    },
   },
   created() {
     // this.fetchUsers();
     this.loading = true
-    this.pagination = {
-      pageSize: 2,
-      currentPage: 1
-    };
-    this.fetchUserPages(this.pagination);
+    this.fetchUserPages(this.options);
     this.loading = false;
   },
 
   methods: {
     ...mapActions(["fetchUsers","fetchUserPages", "deleteUser", "addUser", "updateUser"]),
+
+    updateOpt(){
+      console.log(this.options);
+    },
 
     editItem(item) {
       this.editedIndex = this.allUsers.indexOf(item);
@@ -278,3 +286,8 @@ export default {
   },
 };
 </script>
+<style scoped>
+  .v-menu__content{
+    min-width: 92px;
+  }
+</style>
