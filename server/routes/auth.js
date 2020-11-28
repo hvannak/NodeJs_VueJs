@@ -66,19 +66,20 @@ router.get('/',verify,async (req,res) => {
 
 router.post('/page',verify,async (req,res) => {
     try{
-        var pageSize = req.body.itemsPerPage;
-        var currentPage = req.body.page;
+        let opt = req.body.pageOpt;
+        var pageSize = opt.itemsPerPage;
+        var currentPage = opt.page;
         var docObj;
-        if(req.body.sortBy.length == 1 && req.body.sortDesc.length == 1){
-            if(req.body.sortDesc[0] == false){
+        if(opt.sortBy.length == 1 && opt.sortDesc.length == 1){
+            if(opt.sortDesc[0] == false){
                 console.log('asc');
                 docObj = await User.find().limit(pageSize).skip(pageSize*(currentPage-1)).sort({
-                    [req.body.sortBy[0]]: 'asc'
+                    [opt.sortBy[0]]: 'asc'
                 });
             } else {
                 console.log('desc');
                 docObj = await User.find().limit(pageSize).skip(pageSize*(currentPage-1)).sort({
-                    [req.body.sortBy[0]]: 'desc'
+                    [opt.sortBy[0]]: 'desc'
                 });
             }
         } else{
@@ -86,10 +87,6 @@ router.post('/page',verify,async (req,res) => {
                 _id: 'asc'
             });
         }
-        
-        // const docObj = await User.find().limit(pageSize).skip(pageSize*(currentPage-1)).sort({
-        //     name: 'desc'
-        // });
         var totalItems = await User.count();
         res.json({objList:docObj,totalDoc:totalItems});
 

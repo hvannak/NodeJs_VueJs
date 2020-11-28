@@ -2,38 +2,50 @@
   <v-data-table
     :headers="headers"
     :items="allUsers"
-    :search="search"
     :options.sync="options"
     :server-items-length="gettotalItems"
     :loading="loading"
     :footer-props="{
       'items-per-page-options': items_per_page,
-      'showFirstLastPage': true
-      }"
+      showFirstLastPage: true,
+    }"
     @update:options="updateOpt()"
     class="elevation-1"
   >
     <template v-slot:top>
       <v-toolbar flat>
-        <v-divider class="mx-4" inset vertical> </v-divider>
         <v-text-field
           v-model="search"
-          append-icon="mdi-magnify"
-          label="Search"
-          single-line
+          clearable
+          flat
+          solo-inverted
           hide-details
-        >
-        </v-text-field>
+          prepend-inner-icon="mdi-magnify"
+          label="Search"
+        ></v-text-field>
+        <template v-if="$vuetify.breakpoint.mdAndUp">
+          <v-spacer></v-spacer>
+          <v-select
+            v-model="searchBy"
+            flat
+            solo-inverted
+            hide-details
+            :items="searchKey"
+            prepend-inner-icon="mdi-magnify"
+            label="Search by"
+          ></v-select>
+          <v-spacer></v-spacer>
+          <v-btn-toggle mandatory>
+            <v-btn large depressed color="blue" :value="true">
+              <v-icon>mdi-arrow-down</v-icon>
+            </v-btn>
+          </v-btn-toggle>
+        </template>
+
         <v-spacer></v-spacer>
         <v-dialog v-model="dialog" max-width="70%">
           <template v-slot:activator="{ on, attrs }">
-            <v-btn
-              color="red lighten-2"
-              dark
-              class="mb-2"
-              v-bind="attrs"
-              v-on="on"
-            >
+            <v-btn large color="red lighten-2" dark v-bind="attrs" v-on="on">
               New Item
             </v-btn>
           </template>
@@ -193,22 +205,29 @@ export default {
     dialogDelete: false,
     loading: true,
     options: {},
-    items_per_page:[2,3,50,100,500,1000,-1],
+    items_per_page: [2, 3, 50, 100, 500, 1000, -1],
     search: "",
+    searchBy: "Name",
     confirmPassword: "",
     headers: [
       { text: "Name", value: "name", class: "text-success indigo darken-5" },
       { text: "Email", value: "email", class: "text-success indigo darken-5" },
-      { text: "Date", value: "date",class: "text-success indigo darken-5" },
-      { text: "Actions", value: "actions", sortable: false, class: "text-success indigo darken-5"},
+      { text: "Date", value: "date", class: "text-success indigo darken-5" },
+      {
+        text: "Actions",
+        value: "actions",
+        sortable: false,
+        class: "text-success indigo darken-5",
+      },
     ],
+    searchKey: ["Name", "Email", "Date"],
     user: {},
     users: [],
-    pagination:{},
+    pagination: {},
     editedIndex: -1,
   }),
   computed: {
-    ...mapGetters(["allUsers", "getMessage","gettotalItems"]),
+    ...mapGetters(["allUsers", "getMessage", "gettotalItems"]),
     formTitle() {
       return this.editedIndex === -1 ? "New Item" : "Edit Item";
     },
@@ -221,23 +240,39 @@ export default {
       val || this.closeDelete();
     },
     options: {
-        handler () {
-          this.fetchUserPages(this.options);
-        },
-        deep: true,
+      handler() {
+      let pageObj = {
+        searchObj: this.search,
+        searchObjby: this.searchBy,
+        pageOpt: this.options
+      };
+        this.fetchUserPages(pageObj);
+      },
+      deep: true,
     },
   },
   created() {
     // this.fetchUsers();
-    this.loading = true
-    this.fetchUserPages(this.options);
+    this.loading = true;
+    let pageObj = {
+      searchObj: this.search,
+      searchObjby: this.searchBy,
+      pageOpt: this.options
+    };
+    this.fetchUserPages(pageObj);
     this.loading = false;
   },
 
   methods: {
-    ...mapActions(["fetchUsers","fetchUserPages", "deleteUser", "addUser", "updateUser"]),
+    ...mapActions([
+      "fetchUsers",
+      "fetchUserPages",
+      "deleteUser",
+      "addUser",
+      "updateUser",
+    ]),
 
-    updateOpt(){
+    updateOpt() {
       console.log(this.options);
     },
 
@@ -290,5 +325,4 @@ export default {
 };
 </script>
 <style scoped>
-
 </style>
