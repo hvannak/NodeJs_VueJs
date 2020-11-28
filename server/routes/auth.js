@@ -68,9 +68,28 @@ router.post('/page',verify,async (req,res) => {
     try{
         var pageSize = req.body.itemsPerPage;
         var currentPage = req.body.page;
-        const docObj = await User.find().limit(pageSize).skip(pageSize*(currentPage-1)).sort({
-            _id: 'asc'
-        });
+        var docObj;
+        if(req.body.sortBy.length == 1 && req.body.sortDesc.length == 1){
+            if(req.body.sortDesc[0] == false){
+                console.log('asc');
+                docObj = await User.find().limit(pageSize).skip(pageSize*(currentPage-1)).sort({
+                    [req.body.sortBy[0]]: 'asc'
+                });
+            } else {
+                console.log('desc');
+                docObj = await User.find().limit(pageSize).skip(pageSize*(currentPage-1)).sort({
+                    [req.body.sortBy[0]]: 'desc'
+                });
+            }
+        } else{
+            docObj = await User.find().limit(pageSize).skip(pageSize*(currentPage-1)).sort({
+                _id: 'asc'
+            });
+        }
+        
+        // const docObj = await User.find().limit(pageSize).skip(pageSize*(currentPage-1)).sort({
+        //     name: 'desc'
+        // });
         var totalItems = await User.count();
         res.json({objList:docObj,totalDoc:totalItems});
 

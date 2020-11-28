@@ -6,7 +6,10 @@
     :options.sync="options"
     :server-items-length="gettotalItems"
     :loading="loading"
-    :footer-props="{'items-per-page-options': items_per_page}"
+    :footer-props="{
+      'items-per-page-options': items_per_page,
+      'showFirstLastPage': true
+      }"
     @update:options="updateOpt()"
     class="elevation-1"
   >
@@ -287,7 +290,5 @@ export default {
 };
 </script>
 <style scoped>
-  .v-menu__content{
-    min-width: 92px;
-  }
+
 </style>
