@@ -210,7 +210,7 @@ export default {
     options: {},
     items_per_page: [2, 3, 50, 100, 500, 1000, -1],
     search: "",
-    searchBy: {text: "Name", value: "name"},
+    searchBy: "",
     confirmPassword: "",
     headers: [
       { text: "Name", value: "name", class: "text-success indigo darken-5" },
