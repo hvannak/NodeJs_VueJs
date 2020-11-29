@@ -22,6 +22,7 @@
           hide-details
           prepend-inner-icon="mdi-magnify"
           label="Search"
+          @click:clear="clearSearch()"
         ></v-text-field>
         <template v-if="$vuetify.breakpoint.mdAndUp">
           <v-spacer></v-spacer>
@@ -31,12 +32,14 @@
             solo-inverted
             hide-details
             :items="searchKey"
+            item-text="text"
+            item-value="value"
             prepend-inner-icon="mdi-magnify"
             label="Search by"
           ></v-select>
           <v-spacer></v-spacer>
           <v-btn-toggle mandatory>
-            <v-btn large depressed color="blue" :value="true">
+            <v-btn large depressed color="blue" :value="true" @click="searchData()">
               <v-icon>mdi-arrow-down</v-icon>
             </v-btn>
           </v-btn-toggle>
@@ -207,7 +210,7 @@ export default {
     options: {},
     items_per_page: [2, 3, 50, 100, 500, 1000, -1],
     search: "",
-    searchBy: "Name",
+    searchBy: {text: "Name", value: "name"},
     confirmPassword: "",
     headers: [
       { text: "Name", value: "name", class: "text-success indigo darken-5" },
@@ -220,7 +223,11 @@ export default {
         class: "text-success indigo darken-5",
       },
     ],
-    searchKey: ["Name", "Email", "Date"],
+    searchKey: [
+      {text: "Name", value: "name"},
+      {text: "Email", value: "email"},
+      {text: "Date", value: "date"}
+    ],
     user: {},
     users: [],
     pagination: {},
@@ -274,6 +281,29 @@ export default {
 
     updateOpt() {
       console.log(this.options);
+    },
+
+    searchData(){
+        this.loading = true;
+        let pageObj = {
+          searchObj: this.search,
+          searchObjby: this.searchBy,
+          pageOpt: this.options
+        };
+        this.fetchUserPages(pageObj);
+        this.loading = false;
+    },
+
+    clearSearch(){
+        this.loading = true;
+        this.search = '';
+        let pageObj = {
+          searchObj: this.search,
+          searchObjby: this.searchBy,
+          pageOpt: this.options
+        };
+        this.fetchUserPages(pageObj);
+        this.loading = false;
     },
 
     editItem(item) {

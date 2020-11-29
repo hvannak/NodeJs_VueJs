@@ -70,24 +70,27 @@ router.post('/page',verify,async (req,res) => {
         var pageSize = opt.itemsPerPage;
         var currentPage = opt.page;
         var docObj;
+        var handlenull = (req.body.searchObj == null) ? '' : req.body.searchObj;
+        // var filter = (handlenull != '') ? {[req.body.searchObjby]: req.body.searchObj } : {};
+        var filter = (handlenull != '') ? {[req.body.searchObjby]: { "$regex": req.body.searchObj, "$options": "i" } } : {};
         if(opt.sortBy.length == 1 && opt.sortDesc.length == 1){
             if(opt.sortDesc[0] == false){
                 console.log('asc');
-                docObj = await User.find().limit(pageSize).skip(pageSize*(currentPage-1)).sort({
+                docObj = await User.find(filter).limit(pageSize).skip(pageSize*(currentPage-1)).sort({
                     [opt.sortBy[0]]: 'asc'
                 });
             } else {
                 console.log('desc');
-                docObj = await User.find().limit(pageSize).skip(pageSize*(currentPage-1)).sort({
+                docObj = await User.find(filter).limit(pageSize).skip(pageSize*(currentPage-1)).sort({
                     [opt.sortBy[0]]: 'desc'
                 });
             }
         } else{
-            docObj = await User.find().limit(pageSize).skip(pageSize*(currentPage-1)).sort({
+            docObj = await User.find(filter).limit(pageSize).skip(pageSize*(currentPage-1)).sort({
                 _id: 'asc'
             });
         }
-        var totalItems = await User.count();
+        var totalItems = await User.count(filter);
         res.json({objList:docObj,totalDoc:totalItems});
 
     }catch(err){
