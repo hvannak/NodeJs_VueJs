@@ -25,6 +25,12 @@ const actions = {
     commit('setTotalItems',response.data.totalDoc);
   },
 
+  async fetchUserSearch({ commit},_search){
+    const response = await axios.get(`${apihelper.api_url}/user/search/${_search}`,apihelper.config);
+    console.log(response.data);
+    commit('setUserSearch',response.data);
+  },
+
   async addUser({ commit }, userObj) {
     const response = await axios.post(
       `${apihelper.api_url}/user`,userObj,apihelper.config);
@@ -54,6 +60,7 @@ const mutations = {
     setTotalItems:(state,total) => (state.totalItems = total),
     setUserPages:(state,user) => (state.users = user),
     setUsers: (state, user) => (state.users = user),
+    setUserSearch:(state,user) => (state.users = user),
     newUsers: (state, user) => state.users.unshift(user),
     removeUser: (state, _id) =>
         (state.users = state.users.filter(user => user._id !== _id)),

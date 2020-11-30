@@ -86,21 +86,32 @@
                           v-slot="{ errors }"
                         >
                       <v-autocomplete
-                          v-model="value"
-                          :items="items"
+                          v-model="valueOfuser"
+                          :items="allUsers"
                           :loading="isLoading"
                           :search-input.sync="searchuser"
-                          item-text="Description"
-                          item-value="API"
+                          item-text="email"
+                          item-value="_id"
                           outlined
                           chips
                           hide-selected
-                          small-chips
                           label="Users"
                           :error-messages="errors"
                           multiple
                           return-object
-                        ></v-autocomplete>
+                        >
+                        <template v-slot:selection="data">
+                          <v-chip
+                            v-bind="data.attrs"
+                            :input-value="data.selected"
+                            close
+                            @click="data.select"
+                            @click:close="remove(data.item)"
+                          >
+                            {{ data.item.name }}
+                          </v-chip>
+                        </template>
+                        </v-autocomplete>
                         </ValidationProvider>
                     </v-col>
                   </v-form>
@@ -174,8 +185,7 @@ export default {
     searchuser:null,
     isLoading: false,
     searchBy: "",
-    items: ['foo', 'bar', 'fizz', 'buzz','foo1', 'bar1', 'fizz1', 'buzz1'],
-    value: [],
+    valueOfuser: [],
     headers: [
       { text: "Name", value: "name", class: "text-success indigo darken-5" },
       { text: "Date", value: "date", class: "text-success indigo darken-5" },
@@ -196,7 +206,7 @@ export default {
     editedIndex: -1,
   }),
   computed: {
-    ...mapGetters(["allRoles", "getRoleMessage", "getRoletotalItems"]),
+    ...mapGetters(["allRoles","allUsers", "getRoleMessage", "getRoletotalItems"]),
     formTitle() {
       return this.editedIndex === -1 ? "New Item" : "Edit Item";
     },
@@ -219,6 +229,16 @@ export default {
       },
       deep: true,
     },
+    searchuser(val){
+      if(val){
+        if (this.isLoading) return
+        this.isLoading = true;
+        //search api
+        console.log(val);
+        this.fetchUserSearch(val);
+        this.isLoading = false;
+      }
+    }
   },
   created() {
     this.loading = true;
@@ -230,6 +250,7 @@ export default {
   methods: {
     ...mapActions([
       "fetchRolePages",
+      "fetchUserSearch",
       "deleteRole",
       "addRole",
       "updateRole",
@@ -237,6 +258,11 @@ export default {
 
     updateOpt() {
       console.log(this.options);
+    },
+
+    remove (item) {
+      const index = this.valueOfuser.indexOf(item);
+      if (index >= 0) this.valueOfuser.splice(index, 1);
     },
 
     searchData(){

@@ -1,5 +1,7 @@
 const mongoose = require('mongoose');
 
+const childSchema = new mongoose.Schema({ _id: 'string' });
+
 const rolesSchema = mongoose.Schema({
     name: {
         type: String,
@@ -7,10 +9,7 @@ const rolesSchema = mongoose.Schema({
         min: 6,
         max: 255
     },
-    userid: {
-        type: String,
-        require: true
-    },
+    user: [childSchema],
     date: {
         type: Date,
         default: Date.now
