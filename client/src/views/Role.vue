@@ -1,9 +1,9 @@
 <template>
   <v-data-table
     :headers="headers"
-    :items="allUsers"
+    :items="allRoles"
     :options.sync="options"
-    :server-items-length="gettotalItems"
+    :server-items-length="getRoletotalItems"
     :loading="loading"
     :footer-props="{
       'items-per-page-options': items_per_page,
@@ -56,21 +56,22 @@
             <v-card-title class="headline grey lighten-2">
               <span class="headline">{{ formTitle }}</span>
               <v-spacer></v-spacer>
-              <span class="headline font-weight-thin">{{ getMessage }}</span>
+              <span class="headline font-weight-thin">{{ getRoleMessage }}</span>
             </v-card-title>
             <ValidationObserver v-slot="{ invalid }">
               <v-card-text>
                 <v-container>
                   <v-form @submit.prevent="submit" ref="form" lazy-validation>
-                    <v-row>
-                      <v-col cols="12" sm="6" md="6">
+                      <v-col class="mx-auto my-auto" cols="12">
                         <ValidationProvider
                           name="Name"
                           rules="required"
                           v-slot="{ errors }"
                         >
                           <v-text-field
-                            v-model="user.name"
+                            v-model="role.name"
+                            chips
+                            outlined
                             label="Name"
                             :error-messages="errors"
                             required
@@ -78,54 +79,30 @@
                           </v-text-field>
                         </ValidationProvider>
                       </v-col>
-                      <v-col cols="12" sm="6" md="6">
+                      <v-col class="mx-auto my-auto">
                         <ValidationProvider
-                          name="Email"
-                          rules="required|email"
+                          name="Name"
+                          rules="required"
                           v-slot="{ errors }"
                         >
-                          <v-text-field
-                            v-model="user.email"
-                            label="Email"
-                            :error-messages="errors"
-                            required
-                          >
-                          </v-text-field>
+                      <v-autocomplete
+                          v-model="value"
+                          :items="items"
+                          :loading="isLoading"
+                          :search-input.sync="searchuser"
+                          item-text="Description"
+                          item-value="API"
+                          outlined
+                          chips
+                          hide-selected
+                          small-chips
+                          label="Users"
+                          :error-messages="errors"
+                          multiple
+                          return-object
+                        ></v-autocomplete>
                         </ValidationProvider>
-                      </v-col>
-                      <v-col cols="12" sm="6" md="6">
-                        <ValidationProvider
-                          name="Password"
-                          rules="required|min:6"
-                          v-slot="{ errors }"
-                        >
-                          <v-text-field
-                            :type="'password'"
-                            label="Password"
-                            :error-messages="errors"
-                            v-model="user.password"
-                            required
-                          >
-                          </v-text-field>
-                        </ValidationProvider>
-                      </v-col>
-                      <v-col cols="12" sm="6" md="6">
-                        <ValidationProvider
-                          name="Confirm"
-                          rules="required|password:@Password"
-                          v-slot="{ errors }"
-                        >
-                          <v-text-field
-                            :type="'password'"
-                            label="Confirm Password"
-                            :error-messages="errors"
-                            v-model="confirmPassword"
-                            required
-                          >
-                          </v-text-field>
-                        </ValidationProvider>
-                      </v-col>
-                    </v-row>
+                    </v-col>
                   </v-form>
                 </v-container>
               </v-card-text>
@@ -171,35 +148,18 @@
       <v-icon small @click="deleteItem(item)"> mdi-delete </v-icon>
     </template>
     <template v-slot:no-data>
-      <v-btn color="primary" @click="fetchUserPages"> Reset </v-btn>
+      <v-btn color="primary" @click="fetchRolePages"> Reset </v-btn>
     </template>
   </v-data-table>
 </template>
 <script>
 import { mapGetters, mapActions } from "vuex";
 import { extend } from "vee-validate";
-import { required, email, min } from "vee-validate/dist/rules";
+import { required } from "vee-validate/dist/rules";
 
 extend("required", {
   ...required,
   message: "{_field_} can not be empty",
-});
-
-extend("password", {
-  params: ["target"],
-  validate(value, { target }) {
-    return value === target;
-  },
-  message: "Password confirmation does not match",
-});
-
-extend("min", {
-  ...min,
-  message: "{_field_} may not be lesser than {length} characters",
-});
-
-extend("email", {
-  ...email,
 });
 
 export default {
@@ -211,11 +171,13 @@ export default {
     pageObj: {},
     items_per_page: [2, 3, 50, 100, 500, 1000, -1],
     search: "",
+    searchuser:null,
+    isLoading: false,
     searchBy: "",
-    confirmPassword: "",
+    items: ['foo', 'bar', 'fizz', 'buzz','foo1', 'bar1', 'fizz1', 'buzz1'],
+    value: [],
     headers: [
       { text: "Name", value: "name", class: "text-success indigo darken-5" },
-      { text: "Email", value: "email", class: "text-success indigo darken-5" },
       { text: "Date", value: "date", class: "text-success indigo darken-5" },
       {
         text: "Actions",
@@ -226,16 +188,15 @@ export default {
     ],
     searchKey: [
       {text: "Name", value: "name"},
-      {text: "Email", value: "email"},
       {text: "Date", value: "date"}
     ],
-    user: {},
-    users: [],
+    role: {},
+    roles: [],
     pagination: {},
     editedIndex: -1,
   }),
   computed: {
-    ...mapGetters(["allUsers", "getMessage", "gettotalItems"]),
+    ...mapGetters(["allRoles", "getRoleMessage", "getRoletotalItems"]),
     formTitle() {
       return this.editedIndex === -1 ? "New Item" : "Edit Item";
     },
@@ -254,7 +215,7 @@ export default {
         searchObjby: this.searchBy,
         pageOpt: this.options
       };
-        this.fetchUserPages(pageObj);
+        this.fetchRolePages(pageObj);
       },
       deep: true,
     },
@@ -262,17 +223,16 @@ export default {
   created() {
     this.loading = true;
     this.setpageObj();
-    this.fetchUserPages(this.pageObj);
+    this.fetchRolePages(this.pageObj);
     this.loading = false;
   },
 
   methods: {
     ...mapActions([
-      "fetchUsers",
-      "fetchUserPages",
-      "deleteUser",
-      "addUser",
-      "updateUser",
+      "fetchRolePages",
+      "deleteRole",
+      "addRole",
+      "updateRole",
     ]),
 
     updateOpt() {
@@ -288,7 +248,7 @@ export default {
           sortDesc: this.options.sortDesc
         };
         this.setpageObj();
-        this.fetchUserPages(this.pageObj);
+        this.fetchRolePages(this.pageObj);
         this.loading = false;
     },
 
@@ -296,7 +256,7 @@ export default {
         this.loading = true;
         this.search = '';
         this.setpageObj();
-        this.fetchUserPages(this.pageObj);
+        this.fetchRolePages(this.pageObj);
         this.loading = false;
     },
 
@@ -309,30 +269,29 @@ export default {
     },
 
     editItem(item) {
-      this.editedIndex = this.allUsers.indexOf(item);
-      this.user = Object.assign(
+      this.editedIndex = this.allRoles.indexOf(item);
+      this.role = Object.assign(
         {},
-        { _id: item._id, name: item.name, email: item.email }
+        { _id: item._id, name: item.name }
       );
       this.dialog = true;
     },
 
     deleteItem(item) {
-      this.editedIndex = this.allUsers.indexOf(item);
-      this.user = Object.assign({}, item);
+      this.editedIndex = this.allRoles.indexOf(item);
+      this.role = Object.assign({}, item);
       this.dialogDelete = true;
     },
 
     deleteItemConfirm() {
-      this.deleteUser(this.user._id);
+      this.deleteRole(this.role._id);
       this.closeDelete();
     },
 
     close() {
       this.dialog = false;
       this.$nextTick(() => {
-        this.user = Object.assign({}, {});
-        this.confirmPassword = "";
+        this.role = Object.assign({}, {});
         this.editedIndex = -1;
       });
       this.$store.commit("updateMessage", "");
@@ -341,16 +300,16 @@ export default {
     closeDelete() {
       this.dialogDelete = false;
       this.$nextTick(() => {
-        this.user = Object.assign({}, {});
+        this.role = Object.assign({}, {});
         this.editedIndex = -1;
       });
     },
 
     save() {
       if (this.editedIndex > -1) {
-        this.updateUser(this.user);
+        this.updateRole(this.role);
       } else {
-        this.addUser(this.user);
+        this.addRole(this.role);
       }
     },
   },

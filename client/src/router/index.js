@@ -5,6 +5,7 @@ import Login from '../views/Login.vue'
 import ControlPanel from '../views/ControlPanel.vue'
 import Register from '../views/Register.vue'
 import Account from '../views/Account.vue'
+import Role from '../views/Role.vue'
 
 Vue.use(VueRouter)
 
@@ -42,6 +43,12 @@ Vue.use(VueRouter)
           name: 'Accounts',
           meta: { back: true,icon: 'mdi-account-cog',group:'Users',gicon:'mdi-folder' },
           component: Account
+        },
+        {
+          path: 'roles',
+          name: 'Roles',
+          meta: { back: true,icon: 'mdi-application-cog',group:'Users',gicon:'mdi-folder' },
+          component: Role
         }
       ],
     },
