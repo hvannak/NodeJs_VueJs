@@ -208,6 +208,7 @@ export default {
     dialogDelete: false,
     loading: true,
     options: {},
+    pageObj: {},
     items_per_page: [2, 3, 50, 100, 500, 1000, -1],
     search: "",
     searchBy: "",
@@ -259,14 +260,9 @@ export default {
     },
   },
   created() {
-    // this.fetchUsers();
     this.loading = true;
-    let pageObj = {
-      searchObj: this.search,
-      searchObjby: this.searchBy,
-      pageOpt: this.options
-    };
-    this.fetchUserPages(pageObj);
+    this.setpageObj();
+    this.fetchUserPages(this.pageObj);
     this.loading = false;
   },
 
@@ -285,25 +281,31 @@ export default {
 
     searchData(){
         this.loading = true;
-        let pageObj = {
-          searchObj: this.search,
-          searchObjby: this.searchBy,
-          pageOpt: this.options
+        this.options = {
+          page: 1,
+          itemsPerPage: this.options.itemsPerPage,
+          sortBy: this.options.sortBy,
+          sortDesc: this.options.sortDesc
         };
-        this.fetchUserPages(pageObj);
+        this.setpageObj();
+        this.fetchUserPages(this.pageObj);
         this.loading = false;
     },
 
     clearSearch(){
         this.loading = true;
         this.search = '';
-        let pageObj = {
-          searchObj: this.search,
-          searchObjby: this.searchBy,
-          pageOpt: this.options
-        };
-        this.fetchUserPages(pageObj);
+        this.setpageObj();
+        this.fetchUserPages(this.pageObj);
         this.loading = false;
+    },
+
+    setpageObj(){
+      this.pageObj = {
+        searchObj: this.search,
+        searchObjby: this.searchBy,
+        pageOpt: this.options
+      };
     },
 
     editItem(item) {
