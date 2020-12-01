@@ -233,8 +233,6 @@ export default {
       if(val){
         if (this.isLoading) return
         this.isLoading = true;
-        //search api
-        console.log(val);
         this.fetchUserSearch(val);
         this.isLoading = false;
       }

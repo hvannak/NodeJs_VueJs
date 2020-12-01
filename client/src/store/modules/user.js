@@ -27,7 +27,6 @@ const actions = {
 
   async fetchUserSearch({ commit},_search){
     const response = await axios.get(`${apihelper.api_url}/user/search/${_search}`,apihelper.config);
-    console.log(response.data);
     commit('setUserSearch',response.data);
   },
 

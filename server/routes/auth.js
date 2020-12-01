@@ -105,7 +105,6 @@ router.get('/search/:value',verify,async (req,res) => {
             email: { "$regex": req.params.value, "$options": "i" }
         };
         const docObj = await User.find(filter);
-        console.log(docObj);
         res.json(docObj);
     }catch(err){
         res.json(err)
