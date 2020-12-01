@@ -16,17 +16,17 @@ router.post('/page',verify,async (req,res) => {
         if(opt.sortBy.length == 1 && opt.sortDesc.length == 1){
             if(opt.sortDesc[0] == false){
                 console.log('asc');
-                docObj = await Role.find(filter).limit(pageSize).skip(pageSize*(currentPage-1)).sort({
+                docObj = await Role.find(filter).populate("users").limit(pageSize).skip(pageSize*(currentPage-1)).sort({
                     [opt.sortBy[0]]: 'asc'
                 });
             } else {
                 console.log('desc');
-                docObj = await Role.find(filter).limit(pageSize).skip(pageSize*(currentPage-1)).sort({
+                docObj = await Role.find(filter).populate("users").limit(pageSize).skip(pageSize*(currentPage-1)).sort({
                     [opt.sortBy[0]]: 'desc'
                 });
             }
         } else{
-            docObj = await Role.find(filter).limit(pageSize).skip(pageSize*(currentPage-1)).sort({
+            docObj = await Role.find(filter).populate("users").limit(pageSize).skip(pageSize*(currentPage-1)).sort({
                 _id: 'asc'
             });
         }
@@ -38,5 +38,29 @@ router.post('/page',verify,async (req,res) => {
     }
 });
 
+router.post('/', async (req,res) => {
+    const nameExist = await Role.findOne({name: req.body.name});
+    if(nameExist) return res.status(400).send('Name already exist');
+    const docObj = new Role({
+        name: req.body.name,
+        users: req.body.users      
+    });
+    try{
+        await docObj.save();
+        const saveUser =  await Role.findById(docObj._id).populate("users");
+        res.send({obj:saveUser,message:savemessage});
+    }catch(err){
+        res.status(400).send(err);
+    }
+});
+
+router.delete('/:roleId',verify, async (req,res) => {
+    try{
+        const docObj = await Role.remove({_id: req.params.roleId});
+        res.json(docObj);
+    }catch(err){
+        res.json(err)
+    }
+});
 
 module.exports = router;

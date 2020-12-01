@@ -300,6 +300,8 @@ export default {
         {},
         { _id: item._id, name: item.name }
       );
+      this.$store.commit("setUserSearch", item.users);
+      this.valueOfuser = item.users;
       this.dialog = true;
     },
 
@@ -321,6 +323,7 @@ export default {
         this.editedIndex = -1;
       });
       this.$store.commit("updateMessage", "");
+      this.$store.commit("setUserSearch", []);
     },
 
     closeDelete() {
@@ -332,10 +335,16 @@ export default {
     },
 
     save() {
+      let docObj = {
+        name: this.role.name,
+        users: this.valueOfuser.map(element => ({
+          _id: element._id
+        }))
+      };
       if (this.editedIndex > -1) {
-        this.updateRole(this.role);
+        this.updateRole(docObj);
       } else {
-        this.addRole(this.role);
+        this.addRole(docObj);
       }
     },
   },

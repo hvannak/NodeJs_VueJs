@@ -24,6 +24,7 @@ const actions = {
   async addRole({ commit }, roleObj) {
     const response = await axios.post(
       `${apihelper.api_url}/role`,roleObj,apihelper.config);
+      console.log(response.data.obj);
     commit('newRoles', response.data.obj);
     commit('updateMessage',response.data.message);
   },

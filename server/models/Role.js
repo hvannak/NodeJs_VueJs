@@ -1,7 +1,5 @@
 const mongoose = require('mongoose');
 
-const childSchema = new mongoose.Schema({ _id: 'string' });
-
 const rolesSchema = mongoose.Schema({
     name: {
         type: String,
@@ -9,7 +7,7 @@ const rolesSchema = mongoose.Schema({
         min: 6,
         max: 255
     },
-    user: [childSchema],
+    users: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
     date: {
         type: Date,
         default: Date.now
