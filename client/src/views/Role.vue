@@ -336,6 +336,7 @@ export default {
 
     save() {
       let docObj = {
+        _id: this.role._id,
         name: this.role.name,
         users: this.valueOfuser.map(element => ({
           _id: element._id

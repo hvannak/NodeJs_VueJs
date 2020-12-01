@@ -38,6 +38,26 @@ router.post('/page',verify,async (req,res) => {
     }
 });
 
+router.put('/:roleId',verify, async (req,res) => {
+    //Checking if the user is already exist
+    const nameExist = await Role.findOne({name: req.body.name});
+    if(nameExist !=null && req.params.roleId != nameExist._id) return res.status(400).send('Name already exist');
+    try{
+        const filter = { _id: req.params.roleId };
+        console.log(req.body);
+        const update = new Role({
+            _id: req.body._id,
+            name: req.body.name,
+            users: req.body.users      
+        });
+        await Role.update(filter,update);
+        let docObj = await Role.findById(req.body._id).populate("users");
+        res.json({obj:docObj,message:updatemessage});
+    } catch(err) {
+        res.json(err)
+    }
+});
+
 router.post('/', async (req,res) => {
     const nameExist = await Role.findOne({name: req.body.name});
     if(nameExist) return res.status(400).send('Name already exist');
