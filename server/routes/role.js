@@ -44,7 +44,6 @@ router.put('/:roleId',verify, async (req,res) => {
     if(nameExist !=null && req.params.roleId != nameExist._id) return res.status(400).send('Name already exist');
     try{
         const filter = { _id: req.params.roleId };
-        console.log(req.body);
         const update = new Role({
             _id: req.body._id,
             name: req.body.name,

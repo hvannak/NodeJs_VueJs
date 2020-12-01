@@ -321,7 +321,7 @@ export default {
         this.editedIndex = -1;
       });
       this.$store.commit("updateMessage", "");
-      this.$store.commit("setUserSearch", []);
+      this.valueOfuser = [];
     },
 
     closeDelete() {

@@ -59,7 +59,9 @@ const mutations = {
     setTotalItems:(state,total) => (state.totalItems = total),
     setUserPages:(state,user) => (state.users = user),
     setUsers: (state, user) => (state.users = user),
-    setUserSearch:(state,user) => (state.users = user),
+    setUserSearch:(state,user) => (user.forEach(element => {
+      state.users.push(element)
+    })),
     newUsers: (state, user) => state.users.unshift(user),
     removeUser: (state, _id) =>
         (state.users = state.users.filter(user => user._id !== _id)),
