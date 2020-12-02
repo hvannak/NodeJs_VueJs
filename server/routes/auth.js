@@ -100,11 +100,16 @@ router.post('/page',verify,async (req,res) => {
 
 router.get('/search/:value',verify,async (req,res) => {
     try{
-        var filter = { 
-            name: { "$regex": req.params.value, "$options": "i" },
+        var filter = {
             email: { "$regex": req.params.value, "$options": "i" }
         };
+        // var filter = { $or:[
+        //    { name: { "$regex": req.params.value, "$options": "i" } },
+        //    { email: { "$regex": req.params.value, "$options": "i" } }
+        // ]};
+        console.log(filter);
         const docObj = await User.find(filter);
+        console.log(docObj);
         res.json(docObj);
     }catch(err){
         res.json(err)
