@@ -10,6 +10,7 @@
         <v-divider></v-divider>
         <v-list-group v-for="(item, i) in itemGroups" :key="i">
           <template v-slot:activator>
+            <v-divider vertical></v-divider>
             <v-list-item-icon>
               <v-icon v-text="item.icon"></v-icon>
             </v-list-item-icon>
@@ -29,6 +30,7 @@
               )"
               :key="i"
             >
+            <v-divider vertical></v-divider>
               <v-list-item-icon>
                 <v-icon v-text="child.meta.icon"></v-icon>
               </v-list-item-icon>

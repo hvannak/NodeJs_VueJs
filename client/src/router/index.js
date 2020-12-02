@@ -6,6 +6,7 @@ import ControlPanel from '../views/ControlPanel.vue'
 import Register from '../views/Register.vue'
 import Account from '../views/Account.vue'
 import Role from '../views/Role.vue'
+import Autherize from '../views/Autherize.vue'
 
 Vue.use(VueRouter)
 
@@ -49,6 +50,12 @@ Vue.use(VueRouter)
           name: 'Roles',
           meta: { back: true,icon: 'mdi-application-cog',group:'Users',gicon:'mdi-folder' },
           component: Role
+        },
+        {
+          path: 'autherize',
+          name: 'Autherize',
+          meta: { back: true,icon: 'mdi-account-switch',group:'Users',gicon:'mdi-folder' },
+          component: Autherize
         }
       ],
     },

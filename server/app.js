@@ -14,6 +14,7 @@ app.use(bodyParser.json());
 const postsRoute = require('./routes/posts');
 const authRoute = require('./routes/auth');
 const roleRoute = require('./routes/role');
+const allRoute = [postsRoute,authRoute,roleRoute];
 
 app.use('/api/posts',postsRoute);
 app.use('/api/user',authRoute);
@@ -27,6 +28,9 @@ app.get('/',(req,res) => {
 });
 
 mongoose.connect(process.env.DB_CONNECTION,{useNewUrlParser:true,useUnifiedTopology: true},()=>{
+    const endpoints = postsRoute.stack.filter(x=> x.route && x.route.path && Object.keys(x.route.methods) != 0)
+    .map(layer => ({ method :layer.route.stack[0].method.toUpperCase(), path: layer.route.path}));
+    console.log(endpoints);
     console.log('connected to DB')
 });
 
