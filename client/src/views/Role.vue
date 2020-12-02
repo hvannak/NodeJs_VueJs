@@ -167,6 +167,7 @@
 import { mapGetters, mapActions } from "vuex";
 import { extend } from "vee-validate";
 import { required } from "vee-validate/dist/rules";
+import * as constHelper from '../store/modules/const-helper';
 
 extend("required", {
   ...required,
@@ -180,7 +181,7 @@ export default {
     loading: true,
     options: {},
     pageObj: {},
-    items_per_page: [2, 3, 50, 100, 500, 1000, -1],
+    items_per_page: constHelper.items_per_page,
     search: "",
     searchuser:null,
     isLoading: false,
@@ -197,8 +198,7 @@ export default {
       },
     ],
     searchKey: [
-      {text: "Name", value: "name"},
-      {text: "Date", value: "date"}
+      {text: "Name", value: "name"}
     ],
     role: {},
     roles: [],

@@ -179,6 +179,7 @@
 import { mapGetters, mapActions } from "vuex";
 import { extend } from "vee-validate";
 import { required, email, min } from "vee-validate/dist/rules";
+import * as constHelper from '../store/modules/const-helper';
 
 extend("required", {
   ...required,
@@ -209,7 +210,7 @@ export default {
     loading: true,
     options: {},
     pageObj: {},
-    items_per_page: [2, 3, 50, 100, 500, 1000, -1],
+    items_per_page: constHelper.items_per_page,
     search: "",
     searchBy: "",
     confirmPassword: "",
@@ -226,8 +227,7 @@ export default {
     ],
     searchKey: [
       {text: "Name", value: "name"},
-      {text: "Email", value: "email"},
-      {text: "Date", value: "date"}
+      {text: "Email", value: "email"}
     ],
     user: {},
     users: [],
