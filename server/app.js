@@ -4,6 +4,7 @@ const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const {getendpoints} = require('./helper');
+const verify = require('./routes/verifyToken');
 //Import Models
 const User = require('./models/User');
 const Role = require('./models/Role');
@@ -27,7 +28,7 @@ app.use('/api/user',authRoute);
 app.use('/api/role',roleRoute);
 app.use('/api/autherize',autherizeRoute);
 
-app.get('/router',(req,res) => {
+app.get('/api/router',verify,(req,res) => {
     try {
         let postendpoints = {
             name:'Post',
