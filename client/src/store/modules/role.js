@@ -21,6 +21,11 @@ const actions = {
     commit('setTotalItems',response.data.totalDoc);
   },
 
+  async fetchRoleSearch({ commit},_search){
+    const response = await axios.get(`${apihelper.api_url}/role/search/${_search}`,apihelper.config);
+    commit('setRoleSearch',response.data);
+  },
+
   async addRole({ commit }, roleObj) {
     const response = await axios.post(
       `${apihelper.api_url}/role`,roleObj,apihelper.config);
@@ -51,6 +56,9 @@ const mutations = {
     setTotalItems:(state,total) => (state.totalItems = total),
     setRolePages:(state,role) => (state.roles = role),
     setRoles: (state, role) => (state.roles = role),
+    setRoleSearch:(state,role) => (role.forEach(element => {
+      state.roles.push(element)
+    })),
     newRoles: (state, role) => state.roles.unshift(role),
     removeRole: (state, _id) =>
         (state.roles = state.roles.filter(role => role._id !== _id)),

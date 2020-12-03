@@ -38,6 +38,18 @@ router.post('/page',verify,async (req,res) => {
     }
 });
 
+router.get('/search/:value',verify,async (req,res) => {
+    try{
+        var filter = {
+            name: { "$regex": req.params.value, "$options": "i" }
+        };
+        const docObj = await Role.find(filter);
+        res.json(docObj);
+    }catch(err){
+        res.json(err)
+    }
+});
+
 router.put('/:roleId',verify, async (req,res) => {
     //Checking if the user is already exist
     const nameExist = await Role.findOne({name: req.body.name});
