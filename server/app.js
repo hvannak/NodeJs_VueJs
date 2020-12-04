@@ -39,13 +39,13 @@ app.get('/api/router',verify,(req,res) => {
                     id: 1,
                     parent:'Post',
                     name:'Props',
-                    props: Object.keys(User.schema.paths)
+                    props: Object.keys(Post.schema.paths)
                 },
                 {
                     id: 2,
                     parent:'Post',
                     name:'Routers',
-                    routers: getendpoints(autherizeRoute)
+                    routers: getendpoints(postsRoute)
                 }
             ]
         };

@@ -102,6 +102,7 @@
                 <v-divider></v-divider>
                 <div v-if="isprops">
                   <v-autocomplete
+                    v-model="valuesOfprops"
                     :items="screens"
                     outlined
                     dense
@@ -109,6 +110,7 @@
                     small-chips
                     label="Properties"
                     multiple
+                    return-object
                   ></v-autocomplete>
                 </div>
                 <div v-else>
@@ -122,6 +124,7 @@
                     small-chips
                     label="Routers"
                     multiple
+                    return-object
                   ></v-autocomplete>
                 </div>
 
@@ -169,7 +172,8 @@ export default {
     isprops: false,
     screens:[],
     routers:[],
-    permissionHeader:''
+    permissionHeader:'',
+    valuesOfprops:[]
   }),
   created () {
     this.fetchAllRouter_Screen();
@@ -181,6 +185,7 @@ export default {
     showPermission(item){
       this.selected = true;
       this.permissionHeader = item.parent + '-' + item.name;
+      console.log(this.valuesOfprops);
       if(item.name == 'Props'){
         this.isprops = true;
         this.screens = item.props
