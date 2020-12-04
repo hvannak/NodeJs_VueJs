@@ -58,24 +58,90 @@
       ></v-checkbox>
     </v-sheet>
     <v-card-text>
+      <v-row
+      class="pa-4"
+      justify="space-between"
+    >
       <v-treeview
         :items="allRouter_Screen"
         :search="search"
         :filter="filter"
         :open.sync="open"
+        open-on-click
+        selection-type="independent"
+        activatable
       >
-        <template v-slot:prepend="{ item }">
-          <v-icon
-            v-if="item.children"
-            v-text="`mdi-${item.id === 1 ? 'home-variant' : 'folder-network'}`"
+      <template v-slot:prepend="{ item }">
+        <v-list-item @click="showPermission(item)">
+            <v-icon
+            v-if="item"
+            v-text="'mdi-folder-network'"
           ></v-icon>
-        </template>
+        </v-list-item>
+      </template>
+
       </v-treeview>
+
+      <v-divider vertical></v-divider>
+
+      <v-col
+        class="d-flex text-center"
+      >
+        <v-scroll-y-transition mode="out-in">
+          <div
+            v-if="!selected"
+            class="title grey--text text--lighten-1 font-weight-light"
+            style="align-self: center;"
+          >
+            Select Items
+          </div>
+          <div v-else>
+            <v-card height="100%">
+              <v-card-title>{{permissionHeader}}</v-card-title>
+              <v-card-text>
+                <v-divider></v-divider>
+                <div v-if="isprops">
+                  <v-autocomplete
+                    :items="screens"
+                    outlined
+                    dense
+                    chips
+                    small-chips
+                    label="Properties"
+                    multiple
+                  ></v-autocomplete>
+                </div>
+                <div v-else>
+                  <v-autocomplete
+                    :items="routers"
+                    item-text="path"
+                    item-value="path"
+                    outlined
+                    dense
+                    chips
+                    small-chips
+                    label="Routers"
+                    multiple
+                  ></v-autocomplete>
+                </div>
+
+              </v-card-text>
+            </v-card>
+            
+          </div>
+          
+        </v-scroll-y-transition>
+      </v-col>
+
+
+      </v-row>
     </v-card-text>
   </v-card>
 
 
+  
 
+      
       </v-container>
     </v-card>
   </v-app>
@@ -96,80 +162,14 @@ export default {
     isLoading: false,
     valueOfroles: [],
     searchroles:null,
-
-  // items: [
-  //       {
-  //         id: 1,
-  //         name: 'Vuetify Human Resources',
-  //         children: [
-  //           {
-  //             id: 2,
-  //             name: 'Core team',
-  //             children: [
-  //               {
-  //                 id: 201,
-  //                 name: 'John',
-  //               },
-  //               {
-  //                 id: 202,
-  //                 name: 'Kael',
-  //               },
-  //               {
-  //                 id: 203,
-  //                 name: 'Nekosaur',
-  //               },
-  //               {
-  //                 id: 204,
-  //                 name: 'Jacek',
-  //               },
-  //               {
-  //                 id: 205,
-  //                 name: 'Andrew',
-  //               },
-  //             ],
-  //           },
-  //           {
-  //             id: 3,
-  //             name: 'Administrators',
-  //             children: [
-  //               {
-  //                 id: 301,
-  //                 name: 'Mike',
-  //               },
-  //               {
-  //                 id: 302,
-  //                 name: 'Hunt',
-  //               },
-  //             ],
-  //           },
-  //           {
-  //             id: 4,
-  //             name: 'Contributors',
-  //             children: [
-  //               {
-  //                 id: 401,
-  //                 name: 'Phlow',
-  //               },
-  //               {
-  //                 id: 402,
-  //                 name: 'Brandon',
-  //               },
-  //               {
-  //                 id: 403,
-  //                 name: 'Sean',
-  //               },
-  //             ],
-  //           },
-  //         ],
-  //       },
-  //     ],
-      open: [1, 2],
-      search: null,
-      caseSensitive: false,
-
-
-
-
+    open: [1],
+    search: null,
+    caseSensitive: false,
+    selected: false,
+    isprops: false,
+    screens:[],
+    routers:[],
+    permissionHeader:''
   }),
   created () {
     this.fetchAllRouter_Screen();
@@ -177,7 +177,22 @@ export default {
   methods: {
     ...mapActions([
       "fetchRoleSearch","fetchAllRouter_Screen"
-    ])
+    ]),
+    showPermission(item){
+      this.selected = true;
+      this.permissionHeader = item.parent + '-' + item.name;
+      if(item.name == 'Props'){
+        this.isprops = true;
+        this.screens = item.props
+      }
+      else if(item.name == 'Routers'){
+        this.isprops = false;
+        this.routers = item.routers;
+      }
+      else{
+        this.selected = false;
+      }
+    }
   },
   computed: {
     ...mapGetters(["allRoles","allRouter_Screen"]),
@@ -185,7 +200,7 @@ export default {
         return this.caseSensitive
           ? (item, search, textKey) => item[textKey].indexOf(search) > -1
           : undefined
-      },
+      }
   },
   watch: {
       searchroles(val){
@@ -195,7 +210,7 @@ export default {
         this.fetchRoleSearch(val);
         this.isLoading = false;
       }
-    }
+    },
   }
 };
 </script>
