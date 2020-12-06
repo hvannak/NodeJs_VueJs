@@ -16,7 +16,6 @@
               hide-selected
               label="Roles"
               :error-messages="errors"
-              multiple
               return-object
             >
               <template v-slot:selection="data">
@@ -101,17 +100,12 @@
               <v-card-text>
                 <v-divider></v-divider>
                 <div v-if="isprops">
-                  <v-autocomplete
-                    v-model="valuesOfprops"
-                    :items="screens"
-                    outlined
-                    dense
-                    chips
-                    small-chips
-                    label="Properties"
-                    multiple
-                    return-object
-                  ></v-autocomplete>
+                  <v-switch v-for="(item, i) in screens" :key="i"
+                    :label="`${item}`"
+                    value= item
+                    color="primary"
+                    @change="changeSwitch(item)"
+                  ></v-switch>
                 </div>
                 <div v-else>
                   <v-autocomplete
@@ -173,7 +167,9 @@ export default {
     screens:[],
     routers:[],
     permissionHeader:'',
-    valuesOfprops:[]
+    valuesOfAuth:[],
+    parent:'',
+
   }),
   created () {
     this.fetchAllRouter_Screen();
@@ -184,8 +180,8 @@ export default {
     ]),
     showPermission(item){
       this.selected = true;
+      this.parent = item.parent;
       this.permissionHeader = item.parent + '-' + item.name;
-      console.log(this.valuesOfprops);
       if(item.name == 'Props'){
         this.isprops = true;
         this.screens = item.props
@@ -197,6 +193,13 @@ export default {
       else{
         this.selected = false;
       }
+    },
+    changeSwitch(item){
+      // id: 1,
+      // parent:'Post',
+      // name:'Props',
+      // props: Object.keys(Post.schema.paths)
+      console.log( this.parent + '-' + item);
     }
   },
   computed: {
