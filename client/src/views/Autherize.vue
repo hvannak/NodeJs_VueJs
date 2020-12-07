@@ -100,15 +100,22 @@
               <v-card-text>
                 <v-divider></v-divider>
                 <div v-if="isprops">
-                  <v-switch v-for="(item, i) in screens" :key="i"
-                    :label="`${item}`"
-                    value= item
-                    color="primary"
-                    @change="changeSwitch(item)"
-                  ></v-switch>
+                  <v-autocomplete
+                    v-model="valueOfItem"
+                    :items="screens"
+                    outlined
+                    dense
+                    chips
+                    small-chips
+                    label="Routers"
+                    multiple
+                    return-object
+                    @change="changeSelected()"
+                  ></v-autocomplete>
                 </div>
                 <div v-else>
                   <v-autocomplete
+                    v-model="valueOfItem"
                     :items="routers"
                     item-text="path"
                     item-value="path"
@@ -119,6 +126,7 @@
                     label="Routers"
                     multiple
                     return-object
+                    @change="changeSelected()"
                   ></v-autocomplete>
                 </div>
 
@@ -169,7 +177,8 @@ export default {
     permissionHeader:'',
     valuesOfAuth:[],
     parent:'',
-
+    child:'',
+    valueOfItem:[]
   }),
   created () {
     this.fetchAllRouter_Screen();
@@ -181,6 +190,7 @@ export default {
     showPermission(item){
       this.selected = true;
       this.parent = item.parent;
+      this.child = item.name;
       this.permissionHeader = item.parent + '-' + item.name;
       if(item.name == 'Props'){
         this.isprops = true;
@@ -195,11 +205,22 @@ export default {
       }
     },
     changeSwitch(item){
-      // id: 1,
-      // parent:'Post',
-      // name:'Props',
-      // props: Object.keys(Post.schema.paths)
-      console.log( this.parent + '-' + item);
+      let switchindex = this.valueOfItem.indexOf(item);
+      (switchindex == -1) ? this.valueOfItem.push(item) : this.valueOfItem.splice(switchindex,1);
+      // let propchild = {
+      //   parent: this.parent,
+      //   name: this.child,
+      //   value: this.valueOfItem
+      // }
+      console.log(this.valueOfItem);
+    },
+    changeSelected(){
+      let propchild = {
+        parent: this.parent,
+        name: this.child,
+        value: this.valueOfItem
+      };
+      console.log(propchild);
     }
   },
   computed: {
