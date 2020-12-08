@@ -9,7 +9,7 @@ const state = {
 
 const getters = {
   allRouter_Screen: state => state.router_screens,
-  allAutherizes: state => state.roles,
+  allAutherizes: state => state.autherizes,
   getAutherizeMessage: state => state.message,
   getAutherizetalItems: state => state.totalItems
 };
@@ -24,6 +24,7 @@ const actions = {
 
   async fetchAutherizeearch({ commit},_search){
     const response = await axios.get(`${apihelper.api_url}/autherize/search/${_search}`,apihelper.config);
+    console.log(response.data);
     commit('setAutherizeSearch',response.data);
   },
 
@@ -53,9 +54,7 @@ const actions = {
 
 const mutations = {
     updateMessage:(state,message) => (state.message = message),
-    setAutherizeSearch:(state,autherizes) => (autherizes.forEach(element => {
-      state.autherizes.push(element)
-    })),
+    setAutherizeSearch:(state,autherizes) => (state.autherizes = autherizes),
     setRouterScreens:(state,routerscreen) => (state.router_screens = routerscreen),
     newAutherize: (state, autherize) => state.autherizes.unshift(autherize),
     removeAutherize: (state, _id) =>
