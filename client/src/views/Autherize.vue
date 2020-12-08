@@ -62,7 +62,6 @@
                 :open.sync="open"
                 open-on-click
                 selection-type="independent"
-                activatable
               >
                 <template v-slot:prepend="{ item }">
                   <v-list-item @click="showPermission(item)">
