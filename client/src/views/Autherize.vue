@@ -38,7 +38,7 @@
           <v-sheet class="pa-4 primary lighten-2">
             <v-text-field
               v-model="search"
-              label="Search Company Directory"
+              label="Search Directory"
               dark
               flat
               solo-inverted
@@ -213,22 +213,25 @@ export default {
     },
     saveAuth() {
       if (this.valueOfroles != null && this.valueOfItem.length > 0) {
-        if (this.allAutherizes.length == 0) {
+        let index = this.allAutherizes.findIndex(x=> x.parent == this.parent && x.name == this.child);
+        if (index == -1) {
           let authdata = {
             role: this.valueOfroles._id,
             parent: this.parent,
             name: this.child,
             values: this.valueOfItem,
           };
+          console.log('insert');
           this.addAutherize(authdata);
         } else {
           let authdata = {
-            _id: this.allAutherizes[0]._id,
+            _id: this.allAutherizes[index]._id,
             role: this.valueOfroles._id,
             parent: this.parent,
             name: this.child,
             values: this.valueOfItem,
           };
+          console.log('update');
           this.updateAutherize(authdata);
         }
       }
