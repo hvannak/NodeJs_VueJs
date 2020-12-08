@@ -5,7 +5,7 @@
       <v-card class="mx-auto" width="256" tile>
         <v-system-bar height="10"></v-system-bar>
         <v-toolbar>
-            <v-toolbar-title>MODER CATTLE FARM</v-toolbar-title>
+            <v-toolbar-title>MODERN CATTLE FARM</v-toolbar-title>
         </v-toolbar>
         <v-divider></v-divider>
         <v-list-group v-for="(item, i) in itemGroups" :key="i">
