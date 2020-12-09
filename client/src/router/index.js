@@ -36,25 +36,25 @@ Vue.use(VueRouter)
           // when /users/register is matched
           path: 'register',
           name: 'Register',
-          meta: { back: true,icon: 'mdi-account-plus',group:'Users',gicon:'mdi-folder' },
+          meta: { back: true,icon: 'mdi-account-plus',group:'Authentication',gicon:'mdi-folder' },
           component: Register
         },
         {
           path: 'accounts',
           name: 'Accounts',
-          meta: { back: true,icon: 'mdi-account-cog',group:'Users',gicon:'mdi-folder' },
+          meta: { back: true,icon: 'mdi-account-cog',group:'Authentication',gicon:'mdi-folder' },
           component: Account
         },
         {
           path: 'roles',
           name: 'Roles',
-          meta: { back: true,icon: 'mdi-application-cog',group:'Users',gicon:'mdi-folder' },
+          meta: { back: true,icon: 'mdi-application-cog',group:'Authentication',gicon:'mdi-folder' },
           component: Role
         },
         {
           path: 'autherize',
           name: 'Autherize',
-          meta: { back: true,icon: 'mdi-account-switch',group:'Users',gicon:'mdi-folder' },
+          meta: { back: true,icon: 'mdi-account-switch',group:'Authentication',gicon:'mdi-folder' },
           component: Autherize
         }
       ],

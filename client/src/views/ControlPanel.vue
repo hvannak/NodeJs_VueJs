@@ -8,44 +8,39 @@
             <v-toolbar-title>MODERN CATTLE FARM</v-toolbar-title>
         </v-toolbar>
         <v-divider></v-divider>
-        <v-list-group v-for="(item, i) in itemGroups" :key="i">
-          <template v-slot:activator>
-            <v-divider vertical></v-divider>
-            <v-list-item-icon>
-              <v-icon v-text="item.icon"></v-icon>
-            </v-list-item-icon>
-            <v-list-item-content>
-              <v-list-item-title v-text="item.group"></v-list-item-title>
-            </v-list-item-content>
-          </template>
-
-          <v-list-item-group
-            v-model="selectedItem"
-            color="primary"
-            class="ml-3"
+        <v-expansion-panels inset>
+          <v-expansion-panel
+            v-for="(item,i) in itemGroups"
+            :key="i"
           >
-            <v-list-item
-              v-for="(child, i) in itemChild.filter(
-                (x) => x.meta.group == item.group
-              )"
-              :key="i"
-            >
-            <v-divider vertical></v-divider>
-              <v-list-item-icon>
-                <v-icon v-text="child.meta.icon"></v-icon>
-              </v-list-item-icon>
+            <v-expansion-panel-header>{{item.group}}</v-expansion-panel-header>
+            <v-expansion-panel-content>
+              <v-list-item-group>
+              <v-list dense>
+                <v-list-item
+                  v-for="(child, i) in itemChild.filter(
+                    (x) => x.meta.group == item.group)"
+                  :key="i">
+                  <v-list-item-icon>
+                    <v-icon v-text="child.meta.icon"></v-icon>
+                  </v-list-item-icon>
 
-              <v-list-item-content>
-                <router-link :to="item.path + '/' + child.path">
-                  <v-list-item-title
-                    v-text="child.name"
-                    @click="showAppname(child.name)"
-                  ></v-list-item-title>
-                </router-link>
-              </v-list-item-content>
-            </v-list-item>
-          </v-list-item-group>
-        </v-list-group>
+                  <v-list-item-content>
+                    <router-link :to="item.path + '/' + child.path">
+                      <v-list-item-title
+                        v-text="child.name"
+                        @click="showAppname(child.name)"
+                      ></v-list-item-title>
+                    </router-link>
+                  </v-list-item-content>
+                </v-list-item>
+              </v-list>
+              </v-list-item-group>
+              <v-divider></v-divider>
+            </v-expansion-panel-content>
+          </v-expansion-panel>
+        </v-expansion-panels>
+
       </v-card>
     </v-navigation-drawer>
 
