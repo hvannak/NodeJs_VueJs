@@ -21,7 +21,7 @@ router.put('/:authId',verify, async (req,res) => {
     }
 });
 
-router.post('/', async (req,res) => {
+router.post('/',verify, async (req,res) => {
     const docObj = new Autherize({
         role: req.body.role,
         parent: req.body.parent,
