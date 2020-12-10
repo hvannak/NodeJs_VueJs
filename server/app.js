@@ -30,75 +30,74 @@ app.use('/api/autherize',autherizeRoute);
 
 app.get('/api/router',verify,(req,res) => {
     try {
-        console.log(Object.keys(Post.schema.paths));
         let postendpoints = {
             id: 1,
-            name:'Post',
+            name:'posts',
             children:[
                 {
                     id: 1,
-                    parent:'Post',
-                    name:'Props',
+                    parent:'posts',
+                    name:'props',
                     props: Object.keys(Post.schema.paths)
                 },
                 {
                     id: 2,
-                    parent:'Post',
-                    name:'Routers',
+                    parent:'posts',
+                    name:'routers',
                     routers: getendpoints(postsRoute)
                 }
             ]
         };
         let authendpoints = {
             id: 2,
-            name:'Users',
+            name:'user',
             children:[
                 {
                     id: 1,
-                    parent:'Users',
-                    name:'Props',
+                    parent:'user',
+                    name:'props',
                     props: Object.keys(User.schema.paths)
                 },
                 {
                     id: 2,
-                    parent:'Users',
-                    name:'Routers',
+                    parent:'user',
+                    name:'routers',
                     routers: getendpoints(authRoute)
                 }
             ]
         };
         let roleendpoints = {
             id: 3,
-            name:'Roles',
+            name:'role',
             children:[
                 {
                     id: 1,
-                    parent:'Roles',
-                    name:'Props',
+                    parent:'role',
+                    name:'props',
                     props: Object.keys(Role.schema.paths)
                 },
                 {
                     id: 2,
-                    parent:'Roles',
-                    name:'Routers',
+                    parent:'role',
+                    name:'routers',
                     routers: getendpoints(roleRoute)
                 }
             ]
         };
         let autherizeendpoints = {
             id: 4,
-            name:'Autherization',
+            name:'autherize',
             children:[
                 {
                     id: 1,
-                    parent:'Autherization',
-                    name:'Props',
+                    parent:'autherize',
+                    name:'props',
                     props: Object.keys(Autherize.schema.paths)
                 },
                 {
                     id: 2,
-                    parent:'Autherization',
-                    name:'Routers',
+                    parent:'autherize',
+                    name:'routers',
                     routers: getendpoints(autherizeRoute)
                 }
             ]

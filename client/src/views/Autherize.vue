@@ -109,7 +109,7 @@
                             dense
                             chips
                             small-chips
-                            label="Routers"
+                            label="Props"
                             multiple
                             return-object
                           ></v-autocomplete>
@@ -195,10 +195,10 @@ export default {
         if (index != -1) this.valueOfItem = this.allAutherizes[index].values;
       }
 
-      if (item.name == "Props") {
+      if (item.name == "props") {
         this.isprops = true;
         this.screens = item.props;
-      } else if (item.name == "Routers") {
+      } else if (item.name == "routers") {
         this.isprops = false;
         this.routers = item.routers;
       } else {
