@@ -9,7 +9,6 @@ module.exports = async function auth (req,res,next) {
     if(!token) return res.status(401).send('Access Denied');
     try{
         const verified = jwt.verify(token,process.env.TOKEN_SECRET);
-        console.log(verified);
         req.user = verified;
 
         let parent = req.originalUrl.split('/')[2];
@@ -33,7 +32,6 @@ module.exports = async function auth (req,res,next) {
                 }       
             });
         });
-        console.log(existrouter);
         if(existrouter == false) return res.status(403).send('Unautherization Url');
 
         next();

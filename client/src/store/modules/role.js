@@ -22,8 +22,14 @@ const actions = {
   },
 
   async fetchRoleSearch({ commit},_search){
-    const response = await axios.get(`${apihelper.api_url}/role/search/${_search}`,apihelper.config);
-    commit('setRoleSearch',response.data);
+    try {
+      const response = await axios.get(`${apihelper.api_url}/role/search/${_search}`,apihelper.config);
+      commit('setRoleSearch',response.data);
+    } catch (err) {
+      console.log(err.response.status);
+      console.log(err.response.data);
+      commit('updateMessage',err.response.data);
+    }
   },
 
   async addRole({ commit }, roleObj) {

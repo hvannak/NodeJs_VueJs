@@ -139,6 +139,12 @@
         </v-card>
       </v-container>
     </v-card>
+    <v-snackbar
+      :value= "getAutherizeMessage != '' ? 'true' : 'false'"
+      :multi-line="true"
+    >
+      {{ getAutherizeMessage }}
+    </v-snackbar>
   </v-app>
 </template>
 <script>
