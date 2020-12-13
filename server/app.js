@@ -30,8 +30,31 @@ app.use('/api/autherize',autherizeRoute);
 
 app.get('/api/router',verify,(req,res) => {
     try {
-        let postendpoints = {
+        let routerendpoints = {
             id: 1,
+            name:'router',
+            children:[
+                {
+                    id: 1,
+                    parent:'router',
+                    name:'props',
+                    props: []
+                },
+                {
+                    id: 2,
+                    parent:'router',
+                    name:'routers',
+                    routers: [
+                        {
+                            method: 'GET',
+                            path: '/'
+                        }
+                    ]
+                }
+            ]
+        };
+        let postendpoints = {
+            id: 2,
             name:'posts',
             children:[
                 {
@@ -49,7 +72,7 @@ app.get('/api/router',verify,(req,res) => {
             ]
         };
         let authendpoints = {
-            id: 2,
+            id: 3,
             name:'user',
             children:[
                 {
@@ -67,7 +90,7 @@ app.get('/api/router',verify,(req,res) => {
             ]
         };
         let roleendpoints = {
-            id: 3,
+            id: 4,
             name:'role',
             children:[
                 {
@@ -85,7 +108,7 @@ app.get('/api/router',verify,(req,res) => {
             ]
         };
         let autherizeendpoints = {
-            id: 4,
+            id: 5,
             name:'autherize',
             children:[
                 {
@@ -102,7 +125,7 @@ app.get('/api/router',verify,(req,res) => {
                 }
             ]
         };
-        res.send([postendpoints,authendpoints,roleendpoints,autherizeendpoints]);
+        res.send([routerendpoints,postendpoints,authendpoints,roleendpoints,autherizeendpoints]);
     } catch (err) {
         console.log(err);
     }

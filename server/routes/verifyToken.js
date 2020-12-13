@@ -9,39 +9,32 @@ module.exports = async function auth (req,res,next) {
     if(!token) return res.status(401).send('Access Denied');
     try{
         const verified = jwt.verify(token,process.env.TOKEN_SECRET);
+        console.log(verified);
         req.user = verified;
-        // console.log(req.method);
-        // console.log(req.originalUrl);
-        // console.log(req.baseUrl);
-        // console.log(req.url);
-        // let url = req.originalUrl;
+
+        let parent = req.originalUrl.split('/')[2];
         let authObj = await Autherize.find({
             $and:[{
                 name: 'routers',
-                parent: 'user'
+                parent: parent
             }]
         }).populate({
             path: 'Role',
             match: { users: req.user._id }
         });
-        // console.log(authObj);
-        // console.log(pattern.match(req.originalUrl));
         let existrouter = false;
-        authObj[0].values.forEach(element => {
-            // console.log('/api/' + authObj[0].parent + element.path);
-            let pathget = '/api/' + authObj[0].parent + element.path;
-            var pattern = new UrlPattern(pathget);
-            console.log(pattern.match(req.originalUrl));
-            if(pattern.match(req.originalUrl) !== null){
-                existrouter = true;
-                throw e;
-            }
-            
+        authObj.forEach(data => {
+            data.values.forEach(element => {
+                let pathget = (element.path != '/') ? '/api/' + authObj[0].parent + element.path : '/api/' + authObj[0].parent;
+                var pattern = new UrlPattern(pathget);
+                if(pattern.match(req.originalUrl) != null || pathget == req.originalUrl){
+                    existrouter = true;
+                    return existrouter;
+                }       
+            });
         });
-        // var pattern = new UrlPattern('/api/user/search/:value');
-        // console.log(req.originalUrl);
-        // console.log(pattern.match(req.originalUrl));
-        
+        console.log(existrouter);
+        if(existrouter == false) return res.status(403).send('Unautherization Url');
 
         next();
     }catch(err){
