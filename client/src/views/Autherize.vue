@@ -2,6 +2,14 @@
   <v-app>
     <v-card outlined elevation="2">
       <v-container class="my-auto">
+        <v-alert
+          v-if="getAutherizeMessage != ''"
+          outlined
+          type="warning"
+          text
+        >
+          {{ getAutherizeMessage }}
+        </v-alert>
         <v-form ref="form">
           <ValidationProvider name="Role" rules="required" v-slot="{ errors }">
             <v-autocomplete
@@ -139,12 +147,6 @@
         </v-card>
       </v-container>
     </v-card>
-    <v-snackbar
-      :value= "getAutherizeMessage != '' ? 'true' : 'false'"
-      :multi-line="true"
-    >
-      {{ getAutherizeMessage }}
-    </v-snackbar>
   </v-app>
 </template>
 <script>
@@ -178,6 +180,7 @@ export default {
   }),
   created() {
     this.fetchAllRouter_Screen();
+    console.log(this.getAutherizeMessage);
   },
   methods: {
     ...mapActions([

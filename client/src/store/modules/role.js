@@ -16,9 +16,13 @@ const getters = {
 const actions = {
 
   async fetchRolePages({ commit },pageObj) {
-    const response = await axios.post(`${apihelper.api_url}/role/page`,pageObj,apihelper.config);
-    commit('setRolePages',response.data.objList);
-    commit('setTotalItems',response.data.totalDoc);
+    try {
+      const response = await axios.post(`${apihelper.api_url}/role/page`,pageObj,apihelper.config);
+      commit('setRolePages',response.data.objList);
+      commit('setTotalItems',response.data.totalDoc);
+    } catch (err) {
+      commit('updateMessage',err.response.data);
+    }
   },
 
   async fetchRoleSearch({ commit},_search){
@@ -26,29 +30,34 @@ const actions = {
       const response = await axios.get(`${apihelper.api_url}/role/search/${_search}`,apihelper.config);
       commit('setRoleSearch',response.data);
     } catch (err) {
-      console.log(err.response.status);
-      console.log(err.response.data);
       commit('updateMessage',err.response.data);
     }
   },
 
   async addRole({ commit }, roleObj) {
-    const response = await axios.post(
-      `${apihelper.api_url}/role`,roleObj,apihelper.config);
-    commit('newRoles', response.data.obj);
-    commit('updateMessage',response.data.message);
+    try {
+      const response = await axios.post(
+        `${apihelper.api_url}/role`,roleObj,apihelper.config);
+      commit('newRoles', response.data.obj);
+      commit('updateMessage',response.data.message);
+    } catch (err) {
+      commit('updateMessage',err.response.data);
+    }
   },
 
   async deleteRole({ commit }, _id) {
+    try {
       await axios.delete(`${apihelper.api_url}/role/${_id}`,apihelper.config);
       commit('removeRole', _id);
+    } catch (err) {
+      commit('updateMessage',err.response.data);
+    }
   },
 
   async updateRole({ commit }, roleObj) {
     try {
         const response = await axios.put(
         `${apihelper.api_url}/role/${roleObj._id}`,roleObj,apihelper.config);
-        console.log(response.data);
         commit('updateRoleObj', response.data.obj);
         commit('updateMessage',response.data.message);
     } catch (err) {

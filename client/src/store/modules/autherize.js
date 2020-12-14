@@ -17,27 +17,41 @@ const getters = {
 const actions = {
 
  async fetchAllRouter_Screen({commit}){
+   try {
     const response = await axios.get(`${apihelper.api_url}/router`,apihelper.config);
-    console.log(response.data);
     commit('setRouterScreens',response.data);
+   } catch (err) {
+    commit('updateMessage',err.response.data);
+   }
  },
 
   async fetchAutherizeearch({ commit},_search){
-    const response = await axios.get(`${apihelper.api_url}/autherize/search/${_search}`,apihelper.config);
-    console.log(response.data);
-    commit('setAutherizeSearch',response.data);
+    try {
+      const response = await axios.get(`${apihelper.api_url}/autherize/search/${_search}`,apihelper.config);
+      commit('setAutherizeSearch',response.data);
+    } catch (err) {
+      commit('updateMessage',err.response.data);
+    }
   },
 
   async addAutherize({ commit }, autherizeObj) {
-    const response = await axios.post(
-      `${apihelper.api_url}/autherize`,autherizeObj,apihelper.config);
-    commit('newAutherize', response.data.obj);
-    commit('updateMessage',response.data.message);
+    try {
+      const response = await axios.post(
+        `${apihelper.api_url}/autherize`,autherizeObj,apihelper.config);
+      commit('newAutherize', response.data.obj);
+      commit('updateMessage',response.data.message);
+    } catch (err) {
+      commit('updateMessage',err.response.data);
+    }
   },
 
   async deleteAutherize({ commit }, _id) {
+    try {
       await axios.delete(`${apihelper.api_url}/autherize/${_id}`,apihelper.config);
       commit('removeAutherize', _id);
+    } catch (err) {
+      commit('updateMessage',err.response.data);
+    }
   },
 
   async updateAutherize({ commit }, autherizeObj) {
