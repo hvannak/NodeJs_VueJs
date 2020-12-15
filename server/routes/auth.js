@@ -137,7 +137,7 @@ router.put('/:userId',verify, async (req,res) => {
     }
 });
 
-router.post('/', async (req,res) => {
+router.post('/',verify, async (req,res) => {
     //LETS VALIDATE THE DATA BEFORE WE A USER
     const { error } = registerValidation(req.body);
     if(error) return res.status(400).send(error.details[0].message);

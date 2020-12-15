@@ -5,6 +5,7 @@ const bodyParser = require('body-parser');
 const cors = require('cors');
 const {getendpoints} = require('./helper');
 const verify = require('./routes/verifyToken');
+const bcrypt = require('bcryptjs');
 //Import Models
 const User = require('./models/User');
 const Role = require('./models/Role');
@@ -131,8 +132,66 @@ app.get('/api/router',verify,(req,res) => {
     }
 });
 
-mongoose.connect(process.env.DB_CONNECTION,{useNewUrlParser:true,useUnifiedTopology: true},()=>{
-    console.log('connected to DB')
+mongoose.connect(process.env.DB_CONNECTION,{useNewUrlParser:true,useUnifiedTopology: true},async ()=> {
+    console.log('connected to DB');
+    //create user role and autherize when initialize
+    const userDoc = await User.countDocuments();
+    if(!userDoc){
+        //Hash password
+        const salt = await bcrypt.genSalt(10);
+        const hashPassword = await bcrypt.hash('123456',salt);
+        const user = new User({
+            name: 'admin',
+            email: 'vannak2010@gmail.com',
+            password: hashPassword,      
+        });
+        await user.save();
+        const roleDoc = await Role.countDocuments();
+        if(!roleDoc){
+            const role = new Role({
+                name: 'admin',
+                users: [user._id]     
+            });
+            await role.save();
+            const authDoc = await Autherize.countDocuments();
+            if(!authDoc){
+                const docObj1 = new Autherize({
+                    role: [role._id],
+                    parent: 'user',
+                    name: 'routers',
+                    values: [
+                        {
+                            method: 'POST',
+                            path: '/register'
+                        },
+                        {
+                            method: 'POST',
+                            path: '/login'
+                        },
+                        {
+                            method: 'GET',
+                            path: '/:userId'
+                        },
+                        {
+                            method: 'GET',
+                            path: '/'
+                        },
+                        {
+                            method: 'POST',
+                            path: '/page'
+                        },
+                        {
+                            method: 'GET',
+                            path: '/search/:value'
+                        }
+                    ]     
+                });
+
+                
+
+            }
+        }
+    }
 });
 
 app.listen(3000,()=> {
