@@ -1,14 +1,17 @@
 import axios from 'axios';
 import * as apihelper from './api-helper';
+import jwt_decode from "jwt-decode";
 
 const state = {
   users: [],
+  user:{},
   totalItems:0,
   message:''
 };
 
 const getters = {
   allUsers: state => state.users,
+  getUser: state => state.user,
   getMessage: state => state.message,
   gettotalItems: state => state.totalItems
 };
@@ -16,8 +19,18 @@ const getters = {
 const actions = {
   async fetchUsers({ commit }) {
     try {
-      const response = await axios.get(`${apihelper.api_url}/user`,apihelper.config);
+      const response = await axios.get(`${apihelper.api_url}/user/all`,apihelper.config);
       commit('setUsers',response.data);
+    } catch (err) {
+      commit('updateMessage',err.response.data);
+    }
+  },
+
+  async fetchUser({ commit }) {
+    try {
+      var decoded = jwt_decode(localStorage.getItem("token"));
+      const response = await axios.get(`${apihelper.api_url}/user/getById/${decoded._id}`,apihelper.config);
+      commit('setUser',response.data);
     } catch (err) {
       commit('updateMessage',err.response.data);
     }
@@ -45,7 +58,7 @@ const actions = {
   async addUser({ commit }, userObj) {
     try {
       const response = await axios.post(
-        `${apihelper.api_url}/user`,userObj,apihelper.config);
+        `${apihelper.api_url}/user/post`,userObj,apihelper.config);
       commit('newUsers', response.data.obj);
       commit('updateMessage',response.data.message);
     } catch (err) {
@@ -55,7 +68,7 @@ const actions = {
 
   async deleteUser({ commit }, _id) {
     try {
-      await axios.delete(`${apihelper.api_url}/user/${_id}`,apihelper.config);
+      await axios.delete(`${apihelper.api_url}/user/delete/${_id}`,apihelper.config);
       commit('removeUser', _id);
     } catch (err) {
       commit('updateMessage',err.response.data);
@@ -79,6 +92,7 @@ const mutations = {
     setTotalItems:(state,total) => (state.totalItems = total),
     setUserPages:(state,user) => (state.users = user),
     setUsers: (state, user) => (state.users = user),
+    setUser: (state, user) => (state.user = user),
     setUserSearch:(state,user) => (user.forEach(element => {
       state.users.push(element)
     })),

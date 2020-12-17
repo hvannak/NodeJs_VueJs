@@ -37,7 +37,7 @@ const actions = {
   async addAutherize({ commit }, autherizeObj) {
     try {
       const response = await axios.post(
-        `${apihelper.api_url}/autherize`,autherizeObj,apihelper.config);
+        `${apihelper.api_url}/autherize/post`,autherizeObj,apihelper.config);
       commit('newAutherize', response.data.obj);
       commit('updateMessage',response.data.message);
     } catch (err) {
@@ -47,7 +47,7 @@ const actions = {
 
   async deleteAutherize({ commit }, _id) {
     try {
-      await axios.delete(`${apihelper.api_url}/autherize/${_id}`,apihelper.config);
+      await axios.delete(`${apihelper.api_url}/autherize/delete/${_id}`,apihelper.config);
       commit('removeAutherize', _id);
     } catch (err) {
       commit('updateMessage',err.response.data);
@@ -57,7 +57,7 @@ const actions = {
   async updateAutherize({ commit }, autherizeObj) {
     try {
         const response = await axios.put(
-        `${apihelper.api_url}/autherize/${autherizeObj._id}`,autherizeObj,apihelper.config);
+        `${apihelper.api_url}/autherize/put/${autherizeObj._id}`,autherizeObj,apihelper.config);
         commit('updateAutherizeObj', response.data.obj);
         commit('updateMessage',response.data.message);
     } catch (err) {

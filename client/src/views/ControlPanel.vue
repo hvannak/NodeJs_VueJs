@@ -62,11 +62,11 @@
           </template>
           <v-list width="300" dense dark> 
             <v-list-item link>
-              <v-list-item-title @click="logout()">Profile</v-list-item-title>
+              <v-list-item-title @click="manageProfile()">{{getUser.email}}</v-list-item-title>
               <v-list-item-icon><v-icon>mdi-account-settings</v-icon></v-list-item-icon>
             </v-list-item>
             <v-list-item link>
-              <v-list-item-title @click="logout()">Setting</v-list-item-title>
+              <v-list-item-title @click="manageSetting()">Setting</v-list-item-title>
               <v-list-item-icon><v-icon>mdi-cog-transfer</v-icon></v-list-item-icon>
             </v-list-item>
             <v-list-item link>
@@ -94,8 +94,7 @@
 </template>
 
 <script>
-import axios from "axios";
-import jwt_decode from "jwt-decode";
+import { mapGetters, mapActions } from "vuex";
 
 export default {
   data: () => ({
@@ -130,7 +129,23 @@ export default {
           });
       });
   },
+  computed: {
+    ...mapGetters(["getUser", "getMessage"])
+  },
+  created() {
+    this.fetchUser();
+    console.log(this.getUser.name);
+  },
   methods: {
+    ...mapActions([
+      "fetchUser"
+    ]),
+    manageProfile(){
+      console.log('manage user profile');
+    },
+    manageSetting(){
+      console.log('manage user setting');
+    },
     logout() {
       localStorage.removeItem("token");
       this.$router.push({ name: "Login" });
@@ -138,30 +153,6 @@ export default {
     showAppname(appname) {
       this.appname = appname;
     },
-  },
-  created() {
-    let token = localStorage.getItem("token");
-    if (token != null) {
-      var decoded = jwt_decode(localStorage.getItem("token"));
-      // let uri = process.env.MIX_APP_URL + ':' + process.env.MIX_APP_PORT + '/api/user/';
-      const config = {
-        headers: {
-          // Authorization: 'Bearer ' + localStorage.getItem('token'),
-          "auth-token": token,
-          Accept: "application/json",
-        },
-      };
-      axios
-        .get("http://localhost:3000/api/user/" + decoded._id, config)
-        .then((res) => {
-          if (res.status == 200) {
-            this.user = res.data;
-          }
-        })
-        .catch((err) => {
-          console.log(err.response.data);
-        });
-    }
-  },
+  }
 };
 </script>

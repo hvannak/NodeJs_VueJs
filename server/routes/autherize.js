@@ -3,7 +3,7 @@ const Autherize = require('../models/Autherize');
 const verify = require('../routes/verifyToken');
 const {updatemessage, savemessage} = require('../helper');
 
-router.put('/:authId',verify, async (req,res) => {
+router.put('/put/:authId',verify, async (req,res) => {
     try{
         const filter = { _id: req.params.authId };
         const update = new Autherize({
@@ -21,7 +21,7 @@ router.put('/:authId',verify, async (req,res) => {
     }
 });
 
-router.post('/',verify, async (req,res) => {
+router.post('/post',verify, async (req,res) => {
     const docObj = new Autherize({
         role: req.body.role,
         parent: req.body.parent,

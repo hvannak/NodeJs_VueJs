@@ -45,7 +45,7 @@ router.post('/login', async (req,res) => {
     // res.headers("authorization", `Bearer ${token}`).send();
 });
 
-router.get('/:userId',verify,async (req,res) => {
+router.get('/getById/:userId',verify,async (req,res) => {
     try{
         const docObj = await User.findById(req.params.userId);
         res.json(docObj);
@@ -54,7 +54,7 @@ router.get('/:userId',verify,async (req,res) => {
     }
 });
 
-router.get('/',verify,async (req,res) => {
+router.get('/all',verify,async (req,res) => {
     try{
         const docObj = await User.find();
         res.json(docObj);
@@ -114,7 +114,7 @@ router.get('/search/:value',verify,async (req,res) => {
     }
 });
 
-router.put('/:userId',verify, async (req,res) => {
+router.put('/put/:userId',verify, async (req,res) => {
     //Checking if the user is already exist
     const emailExist = await User.findOne({email: req.body.email});
     if(emailExist !=null && req.params.userId != emailExist._id) return res.status(400).send('Email already exist');
@@ -137,32 +137,7 @@ router.put('/:userId',verify, async (req,res) => {
     }
 });
 
-router.post('/',verify, async (req,res) => {
-    //LETS VALIDATE THE DATA BEFORE WE A USER
-    const { error } = registerValidation(req.body);
-    if(error) return res.status(400).send(error.details[0].message);
-    //Checking if the user is already exist
-    const emailExist = await User.findOne({email: req.body.email});
-    if(emailExist) return res.status(400).send('Email already exist');
-    //Hash password
-    const salt = await bcrypt.genSalt(10);
-    const hashPassword = await bcrypt.hash(req.body.password,salt);
-
-
-    const docObj = new User({
-        name: req.body.name,
-        email: req.body.email,
-        password: hashPassword,      
-    });
-    try{
-        const saveUser = await docObj.save();
-        res.send({obj:docObj,message:savemessage});
-    }catch(err){
-        res.status(400).send(err);
-    }
-});
-
-router.delete('/:userId',verify, async (req,res) => {
+router.delete('/delete/:userId',verify, async (req,res) => {
     try{
         const docObj = await User.remove({_id: req.params.userId});
         console.log(docObj);

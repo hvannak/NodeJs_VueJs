@@ -37,7 +37,7 @@ const actions = {
   async addRole({ commit }, roleObj) {
     try {
       const response = await axios.post(
-        `${apihelper.api_url}/role`,roleObj,apihelper.config);
+        `${apihelper.api_url}/role/post`,roleObj,apihelper.config);
       commit('newRoles', response.data.obj);
       commit('updateMessage',response.data.message);
     } catch (err) {
@@ -47,7 +47,7 @@ const actions = {
 
   async deleteRole({ commit }, _id) {
     try {
-      await axios.delete(`${apihelper.api_url}/role/${_id}`,apihelper.config);
+      await axios.delete(`${apihelper.api_url}/role/delete/${_id}`,apihelper.config);
       commit('removeRole', _id);
     } catch (err) {
       commit('updateMessage',err.response.data);
@@ -57,7 +57,7 @@ const actions = {
   async updateRole({ commit }, roleObj) {
     try {
         const response = await axios.put(
-        `${apihelper.api_url}/role/${roleObj._id}`,roleObj,apihelper.config);
+        `${apihelper.api_url}/role/put/${roleObj._id}`,roleObj,apihelper.config);
         commit('updateRoleObj', response.data.obj);
         commit('updateMessage',response.data.message);
     } catch (err) {

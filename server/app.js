@@ -153,10 +153,11 @@ mongoose.connect(process.env.DB_CONNECTION,{useNewUrlParser:true,useUnifiedTopol
                 users: [user._id]     
             });
             await role.save();
+            console.log(role._id);
             const authDoc = await Autherize.countDocuments();
             if(!authDoc){
                 const docObj1 = new Autherize({
-                    role: [role._id],
+                    role: role._id,
                     parent: 'user',
                     name: 'routers',
                     values: [
@@ -165,16 +166,24 @@ mongoose.connect(process.env.DB_CONNECTION,{useNewUrlParser:true,useUnifiedTopol
                             path: '/register'
                         },
                         {
+                            method: 'PUT',
+                            path: '/put/:userId'
+                        },
+                        {
+                            method: 'DELETE',
+                            path: '/delete/:userId'
+                        },
+                        {
                             method: 'POST',
                             path: '/login'
                         },
                         {
                             method: 'GET',
-                            path: '/:userId'
+                            path: '/getById/:userId'
                         },
                         {
                             method: 'GET',
-                            path: '/'
+                            path: '/all'
                         },
                         {
                             method: 'POST',
@@ -185,10 +194,59 @@ mongoose.connect(process.env.DB_CONNECTION,{useNewUrlParser:true,useUnifiedTopol
                             path: '/search/:value'
                         }
                     ]     
+                },
+                {
+                    role: role._id,
+                    parent: 'role',
+                    name: 'routers',
+                    values: [
+                        {
+                            method: 'POST',
+                            path: '/post'
+                        },
+                        {
+                            method: 'PUT',
+                            path: '/put/:roleId'
+                        },
+                        {
+                            method: 'DELETE',
+                            path: '/delete/:roleId'
+                        },
+                        {
+                            method: 'GET',
+                            path: '/getById/:roleId'
+                        },
+                        {
+                            method: 'POST',
+                            path: '/page'
+                        },
+                        {
+                            method: 'GET',
+                            path: '/search/:value'
+                        }
+                    ]
+                },
+                {
+                    role: role._id,
+                    parent: 'autherize',
+                    name: 'routers',
+                    values: [
+                        {
+                            method: 'POST',
+                            path: '/post'
+                        },
+                        {
+                            method: 'PUT',
+                            path: '/put/:authId'
+                        },
+                        {
+                            method: 'GET',
+                            path: '/search/:roleId'
+                        }
+                    ]
                 });
-
-                
-
+                let result = await docObj1.save();               
+                console.log(result);
             }
         }
     }

@@ -50,7 +50,7 @@ router.get('/search/:value',verify,async (req,res) => {
     }
 });
 
-router.put('/:roleId',verify, async (req,res) => {
+router.put('/put/:roleId',verify, async (req,res) => {
     //Checking if the user is already exist
     const nameExist = await Role.findOne({name: req.body.name});
     if(nameExist !=null && req.params.roleId != nameExist._id) return res.status(400).send('Name already exist');
@@ -69,7 +69,7 @@ router.put('/:roleId',verify, async (req,res) => {
     }
 });
 
-router.post('/', async (req,res) => {
+router.post('/post', async (req,res) => {
     const nameExist = await Role.findOne({name: req.body.name});
     if(nameExist) return res.status(400).send('Name already exist');
     const docObj = new Role({
@@ -85,7 +85,7 @@ router.post('/', async (req,res) => {
     }
 });
 
-router.delete('/:roleId',verify, async (req,res) => {
+router.delete('/delete/:roleId',verify, async (req,res) => {
     try{
         const docObj = await Role.remove({_id: req.params.roleId});
         res.json(docObj);
