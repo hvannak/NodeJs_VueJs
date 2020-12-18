@@ -156,7 +156,7 @@ mongoose.connect(process.env.DB_CONNECTION,{useNewUrlParser:true,useUnifiedTopol
             console.log(role._id);
             const authDoc = await Autherize.countDocuments();
             if(!authDoc){
-                const docObj1 = new Autherize({
+                const docObj1 = [new Autherize({
                     role: role._id,
                     parent: 'user',
                     name: 'routers',
@@ -194,8 +194,8 @@ mongoose.connect(process.env.DB_CONNECTION,{useNewUrlParser:true,useUnifiedTopol
                             path: '/search/:value'
                         }
                     ]     
-                },
-                {
+                }),
+                new Autherize({
                     role: role._id,
                     parent: 'role',
                     name: 'routers',
@@ -225,8 +225,8 @@ mongoose.connect(process.env.DB_CONNECTION,{useNewUrlParser:true,useUnifiedTopol
                             path: '/search/:value'
                         }
                     ]
-                },
-                {
+                }),
+                new Autherize({
                     role: role._id,
                     parent: 'autherize',
                     name: 'routers',
@@ -244,9 +244,20 @@ mongoose.connect(process.env.DB_CONNECTION,{useNewUrlParser:true,useUnifiedTopol
                             path: '/search/:roleId'
                         }
                     ]
-                });
-                let result = await docObj1.save();               
-                console.log(result);
+                }),
+                new Autherize({
+                    role: role._id,
+                    parent: 'router',
+                    name: 'routers',
+                    values: [
+                        {
+                            method: 'GET',
+                            path: '/'
+                        }
+                    ]
+                })];
+                let result = await Autherize.collection.insertMany(docObj1);
+                console.log(result);            
             }
         }
     }
