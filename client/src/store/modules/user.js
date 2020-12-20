@@ -1,6 +1,7 @@
 import axios from 'axios';
 import * as apihelper from './api-helper';
 import jwt_decode from "jwt-decode";
+import  router from '../../router';
 
 const state = {
   users: [],
@@ -31,6 +32,19 @@ const actions = {
       var decoded = jwt_decode(localStorage.getItem("token"));
       const response = await axios.get(`${apihelper.api_url}/user/getById/${decoded._id}`,apihelper.config);
       commit('setUser',response.data);
+    } catch (err) {
+      console.log(err.response.data);
+      commit('updateMessage',err.response.data);
+    }
+  },
+
+  async loginUser({ commit }, userObj) {
+    try {
+      const response = await axios.post(
+        `${apihelper.api_url}/user/login`,userObj);
+        console.log(response);
+        localStorage.setItem('token',response.data);
+        router.push({ name: 'ControlPanel'});
     } catch (err) {
       commit('updateMessage',err.response.data);
     }

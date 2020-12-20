@@ -2,6 +2,14 @@
     <v-app>
       <v-card width="60%" class="mx-auto my-auto">
         <v-system-bar>Application Autherization</v-system-bar>
+        <v-alert
+          v-if="getMessage != ''"
+          outlined
+          type="warning"
+          text
+        >
+          {{ getMessage }}
+        </v-alert>
         <v-main>
             <v-form
                 ref="form"
@@ -75,7 +83,7 @@
 </template>
 
 <script>
-  import axios from 'axios';
+  import { mapGetters, mapActions } from "vuex";
 
   export default {
     data: () => ({
@@ -93,7 +101,14 @@
       ]
     }),
 
+    computed: {
+      ...mapGetters(["getMessage"])
+    },
+
     methods: {
+      ...mapActions([
+        "loginUser"
+      ]),
       validate () {
         return this.$refs.form.validate()
       },
@@ -105,17 +120,7 @@
       },
       login(){
         if(this.validate()){
-          axios.post('http://localhost:3000/api/user/login',this.user).then(res => {
-            if(res.status == 200){
-              console.log(res.data);
-              localStorage.setItem('token',res.data);
-              this.$router.push({ name: 'ControlPanel'})
-            }
-        }).catch(err => {
-          console.log(err.response.data);
-          this.snackbar = true;
-          this.snakbartext = err.response.data;
-        })
+          this.loginUser(this.user);
         }
       }
     },
