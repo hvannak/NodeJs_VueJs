@@ -18,7 +18,7 @@ const actions = {
 
  async fetchAllRouter_Screen({commit}){
    try {
-    const response = await axios.get(`${apihelper.api_url}/router`,apihelper.config);
+    const response = await axios.get(`${apihelper.api_url}/router`,apihelper.setToken());
     commit('setRouterScreens',response.data);
    } catch (err) {
     commit('updateMessage',err.response.data);
@@ -27,7 +27,7 @@ const actions = {
 
   async fetchAutherizeearch({ commit},_search){
     try {
-      const response = await axios.get(`${apihelper.api_url}/autherize/search/${_search}`,apihelper.config);
+      const response = await axios.get(`${apihelper.api_url}/autherize/search/${_search}`,apihelper.setToken());
       commit('setAutherizeSearch',response.data);
     } catch (err) {
       commit('updateMessage',err.response.data);
@@ -37,7 +37,7 @@ const actions = {
   async addAutherize({ commit }, autherizeObj) {
     try {
       const response = await axios.post(
-        `${apihelper.api_url}/autherize/post`,autherizeObj,apihelper.config);
+        `${apihelper.api_url}/autherize/post`,autherizeObj,apihelper.setToken());
       commit('newAutherize', response.data.obj);
       commit('updateMessage',response.data.message);
     } catch (err) {
@@ -47,7 +47,7 @@ const actions = {
 
   async deleteAutherize({ commit }, _id) {
     try {
-      await axios.delete(`${apihelper.api_url}/autherize/delete/${_id}`,apihelper.config);
+      await axios.delete(`${apihelper.api_url}/autherize/delete/${_id}`,apihelper.setToken());
       commit('removeAutherize', _id);
     } catch (err) {
       commit('updateMessage',err.response.data);
@@ -57,7 +57,7 @@ const actions = {
   async updateAutherize({ commit }, autherizeObj) {
     try {
         const response = await axios.put(
-        `${apihelper.api_url}/autherize/put/${autherizeObj._id}`,autherizeObj,apihelper.config);
+        `${apihelper.api_url}/autherize/put/${autherizeObj._id}`,autherizeObj,apihelper.setToken());
         commit('updateAutherizeObj', response.data.obj);
         commit('updateMessage',response.data.message);
     } catch (err) {

@@ -17,7 +17,7 @@ const actions = {
 
   async fetchRolePages({ commit },pageObj) {
     try {
-      const response = await axios.post(`${apihelper.api_url}/role/page`,pageObj,apihelper.config);
+      const response = await axios.post(`${apihelper.api_url}/role/page`,pageObj,apihelper.setToken());
       commit('setRolePages',response.data.objList);
       commit('setTotalItems',response.data.totalDoc);
     } catch (err) {
@@ -27,7 +27,7 @@ const actions = {
 
   async fetchRoleSearch({ commit},_search){
     try {
-      const response = await axios.get(`${apihelper.api_url}/role/search/${_search}`,apihelper.config);
+      const response = await axios.get(`${apihelper.api_url}/role/search/${_search}`,apihelper.setToken());
       commit('setRoleSearch',response.data);
     } catch (err) {
       commit('updateMessage',err.response.data);
@@ -37,7 +37,7 @@ const actions = {
   async addRole({ commit }, roleObj) {
     try {
       const response = await axios.post(
-        `${apihelper.api_url}/role/post`,roleObj,apihelper.config);
+        `${apihelper.api_url}/role/post`,roleObj,apihelper.setToken());
       commit('newRoles', response.data.obj);
       commit('updateMessage',response.data.message);
     } catch (err) {
@@ -47,7 +47,7 @@ const actions = {
 
   async deleteRole({ commit }, _id) {
     try {
-      await axios.delete(`${apihelper.api_url}/role/delete/${_id}`,apihelper.config);
+      await axios.delete(`${apihelper.api_url}/role/delete/${_id}`,apihelper.setToken());
       commit('removeRole', _id);
     } catch (err) {
       commit('updateMessage',err.response.data);
@@ -57,7 +57,7 @@ const actions = {
   async updateRole({ commit }, roleObj) {
     try {
         const response = await axios.put(
-        `${apihelper.api_url}/role/put/${roleObj._id}`,roleObj,apihelper.config);
+        `${apihelper.api_url}/role/put/${roleObj._id}`,roleObj,apihelper.setToken());
         commit('updateRoleObj', response.data.obj);
         commit('updateMessage',response.data.message);
     } catch (err) {

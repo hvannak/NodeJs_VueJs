@@ -117,7 +117,6 @@ export default {
             let index = this.itemGroups.findIndex(
               (x) => x.group == c.meta.group
             );
-            console.log(index);
             if (index == -1) {
               this.itemGroups.push({
                 name: c.name,
@@ -134,7 +133,6 @@ export default {
   },
   created() {
     this.fetchUser();
-    console.log(this.getUser.name);
   },
   methods: {
     ...mapActions([
