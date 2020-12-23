@@ -87,8 +87,14 @@
       </v-container>
     </v-main>
 
-    <v-footer app>
-      <!-- -->
+  <v-footer
+    app
+    light
+    padless
+  >
+    <v-divider></v-divider>
+    {{ new Date().getFullYear() }} — <strong>MODERN FARM CO.LTD</strong>
+    <v-divider></v-divider>
     </v-footer>
   </v-app>
 </template>
