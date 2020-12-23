@@ -2,6 +2,7 @@ const router = require('express').Router();
 const Autherize = require('../models/Autherize');
 const verify = require('../routes/verifyToken');
 const {updatemessage, savemessage} = require('../helper');
+const {logger} = require('../logger');
 
 router.put('/put/:authId',verify, async (req,res) => {
     try{
@@ -17,6 +18,7 @@ router.put('/put/:authId',verify, async (req,res) => {
         let docObj = await Autherize.findById(req.body._id);
         res.json({obj:docObj,message:updatemessage});
     } catch(err) {
+        logger.error('autherize put:' + err);
         res.json(err)
     }
 });
@@ -32,6 +34,7 @@ router.post('/post',verify, async (req,res) => {
         await docObj.save();
         res.send({obj:docObj,message:savemessage});
     }catch(err){
+        logger.error('autherize post:' + err);
         res.status(400).send(err);
     }
 });
@@ -44,6 +47,7 @@ router.get('/search/:roleId',verify,async (req,res) => {
         const docObj = await Autherize.find(filter);
         res.json(docObj);
     }catch(err){
+        logger.error('autherize search roleId:' + err);
         res.json(err)
     }
 });

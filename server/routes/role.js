@@ -4,6 +4,7 @@ const bcrypt = require('bcryptjs');
 var jwt = require('jsonwebtoken');
 const verify = require('../routes/verifyToken');
 const {updatemessage, savemessage} = require('../helper');
+const {logger} = require('../logger');
 
 router.post('/page',verify,async (req,res) => {
     try{
@@ -34,6 +35,7 @@ router.post('/page',verify,async (req,res) => {
         res.json({objList:docObj,totalDoc:totalItems});
 
     }catch(err){
+        logger.error('role page:' + err);
         res.json(err);
     }
 });
@@ -46,6 +48,7 @@ router.get('/search/:value',verify,async (req,res) => {
         const docObj = await Role.find(filter);
         res.json(docObj);
     }catch(err){
+        logger.error('role search:' + err);
         res.json(err)
     }
 });
@@ -65,6 +68,7 @@ router.put('/put/:roleId',verify, async (req,res) => {
         let docObj = await Role.findById(req.body._id).populate("users");
         res.json({obj:docObj,message:updatemessage});
     } catch(err) {
+        logger.error('role put:' + err);
         res.json(err)
     }
 });
@@ -81,6 +85,7 @@ router.post('/post', async (req,res) => {
         const saveUser =  await Role.findById(docObj._id).populate("users");
         res.send({obj:saveUser,message:savemessage});
     }catch(err){
+        logger.error('role post:' + err);
         res.status(400).send(err);
     }
 });
@@ -90,6 +95,7 @@ router.delete('/delete/:roleId',verify, async (req,res) => {
         const docObj = await Role.remove({_id: req.params.roleId});
         res.json(docObj);
     }catch(err){
+        logger.error('role delete:' + err);
         res.json(err)
     }
 });

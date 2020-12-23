@@ -5,6 +5,7 @@ var jwt = require('jsonwebtoken');
 const verify = require('../routes/verifyToken');
 const {registerValidation,loginValidation} = require('../validation');
 const {updatemessage, savemessage} = require('../helper');
+const {logger} = require('../logger');
 
 router.post('/register', async (req,res) => {
     //LETS VALIDATE THE DATA BEFORE WE A USER
@@ -27,22 +28,28 @@ router.post('/register', async (req,res) => {
         const saveUser = await user.save();
         res.send({_id:user._id,message:'You register successfully'});
     }catch(err){
+        logger.error('auth register:' + err);
         res.status(400).send(err);
     }
 });
 
 router.post('/login', async (req,res) => {
-    console.log(req.body);
-    const { error } = loginValidation(req.body);
-    if(error) return res.status(400).send(error.details[0].message);
-    const user = await User.findOne({email: req.body.email});
-    if(!user) return res.status(400).send('Email or password is wrong');
-    const validPass = await bcrypt.compare(req.body.password,user.password);
-    if(!validPass) return res.status(400).send('Invalid password');
-    //Create and assign a token
-    const token = jwt.sign({_id: user._id},process.env.TOKEN_SECRET);
-    res.header('auth-token',token).send(token);
-    // res.headers("authorization", `Bearer ${token}`).send();
+    try {
+        console.log(req.body);
+        const { error } = loginValidation(req.body);
+        if(error) return res.status(400).send(error.details[0].message);
+        const user = await User.findOne({email: req.body.email});
+        if(!user) return res.status(400).send('Email or password is wrong');
+        const validPass = await bcrypt.compare(req.body.password,user.password);
+        if(!validPass) return res.status(400).send('Invalid password');
+        //Create and assign a token
+        const token = jwt.sign({_id: user._id},process.env.TOKEN_SECRET);
+        res.header('auth-token',token).send(token);
+        // res.headers("authorization", `Bearer ${token}`).send();
+    } catch (err) {
+        logger.error('auth login:' + err);
+        res.status(400).send(err);
+    }
 });
 
 router.get('/getById/:userId',verify,async (req,res) => {
@@ -50,6 +57,7 @@ router.get('/getById/:userId',verify,async (req,res) => {
         const docObj = await User.findById(req.params.userId);
         res.json(docObj);
     }catch(err){
+        logger.error('auth getById:' + err);
         res.json(err)
     }
 });
@@ -59,7 +67,7 @@ router.get('/all',verify,async (req,res) => {
         const docObj = await User.find();
         res.json(docObj);
     }catch(err){
-        console.log(err);
+        logger.error('auth all:' + err);
         res.json(err);
     }
 });
@@ -94,6 +102,7 @@ router.post('/page',verify,async (req,res) => {
         res.json({objList:docObj,totalDoc:totalItems});
 
     }catch(err){
+        logger.error('auth page:' + err);
         res.json(err);
     }
 });
@@ -110,6 +119,7 @@ router.get('/search/:value',verify,async (req,res) => {
         const docObj = await User.find(filter);
         res.json(docObj);
     }catch(err){
+        logger.error('auth search:' + err);
         res.json(err)
     }
 });
@@ -133,6 +143,7 @@ router.put('/put/:userId',verify, async (req,res) => {
           });
         res.json({obj:docObj,message:updatemessage});
     } catch(err) {
+        logger.error('auth put:' + err);
         res.json(err)
     }
 });
@@ -143,6 +154,7 @@ router.delete('/delete/:userId',verify, async (req,res) => {
         console.log(docObj);
         res.json(docObj);
     }catch(err){
+        logger.error('auth delete:' + err);
         res.json(err)
     }
 });

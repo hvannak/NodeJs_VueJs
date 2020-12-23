@@ -2,11 +2,10 @@ var jwt = require('jsonwebtoken');
 const Role = require('../models/Role');
 const Autherize = require('../models/Autherize');
 const UrlPattern = require('url-pattern');
-const e = require('express');
+const {logger} = require('../logger');
 
 module.exports = async function auth (req,res,next) {
     const token = req.header('auth-token');
-    console.log(token);
     if(!token) return res.status(401).send('Access Denied');
     try{
         const verified = jwt.verify(token,process.env.TOKEN_SECRET);
@@ -38,6 +37,7 @@ module.exports = async function auth (req,res,next) {
 
         next();
     }catch(err){
+        logger.error('verify token:' + err);
         res.status(400).send(err);
     }
 }
