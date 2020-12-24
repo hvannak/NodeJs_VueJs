@@ -25,7 +25,6 @@ module.exports = async function auth (req,res,next) {
         authObj.forEach(data => {
             data.values.forEach(element => {
                 let pathget = (element.path != '/') ? '/api/' + authObj[0].parent + element.path : '/api/' + authObj[0].parent;
-                console.log(pathget);
                 var pattern = new UrlPattern(pathget);
                 if(pattern.match(req.originalUrl) != null || pathget == req.originalUrl){
                     existrouter = true;
