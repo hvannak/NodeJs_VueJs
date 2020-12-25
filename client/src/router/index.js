@@ -7,6 +7,8 @@ import Register from '../views/Register.vue'
 import Account from '../views/Account.vue'
 import Role from '../views/Role.vue'
 import Autherize from '../views/Autherize.vue'
+import HelloWorld from "@/components/HelloWorld.vue";
+import SearchData from "@/components/SearchData.vue";
 
 Vue.use(VueRouter)
 
@@ -16,7 +18,18 @@ Vue.use(VueRouter)
       name: 'Home',
       component: Home,
       meta: { back: false,icon: 'mdi-folder' },
-      children:[]
+      children:[{
+        path: '/welcome',
+        name: 'Welcome',
+        meta: { back: false,icon: 'mdi-account-reactivate',group:'Front',gicon:'mdi-folder' },
+        component: HelloWorld
+      },
+      {
+        path: '/searchdata',
+        name: 'Search Data',
+        meta: { back: false,icon: 'mdi-cloud-search',group:'Front',gicon:'mdi-folder' },
+        component: SearchData
+      }]
     },
     {
       path: '/login',
@@ -32,8 +45,6 @@ Vue.use(VueRouter)
       component: ControlPanel,
       children:[
         {
-          // Register will be rendered inside User's <router-view>
-          // when /users/register is matched
           path: 'register',
           name: 'Register',
           meta: { back: true,icon: 'mdi-account-plus',group:'Authentication',gicon:'mdi-folder' },
@@ -68,13 +79,20 @@ const router = new VueRouter({
 })
 
 router.beforeEach((to, from, next) => {
-  if (to.name !== 'Login' && localStorage.getItem('token') == null) {
-    if(to.name == 'Home') next()
-    else next({ name: 'Login' })
+  // if (to.name !== 'Login' && localStorage.getItem('token') == null) {
+  //   if(to.name == 'Home') next()
+  //   else next({ name: 'Login' })
+  // }
+  // else if((to.name == 'Login' && localStorage.getItem('token') != null) || 
+  // (to.name == 'Home' && localStorage.getItem('token') != null)){
+  //   next({name:'ControlPanel'})
+  // }
+  // else next()
+  if(to.name == 'Home') {
+    next({name: 'Welcome'})
   }
-  else if((to.name == 'Login' && localStorage.getItem('token') != null) || 
-  (to.name == 'Home' && localStorage.getItem('token') != null)){
-    next({name:'ControlPanel'})
+  if((to.name == 'Login' && localStorage.getItem('token') != null)){
+    next({name:'ControlPanel'});
   }
   else next()
 })
