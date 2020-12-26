@@ -50,7 +50,7 @@
 
       <v-spacer></v-spacer>
 
-      <div v-if="checklogin" class="d-flex align-center">
+      <div v-if="!false" class="d-flex align-center">
 
       <v-btn href="/loginclient" elevation="2" text>
         <span class="mr-2">LOG IN</span>
@@ -66,6 +66,7 @@
       </v-btn>
       </div>
       <div v-else>
+        <span class="mr-2">{{getUser.name}}</span>
         <v-icon>mdi-open-in-new</v-icon>
       </div>
     </v-app-bar>
@@ -112,16 +113,13 @@ export default {
       selects: [
           { text: 'All', value: 'all' },
           { text: 'Others', value: 'others' }
-        ],
-      login: false
+        ]
   }),
    computed: {
     ...mapGetters(["getUser", "getMessage"]),
   },
   methods:{
-    checklogin(){
-      return this.getUser != null ? false : true;
-    }
+
   },
   mounted() {
     this.$router.options.routes
