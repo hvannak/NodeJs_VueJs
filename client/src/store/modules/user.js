@@ -48,6 +48,17 @@ const actions = {
     }
   },
 
+  async loginUserClient({ commit }, userObj) {
+    try {
+      const response = await axios.post(
+        `${apihelper.api_url}/user/login`,userObj);
+        localStorage.setItem('token',response.data);
+        router.push({ name: 'Welcome'});
+    } catch (err) {
+      commit('updateMessage',err.response.data);
+    }
+  },
+
   async fetchUserPages({ commit },pageObj) {
     try {
       const response = await axios.post(`${apihelper.api_url}/user/page`,pageObj,apihelper.setToken());

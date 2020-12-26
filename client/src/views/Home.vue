@@ -15,7 +15,7 @@
 
       <v-spacer></v-spacer>
 
-      <div class="mx-auto my-auto">
+      <div class="mx-auto mt-6">
       <v-form>
           <v-row>
             <v-col
@@ -25,6 +25,8 @@
               <v-select
                 v-model="value"
                 :items="selects"
+                item-text="text"
+                item-value="value"
                 outlined
                 dense
               ></v-select>
@@ -48,11 +50,13 @@
 
       <v-spacer></v-spacer>
 
-      <v-btn href="/login" target="_blank" elevation="2" text>
+      <div v-if="checklogin" class="d-flex align-center">
+
+      <v-btn href="/loginclient" elevation="2" text>
         <span class="mr-2">LOG IN</span>
         <v-icon>mdi-account-check</v-icon>
       </v-btn>
-      <v-btn href="/login" target="_blank" elevation="2" text>
+      <v-btn href="/login" elevation="2" text>
         <span class="mr-2">REGISTER</span>
         <v-icon>mdi-account-key</v-icon>
       </v-btn>
@@ -60,6 +64,10 @@
         <span class="mr-2">POST FREE ADVERTISEMENT</span>
         <v-icon>mdi-open-in-new</v-icon>
       </v-btn>
+      </div>
+      <div v-else>
+        <v-icon>mdi-open-in-new</v-icon>
+      </div>
     </v-app-bar>
 
       <v-row no-gutters>
@@ -92,23 +100,35 @@
 </template>
 
 <script>
+import { mapGetters } from "vuex";
 
 export default {
   name: "Home",
   components: {
   },
-  data() {
-    return {
+  data: () => ({
       items: [],
-      selects: ['foo', 'bar', 'fizz', 'buzz'],
-      value: ['foo', 'bar', 'fizz', 'buzz'],
-    };
+      value: { text: 'All', value: 'all' },
+      selects: [
+          { text: 'All', value: 'all' },
+          { text: 'Others', value: 'others' }
+        ],
+      login: false
+  }),
+   computed: {
+    ...mapGetters(["getUser", "getMessage"]),
+  },
+  methods:{
+    checklogin(){
+      return this.getUser != null ? false : true;
+    }
   },
   mounted() {
     this.$router.options.routes
       .filter((x) => x.name == 'Home')
       .forEach((route) => {
         route.children
+          .filter((x) => x.meta.back == true)
           .forEach((c) => {
             this.items.push(c);
           });

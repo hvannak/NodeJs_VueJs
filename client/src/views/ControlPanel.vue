@@ -248,7 +248,7 @@ export default {
   }),
   mounted() {
     this.$router.options.routes
-      .filter((x) => x.meta.back == true)
+      .filter((x) => x.meta.back == true && x.name == 'ControlPanel')
       .forEach((route) => {
         route.children
           .filter((x) => x.meta.back == true)

@@ -9,6 +9,7 @@ import Role from '../views/Role.vue'
 import Autherize from '../views/Autherize.vue'
 import HelloWorld from "@/components/HelloWorld.vue";
 import SearchData from "@/components/SearchData.vue";
+import LoginClient from "@/components/LoginClient.vue";
 
 Vue.use(VueRouter)
 
@@ -21,14 +22,20 @@ Vue.use(VueRouter)
       children:[{
         path: '/welcome',
         name: 'Welcome',
-        meta: { back: false,icon: 'mdi-account-reactivate',group:'Front',gicon:'mdi-folder' },
+        meta: { back: true,icon: 'mdi-account-reactivate',group:'Front',gicon:'mdi-folder' },
         component: HelloWorld
       },
       {
         path: '/searchdata',
         name: 'Search Data',
-        meta: { back: false,icon: 'mdi-cloud-search',group:'Front',gicon:'mdi-folder' },
+        meta: { back: true,icon: 'mdi-cloud-search',group:'Front',gicon:'mdi-folder' },
         component: SearchData
+      }, 
+      {
+        path: '/loginclient',
+        name: 'Login Client',
+        meta: { back: false,icon: 'mdi-cloud-search',group:'Front',gicon:'mdi-folder' },
+        component: LoginClient
       }]
     },
     {
