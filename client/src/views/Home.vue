@@ -11,21 +11,53 @@
           transition="scale-transition"
           width="40"
         />
-
-        <v-img
-          alt="Vuetify Name"
-          class="shrink mt-1 hidden-sm-and-down"
-          contain
-          min-width="100"
-          src="https://cdn.vuetifyjs.com/images/logos/vuetify-name-dark.png"
-          width="100"
-        />
       </div>
 
       <v-spacer></v-spacer>
 
-      <v-btn href="/login" target="_blank" text>
-        <span class="mr-2">Control Panel</span>
+      <div class="mx-auto my-auto">
+      <v-form>
+          <v-row>
+            <v-col
+              cols="6"
+              md="6"
+            >
+              <v-select
+                v-model="value"
+                :items="selects"
+                outlined
+                dense
+              ></v-select>
+            </v-col>
+
+            <v-col
+              cols="6"
+              md="6"
+            >
+              <v-text-field
+                label="What are you looking for ?"
+                required
+                outlined
+                dense
+              ></v-text-field>
+            </v-col>
+
+          </v-row>
+      </v-form>
+      </div>
+
+      <v-spacer></v-spacer>
+
+      <v-btn href="/login" target="_blank" elevation="2" text>
+        <span class="mr-2">LOG IN</span>
+        <v-icon>mdi-account-check</v-icon>
+      </v-btn>
+      <v-btn href="/login" target="_blank" elevation="2" text>
+        <span class="mr-2">REGISTER</span>
+        <v-icon>mdi-account-key</v-icon>
+      </v-btn>
+      <v-btn href="/login" target="_blank" elevation="2" text>
+        <span class="mr-2">POST FREE ADVERTISEMENT</span>
         <v-icon>mdi-open-in-new</v-icon>
       </v-btn>
     </v-app-bar>
@@ -37,21 +69,6 @@
         <v-col cols="2" md="2" sm="1">
           <v-card height="92vh">
             <v-navigation-drawer class="mx-auto" permanent right>
-              <template v-slot:prepend>
-                <v-list-item two-line>
-                  <v-list-item-avatar>
-                    <!-- <img
-                      src="https://randomuser.me/api/portraits/women/81.jpg"
-                    /> -->
-                    <v-icon x-large>mdi-account-cowboy-hat</v-icon>
-                  </v-list-item-avatar>
-
-                  <v-list-item-content>
-                    <v-list-item-title>VANNAK HENG</v-list-item-title>
-                    <v-list-item-subtitle>FOUNDER</v-list-item-subtitle>
-                  </v-list-item-content>
-                </v-list-item>
-              </template>
 
               <v-divider></v-divider>
 
@@ -82,7 +99,9 @@ export default {
   },
   data() {
     return {
-      items: []
+      items: [],
+      selects: ['foo', 'bar', 'fizz', 'buzz'],
+      value: ['foo', 'bar', 'fizz', 'buzz'],
     };
   },
   mounted() {
