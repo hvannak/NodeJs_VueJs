@@ -112,6 +112,7 @@ const actions = {
 
 const mutations = {
     updateMessage:(state,message) => (state.message = message),
+    updateislogin:(state,islogin) => (state.islogin = islogin),
     setTotalItems:(state,total) => (state.totalItems = total),
     setUserPages:(state,user) => (state.users = user),
     setUsers: (state, user) => (state.users = user),
