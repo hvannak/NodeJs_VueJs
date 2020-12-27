@@ -49,8 +49,7 @@
       </div>
 
       <v-spacer></v-spacer>
-
-      <div v-if="getUser == {}" class="d-flex align-center">
+      <div v-if="getUser === '{}'" class="d-flex align-center">
       <v-btn href="/loginclient" elevation="2" text>
         <span class="mr-2">LOG IN</span>
         <v-icon>mdi-account-check</v-icon>
@@ -284,6 +283,7 @@ export default {
     },
     logout() {
       localStorage.removeItem("token");
+      this.$store.commit("setUser","{}");
       console.log(this.getUser)
     },
     save() {
@@ -296,8 +296,12 @@ export default {
     
   },
   created() {
+    console.log(localStorage.getItem('token'));
     if(localStorage.getItem('token') != null){
       this.fetchUser();
+    }
+    else{
+      this.$store.commit("setUser","{}");
     }
   },
   mounted() {

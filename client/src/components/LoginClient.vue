@@ -90,7 +90,6 @@
     methods: {
       ...mapActions([
         "loginUserClient",
-        "fetchUser"
       ]),
       validate () {
         return this.$refs.form.validate()
@@ -104,7 +103,6 @@
       login(){
         if(this.validate()){
           this.loginUserClient(this.user);
-          this.fetchUser();
         }
       }
     },

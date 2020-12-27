@@ -53,6 +53,9 @@ const actions = {
       const response = await axios.post(
         `${apihelper.api_url}/user/login`,userObj);
         localStorage.setItem('token',response.data);
+        var decoded = jwt_decode(response.data);
+        const response1 = await axios.get(`${apihelper.api_url}/user/getById/${decoded._id}`,apihelper.setToken());
+        commit('setUser',response1.data);
         router.push({ name: 'Welcome'});
     } catch (err) {
       commit('updateMessage',err.response.data);
