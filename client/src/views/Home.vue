@@ -37,10 +37,13 @@
               md="6"
             >
               <v-text-field
+                :append-icon="search ? 'mdi-arrow-right-bold-box' : 'mdi-arrow-right-bold-box-outline'"
+                clearable
                 label="What are you looking for ?"
                 required
                 outlined
                 dense
+                @click:append="toggleMarker"
               ></v-text-field>
             </v-col>
 
@@ -49,22 +52,23 @@
       </div>
 
       <v-spacer></v-spacer>
+      <v-btn href="/post" elevation="2" text>
+        <span class="mr-2">POST FREE ADVERTISEMENT</span>
+        <v-icon>mdi-open-in-new</v-icon>
+      </v-btn>
+      <v-spacer></v-spacer>
       <div v-if="getUser === '{}'" class="d-flex align-center">
       <v-btn href="/loginclient" elevation="2" text>
         <span class="mr-2">LOG IN</span>
         <v-icon>mdi-account-check</v-icon>
       </v-btn>
-      <v-btn href="/login" elevation="2" text>
+      <v-btn href="/registerclient" elevation="2" text>
         <span class="mr-2">REGISTER</span>
         <v-icon>mdi-account-key</v-icon>
       </v-btn>
-      <v-btn href="/login" target="_blank" elevation="2" text>
-        <span class="mr-2">POST FREE ADVERTISEMENT</span>
-        <v-icon>mdi-open-in-new</v-icon>
-      </v-btn>
       </div>
       <div v-else>
-        <div class="text-center">
+        <div class="d-flex align-center text-center">
         <v-menu offset-y>
           <template v-slot:activator="{ on, attrs }">
             <span class="mr-2">{{getUser.email}}</span>
@@ -73,7 +77,7 @@
               color="blue-grey darken-2"
               v-bind="attrs"
               v-on="on"
-              >mdi-open-in-new</v-icon
+              >mdi-account-reactivate</v-icon
             >
           </template>
           <v-list width="300" dense dark>
@@ -271,6 +275,7 @@ export default {
         ],
       dialog: false,
       confirmPassword: "",
+      search: true
   }),
    computed: {
     ...mapGetters(["getUser","getIslogin", "getMessage"]),
@@ -291,6 +296,9 @@ export default {
       this.updateUser(this.user);
       this.$store.commit("updateMessage", "");
     },
+    toggleMarker(){
+      this.search = !this.search
+    }
   },
   watch: {
     

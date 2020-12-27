@@ -12,12 +12,12 @@
 
       <v-col class="mb-4">
         <h1 class="display-2 font-weight-bold mb-3">
-          Welcome to Vuetify
+          WELCOME TO AGRI-FAMILY
         </h1>
 
         <p class="subheading font-weight-regular">
-          For help and collaboration with other Vuetify developers,
-          <br>please join our online
+          we have collected all agriculture products and services in one place for easy getting informations.
+          <br>please contact us online
         </p>
       </v-col>     
     </v-row>
