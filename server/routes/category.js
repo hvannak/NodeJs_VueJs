@@ -40,6 +40,7 @@ router.post('/page',verify,async (req,res) => {
                 _id: 'asc'
             });
         }
+        console.log(docObj);
         var totalItems = await Category.count(filter);
         res.json({objList:docObj,totalDoc:totalItems});
 
@@ -67,7 +68,7 @@ router.post('/post',verify,async (req,res)=> {
         title: req.body.title
     });
     try{
-        const savestate = await postsave.save();
+        const savestate = await docObj.save();
         res.json({obj:docObj,message:savemessage});
     } catch(err) {
         logger.error('category post:' + err);
@@ -102,8 +103,8 @@ router.put('/put/:catId',verify, async (req,res) => {
             _id: req.body._id,
             title: req.body.title     
         });
-        await Role.update(filter,update);
-        res.json({obj:docObj,message:updatemessage});
+        await Category.update(filter,update);
+        res.json({obj:update,message:updatemessage});
     }catch(err){
         logger.error('category put:' + err);
         res.json(err)
