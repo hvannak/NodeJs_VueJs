@@ -9,5 +9,15 @@ export function setToken (){
     return config;    
 }
 
+export function setclientToken (){
+    const config = {
+            headers: { 
+                'auth-token': localStorage.getItem('clienttoken'),
+                Accept: 'application/json'
+            }
+        };
+    return config;    
+}
+
 export const api_url = "http://localhost:3000/api";
  

@@ -77,7 +77,22 @@
                           >
                           </v-text-field>
                         </ValidationProvider>
-                      </v-col>                     
+                      </v-col>
+                      <v-col cols="12" sm="6" md="6">
+                        <ValidationProvider
+                          name="Icon"
+                          rules="required"
+                          v-slot="{ errors }"
+                        >
+                          <v-text-field
+                            v-model="category.icon"
+                            label="Icon"
+                            :error-messages="errors"
+                            required
+                          >
+                          </v-text-field>
+                        </ValidationProvider>
+                      </v-col>                                   
                     </v-row>
                   </v-form>
                 </v-container>
@@ -151,6 +166,7 @@ export default {
     searchBy: "",
     headers: [
       { text: "Title", value: "title", class: "text-success indigo darken-5" },
+      { text: "Icon", value: "icon", class: "text-success indigo darken-5" },
       { text: "Date", value: "date", class: "text-success indigo darken-5" },
       {
         text: "Actions",

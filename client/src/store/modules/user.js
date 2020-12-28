@@ -37,6 +37,16 @@ const actions = {
     }
   },
 
+  async fetchUserClient({ commit }) {
+    try {
+      var decoded = jwt_decode(localStorage.getItem("clienttoken"));
+      const response = await axios.get(`${apihelper.api_url}/user/getById/${decoded._id}`,apihelper.setclientToken());
+      commit('setUser',response.data);
+    } catch (err) {
+      commit('updateMessage',err.response.data);
+    }
+  },
+
   async loginUser({ commit }, userObj) {
     try {
       const response = await axios.post(
@@ -52,9 +62,9 @@ const actions = {
     try {
       const response = await axios.post(
         `${apihelper.api_url}/user/login`,userObj);
-        localStorage.setItem('token',response.data);
+        localStorage.setItem('clienttoken',response.data);
         var decoded = jwt_decode(response.data);
-        const response1 = await axios.get(`${apihelper.api_url}/user/getById/${decoded._id}`,apihelper.setToken());
+        const response1 = await axios.get(`${apihelper.api_url}/user/getById/${decoded._id}`,apihelper.setclientToken());
         commit('setUser',response1.data);
         router.push({ name: 'Welcome'});
     } catch (err) {

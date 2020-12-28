@@ -281,13 +281,13 @@ export default {
     ...mapGetters(["getUser","getIslogin", "getMessage"]),
   },
   methods:{
-    ...mapActions(["fetchUser"]),
+    ...mapActions(["fetchUserClient"]),
      manageProfile() {
       this.$store.commit("updateMessage", "");
       this.user = Object.assign({},this.getUser);
     },
     logout() {
-      localStorage.removeItem("token");
+      localStorage.removeItem("clienttoken");
       this.$store.commit("setUser","{}");
       console.log(this.getUser)
     },
@@ -304,9 +304,8 @@ export default {
     
   },
   created() {
-    console.log(localStorage.getItem('token'));
-    if(localStorage.getItem('token') != null){
-      this.fetchUser();
+    if(localStorage.getItem('clienttoken') != null){
+      this.fetchUserClient();
     }
     else{
       this.$store.commit("setUser","{}");

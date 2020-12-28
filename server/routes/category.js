@@ -65,7 +65,8 @@ router.get('/search/:value',verify,async (req,res) => {
 
 router.post('/post',verify,async (req,res)=> {
     const docObj = new Category({
-        title: req.body.title
+        title: req.body.title,
+        icon: req.body.icon
     });
     try{
         const savestate = await docObj.save();
@@ -101,7 +102,8 @@ router.put('/put/:catId',verify, async (req,res) => {
         const filter = { _id: req.params.catId };
         const update = new Category({
             _id: req.body._id,
-            title: req.body.title     
+            title: req.body.title,
+            icon: req.body.icon     
         });
         await Category.update(filter,update);
         res.json({obj:update,message:updatemessage});
