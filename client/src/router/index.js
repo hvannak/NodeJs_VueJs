@@ -7,6 +7,7 @@ import Register from '../views/Register.vue'
 import Account from '../views/Account.vue'
 import Role from '../views/Role.vue'
 import Autherize from '../views/Autherize.vue'
+import Category from '../views/Category.vue'
 import HelloWorld from "@/components/HelloWorld.vue";
 import SearchData from "@/components/SearchData.vue";
 import LoginClient from "@/components/LoginClient.vue";
@@ -88,6 +89,12 @@ Vue.use(VueRouter)
           name: 'Autherize',
           meta: { back: true,icon: 'mdi-account-switch',group:'Authentication',gicon:'mdi-folder' },
           component: Autherize
+        },
+        {
+          path: 'category',
+          name: 'Category',
+          meta: { back: true,icon: 'mdi-alpha-c-circle-outline',group:'Configurations',gicon:'mdi-folder' },
+          component: Category
         }
       ],
     },

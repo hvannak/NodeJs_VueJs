@@ -5,7 +5,7 @@
       <v-card class="mx-auto" width="256" tile>
         <v-system-bar height="10"></v-system-bar>
         <v-toolbar>
-          <v-toolbar-title>MODERN CATTLE FARM</v-toolbar-title>
+          <v-toolbar-title>AGRI-FAMILY CO.,LTD</v-toolbar-title>
         </v-toolbar>
         <v-divider></v-divider>
         <v-expansion-panels>

@@ -11,6 +11,7 @@ const User = require('./models/User');
 const Role = require('./models/Role');
 const Post = require('./models/post');
 const Autherize = require('./models/Autherize');
+const Category = require('./models/Category');
 
 require('dotenv/config');
 //Middleware
@@ -23,11 +24,13 @@ const postsRoute = require('./routes/posts');
 const authRoute = require('./routes/auth');
 const roleRoute = require('./routes/role');
 const autherizeRoute = require('./routes/autherize');
+const categoryRoute = require('./routes/category');
 
 app.use('/api/posts',postsRoute);
 app.use('/api/user',authRoute);
 app.use('/api/role',roleRoute);
 app.use('/api/autherize',autherizeRoute);
+app.use('/api/category',categoryRoute);
 
 app.get('/api/router',verify,(req,res) => {
     try {
@@ -126,7 +129,25 @@ app.get('/api/router',verify,(req,res) => {
                 }
             ]
         };
-        res.send([routerendpoints,postendpoints,authendpoints,roleendpoints,autherizeendpoints]);
+        let categoryendpoints = {
+            id: 6,
+            name:'category',
+            children:[
+                {
+                    id: 1,
+                    parent:'category',
+                    name:'props',
+                    props: Object.keys(Category.schema.paths)
+                },
+                {
+                    id: 2,
+                    parent:'category',
+                    name:'routers',
+                    routers: getendpoints(categoryRoute)
+                }
+            ]
+        };
+        res.send([routerendpoints,postendpoints,authendpoints,roleendpoints,autherizeendpoints,categoryendpoints]);
     } catch (err) {
         console.log(err);
     }
