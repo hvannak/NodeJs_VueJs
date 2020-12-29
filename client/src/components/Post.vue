@@ -1,95 +1,97 @@
 <template>
-  <v-stepper v-model="e1">
-    <v-stepper-header>
-      <v-stepper-step
-        :complete="e1 > 1"
-        step="1"
-      >
-        Name of step 1
-      </v-stepper-step>
-
-      <v-divider></v-divider>
-
-      <v-stepper-step
-        :complete="e1 > 2"
-        step="2"
-      >
-        Name of step 2
-      </v-stepper-step>
-
-      <v-divider></v-divider>
-
-      <v-stepper-step step="3">
-        Name of step 3
-      </v-stepper-step>
-    </v-stepper-header>
-
-    <v-stepper-items>
-      <v-stepper-content step="1">
-        <v-card
-          class="mb-12"
-          color="grey lighten-1"
-          height="200px"
-        ></v-card>
-
-        <v-btn
-          color="primary"
-          @click="e1 = 2"
+  <div>
+    <v-stepper v-model="e1" non-linear>
+      <v-stepper-header>
+        <v-stepper-step
+          :complete="e1 > 1"
+          editable
+          step="1"
         >
-          Continue
-        </v-btn>
+          Select Category
+        </v-stepper-step>
 
-        <v-btn text>
-          Cancel
-        </v-btn>
+        <v-divider></v-divider>
+
+        <v-stepper-step
+          :complete="e1 > 2"
+          editable
+          step="2"
+        >
+          Input Information
+        </v-stepper-step>
+
+        <v-divider></v-divider>
+
+        <v-stepper-step
+          step="3"
+          editable
+        >
+          Submit Your Information
+        </v-stepper-step>
+      </v-stepper-header>
+      <v-stepper-items>
+      <v-stepper-content step="1">
+        <v-card height="80vh">
+        <div class="d-flex justify-center flex-row flex-wrap">
+          <div v-for="(item, i) in allCategorys"
+            :key="i">
+              <v-btn
+                class="ma-2"
+                outlined
+                color="indigo"
+                x-large
+                @click="e1 = 2"
+              >
+                <v-icon x-large left>
+                  {{item.icon}}
+                </v-icon>
+                {{item.title}}
+              </v-btn>
+          </div>
+        </div>
+
+        </v-card>
       </v-stepper-content>
 
       <v-stepper-content step="2">
         <v-card
           class="mb-12"
           color="grey lighten-1"
-          height="200px"
+          height="70vh"
         ></v-card>
 
-        <v-btn
-          color="primary"
-          @click="e1 = 3"
-        >
-          Continue
-        </v-btn>
 
-        <v-btn text>
-          Cancel
-        </v-btn>
       </v-stepper-content>
 
       <v-stepper-content step="3">
         <v-card
           class="mb-12"
           color="grey lighten-1"
-          height="200px"
+          height="70vh"
         ></v-card>
 
-        <v-btn
-          color="primary"
-          @click="e1 = 1"
-        >
-          Continue
-        </v-btn>
 
-        <v-btn text>
-          Cancel
-        </v-btn>
       </v-stepper-content>
     </v-stepper-items>
-  </v-stepper>
+    </v-stepper>   
+  </div>
 </template>
 <script>
+import { mapGetters,mapActions } from "vuex";
+
   export default {
-    data () {
-      return {
+    data: () => ({
         e1: 1,
-      }
+    }),
+    computed: {
+      ...mapGetters(["allCategorys", "getCategoryMessage"]),
     },
+    methods:{
+      ...mapActions(["fetchCategories"]),
+    },
+    created() {
+      this.fetchCategories();    
+  },
+    
   }
 </script>

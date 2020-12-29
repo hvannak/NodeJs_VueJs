@@ -5,7 +5,7 @@ const verify = require('../routes/verifyToken');
 const {updatemessage, savemessage} = require('../helper');
 const {logger} = require('../logger');
 
-router.get('/all',verify, async (req,res) => {
+router.get('/all', async (req,res) => {
     try{
         const result = await Category.find();
         res.json(result);

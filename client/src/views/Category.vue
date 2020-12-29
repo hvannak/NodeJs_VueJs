@@ -217,7 +217,6 @@ export default {
 
   methods: {
     ...mapActions([
-      "fetchUsers",
       "fetchCategoryPages",
       "fetchCategorySearch",
       "deleteCategory",
