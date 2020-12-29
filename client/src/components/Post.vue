@@ -54,7 +54,7 @@
       </v-stepper-content>
 
       <v-stepper-content step="2">
-        <v-card height="100vh" class="mx-auto my-auto">
+        <v-card height="100%" class="mx-auto my-auto">
 
         <v-form
                 ref="form"
