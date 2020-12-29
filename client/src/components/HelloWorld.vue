@@ -1,5 +1,5 @@
 <template>
-  <v-container>
+  <v-card height="100vh">
     <v-row class="text-center">
       <v-col cols="12">
         <v-img
@@ -21,7 +21,7 @@
         </p>
       </v-col>     
     </v-row>
-  </v-container>
+  </v-card>
 </template>
 
 <script>

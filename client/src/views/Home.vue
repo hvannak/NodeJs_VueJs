@@ -210,7 +210,7 @@
           <router-view></router-view>
         </v-col>
         <v-col cols="2" md="2" sm="1">
-          <v-card height="92vh">
+          <v-card height="100%">
             <v-navigation-drawer class="mx-auto" permanent right>
 
               <v-divider></v-divider>
