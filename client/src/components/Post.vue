@@ -36,41 +36,69 @@
 
         <v-stepper-content step="2">
           <v-card height="100%" class="mx-auto my-auto">
-            <v-form ref="form" v-model="valid" lazy-validation>
+            <ValidationObserver v-slot="{ invalid }">
+            <v-form ref="form" v-model="valid" @submit.prevent="submit" lazy-validation>
               <v-row>
                 <v-col cols="10" offset-md="1">
+                  <ValidationProvider
+                                name="Category"
+                                rules="required"
+                                v-slot="{ errors }"
+                              >
                   <v-text-field
                     v-model="post.category"
                     hint="You must input the category"
                     label="Your category"
+                    :error-messages="errors"
                     persistent-hint
                     outlined
                     disabled
                     required
                   >
                   </v-text-field>
+                  </ValidationProvider>
                 </v-col>
                 <v-col cols="10" offset-md="1">
+                  <ValidationProvider
+                                name="Title"
+                                rules="required"
+                                v-slot="{ errors }"
+                              >
                   <v-text-field
                     v-model="post.title"
-                    hint="You must input the tittle"
+                    :error-messages="errors"
+                    hint="You must input the title"
                     label="Your tittle"
                     persistent-hint
                     outlined
                     required
                   >
                   </v-text-field>
+                  </ValidationProvider>
                 </v-col>
                 <v-col cols="10" offset-md="1">
+                  <ValidationProvider
+                                name="Description"
+                                rules="required|min:6"
+                                v-slot="{ errors }"
+                              >
                   <v-textarea
                     v-model="post.description"
+                    :error-messages="errors"
                     outlined
                     label="Your description"
                   ></v-textarea>
+                  </ValidationProvider>
                 </v-col>
                 <v-col cols="10" offset-md="1">
+                  <ValidationProvider
+                                name="Phone"
+                                rules="required"
+                                v-slot="{ errors }"
+                              >
                   <v-text-field
                     v-model="post.phone"
+                    :error-messages="errors"
                     hint="You must input the phone"
                     label="Your phone"
                     persistent-hint
@@ -78,10 +106,17 @@
                     required
                   >
                   </v-text-field>
+                  </ValidationProvider>
                 </v-col>
                 <v-col cols="10" offset-md="1">
+                  <ValidationProvider
+                                name="Email"
+                                rules="email"
+                                v-slot="{ errors }"
+                              >
                   <v-text-field
                     v-model="post.email"
+                    :error-messages="errors"
                     hint="You must input the email"
                     label="Your email"
                     persistent-hint
@@ -89,10 +124,17 @@
                     required
                   >
                   </v-text-field>
+                  </ValidationProvider>
                 </v-col>
                 <v-col cols="10" offset-md="1">
+                  <ValidationProvider
+                                name="Location"
+                                rules="required"
+                                v-slot="{ errors }"
+                              >
                   <v-text-field
                     v-model="post.location"
+                    :error-messages="errors"
                     hint="You must input the location"
                     label="Your location"
                     persistent-hint
@@ -100,6 +142,7 @@
                     required
                   >
                   </v-text-field>
+                  </ValidationProvider>
                 </v-col>
                 <v-col cols="10" offset-md="1">
                   <v-file-input
@@ -139,6 +182,7 @@
                           small
                           right
                           top
+                          @click="removeImage(i)"
                         >
                           <v-icon small>mdi-delete</v-icon>
                         </v-btn>
@@ -147,13 +191,15 @@
                   </div>
                 </v-col>
                 <v-col cols="10" offset-md="1" class="text-center">
-                  <v-btn tile color="success" x-large>
+                  <v-btn tile color="success" :disabled="invalid" x-large
+                  @click="save">
                     <v-icon left> mdi-pencil </v-icon>
                     POST
                   </v-btn>
                 </v-col>
               </v-row>
             </v-form>
+            </ValidationObserver>
           </v-card>
         </v-stepper-content>
       </v-stepper-items>
@@ -162,6 +208,22 @@
 </template>
 <script>
 import { mapGetters, mapActions } from "vuex";
+import { extend } from "vee-validate";
+import { required, email, min } from "vee-validate/dist/rules";
+
+extend("required", {
+  ...required,
+  message: "{_field_} can not be empty",
+});
+
+extend("min", {
+  ...min,
+  message: "{_field_} may not be lesser than {length} characters",
+});
+
+extend("email", {
+  ...email,
+});
 
 export default {
   data: () => ({
@@ -187,7 +249,17 @@ export default {
     },
     selectCategory(item){
       this.e1 = 2;
-      this.post.category = item.title;
+      this.post = {
+        categoryId: item._id,
+        category: item.title
+      }
+    },
+    removeImage(index){
+      this.urls.splice(index,1);
+    },
+    save(){
+      console.log(this.urls);
+      console.log('save');
     }
   },
   created() {
