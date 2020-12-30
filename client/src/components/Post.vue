@@ -150,7 +150,6 @@
                     label="File input w/ chips"
                     outlined
                     multiple
-                    v-model="image"
                     accept="image/*"
                     prepend-icon="mdi-camera"
                     @change="Preview_image($event)"
@@ -231,7 +230,6 @@ export default {
     valid: true,
     post: {},
     url: null,
-    image: null,
     urls: [],
   }),
   computed: {
@@ -257,8 +255,9 @@ export default {
     removeImage(index){
       this.urls.splice(index,1);
     },
-    save(){
-      console.log(this.urls);
+    async save(){
+      let blob = await fetch(this.urls[0]).then(r => r.blob());
+      console.log(blob);
       console.log('save');
     }
   },
