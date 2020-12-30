@@ -190,11 +190,41 @@
                   </div>
                 </v-col>
                 <v-col cols="10" offset-md="1" class="text-center">
-                  <v-btn tile color="success" :disabled="invalid" x-large
-                  @click="save">
-                    <v-icon left> mdi-pencil </v-icon>
-                    POST
-                  </v-btn>
+
+                          <v-dialog
+                            transition="dialog-bottom-transition"
+                            max-width="600"
+                            persistent
+                            v-model="dialog"
+                          >
+                            <template v-slot:activator="{ on, attrs }">
+                              <v-btn tile color="success" :disabled="invalid" x-large
+                                v-bind="attrs"
+                                v-on="on"
+                                @click="save">
+                                <v-icon left> mdi-pencil </v-icon>
+                                POST
+                              </v-btn>
+                            </template>
+                              <v-card>
+                                <v-toolbar
+                                  color="primary"
+                                  dark
+                                >Opening Post Message</v-toolbar>
+                                <v-card-text>
+                                  <div class="text-h2 pa-12">Status when save</div>
+                                </v-card-text>
+                                <v-card-actions class="justify-end">
+                                  <v-btn
+                                    text
+                                    @click="closedialog()"
+                                  >Close</v-btn>
+                                </v-card-actions>
+                              </v-card>
+                          </v-dialog>
+
+
+
                 </v-col>
               </v-row>
             </v-form>
@@ -231,6 +261,7 @@ export default {
     post: {},
     url: null,
     urls: [],
+    dialog: false,
   }),
   computed: {
     ...mapGetters(["allCategorys", "getCategoryMessage"]),
@@ -259,6 +290,11 @@ export default {
       let blob = await fetch(this.urls[0]).then(r => r.blob());
       console.log(blob);
       console.log('save');
+    },
+    closedialog(){
+      this.dialog = false;
+      this.e1 = 1;
+      this.post = {};
     }
   },
   created() {
