@@ -9,7 +9,7 @@ const bcrypt = require('bcryptjs');
 //Import Models
 const User = require('./models/User');
 const Role = require('./models/Role');
-const Post = require('./models/post');
+const Post = require('./models/Post');
 const Autherize = require('./models/Autherize');
 const Category = require('./models/Category');
 
