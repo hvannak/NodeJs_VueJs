@@ -68,7 +68,7 @@
                     v-model="post.title"
                     :error-messages="errors"
                     hint="You must input the title"
-                    label="Your tittle"
+                    label="Your title"
                     persistent-hint
                     outlined
                     required
@@ -262,6 +262,7 @@ export default {
     url: null,
     urls: [],
     dialog: false,
+    image: [],
   }),
   computed: {
     ...mapGetters(["allCategorys", "getCategoryMessage"]),
@@ -273,6 +274,7 @@ export default {
         e.forEach((element) => {
           this.url = URL.createObjectURL(element);
           this.urls.push(this.url);
+          this.image.push(element);
         });
       }
     },
@@ -285,11 +287,27 @@ export default {
     },
     removeImage(index){
       this.urls.splice(index,1);
+      this.image.splice(index,1);
     },
     async save(){
-      let blob = await fetch(this.urls[0]).then(r => r.blob());
-      console.log(blob);
-      console.log(this.post);
+      // let blob = await fetch(this.urls[0]).then(r => r.blob());
+      // this.post.image = this.image;
+      // console.log(this.post);
+      // const form_data = new FormData();
+      // form_data.append("file", this.image[0]);
+      // console.log(form_data);
+      const formData = new FormData();
+      // formData.append('categoryId',this.post.categoryId);
+      // formData.append('category',this.post.category);
+      // formData.append('title',this.post.title);
+      // formData.append('description',this.post.description);
+      // formData.append('phone',this.post.phone);
+      // formData.append('email',this.post.email);
+      // formData.append('location',this.post.location);
+      // formData.append('image',this.image);
+      console.log(formData);
+
+      // this.addPost(formData);
     },
     closedialog(){
       this.dialog = false;

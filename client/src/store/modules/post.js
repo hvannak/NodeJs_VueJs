@@ -37,6 +37,7 @@ const actions = {
 
   async addPost({ commit }, postObj) {
     try {
+      console.log(postObj);
       const response = await axios.post(
         `${apihelper.api_url}/posts/post`,postObj,apihelper.setToken());
       commit('newPost', response.data.obj);
@@ -55,10 +56,10 @@ const actions = {
     }
   },
 
-  async updateRole({ commit }, postObj) {
+  async updatePost({ commit }, postObj) {
     try {
         const response = await axios.put(
-        `${apihelper.api_url}/posts/put/${roleObj._id}`,postObj,apihelper.setToken());
+        `${apihelper.api_url}/posts/put/${postObj._id}`,postObj,apihelper.setToken());
         commit('updatePostObj', response.data.obj);
         commit('updateMessage',response.data.message);
     } catch (err) {

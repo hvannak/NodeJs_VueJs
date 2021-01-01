@@ -1,12 +1,5 @@
 const mongoose = require('mongoose');
 
-const imageSchema = mongoose.Schema({
-    image:{
-        type: Buffer,
-        require: true
-    }
-})
-
 const postSchema = mongoose.Schema({
     categoryId:{
         type:String,
@@ -36,7 +29,10 @@ const postSchema = mongoose.Schema({
         type:String,
         require:true
     },
-    image:[imageSchema],
+    image:[{
+        type: Buffer,
+        require: true
+    }],
     date:{
         type:Date,
         default:Date.now

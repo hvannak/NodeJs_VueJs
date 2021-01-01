@@ -4,6 +4,7 @@ import User from './modules/user'
 import Role from './modules/role'
 import Autherize from './modules/autherize'
 import Category from './modules/category'
+import Post from './modules/post'
 
 Vue.use(Vuex)
 
@@ -12,6 +13,7 @@ export default new Vuex.Store({
     User,
     Role,
     Autherize,
-    Category
+    Category,
+    Post
   }
 })

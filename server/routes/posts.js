@@ -72,7 +72,8 @@ router.put('/put/:roleId',verify, async (req,res) => {
     }
 });
 
-router.post('/post',verify,async (req,res)=> {
+router.post('/post',async (req,res)=> {
+    console.log(req.body);
     const postsave = new Post({
         categoryId: req.body.categoryId,
         category: req.body.category,
