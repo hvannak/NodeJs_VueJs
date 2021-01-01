@@ -1,5 +1,12 @@
 const mongoose = require('mongoose');
 
+const imageSchema = mongoose.Schema({
+    image:{
+        type: Buffer,
+        require: true
+    }
+})
+
 const postSchema = mongoose.Schema({
     categoryId:{
         type:String,
@@ -29,14 +36,11 @@ const postSchema = mongoose.Schema({
         type:String,
         require:true
     },
-    image:{
-        type:Buffer,
-        require:true
-    },
+    image:[imageSchema],
     date:{
         type:Date,
         default:Date.now
     }
 });
 
-module.exports = mongoose.model('post',postSchema);
+module.exports = mongoose.model('Post',postSchema);

@@ -267,7 +267,7 @@ export default {
     ...mapGetters(["allCategorys", "getCategoryMessage"]),
   },
   methods: {
-    ...mapActions(["fetchCategories"]),
+    ...mapActions(["fetchCategories","addPost"]),
     Preview_image(e) {
       if (e.length > 0) {
         e.forEach((element) => {
@@ -289,7 +289,7 @@ export default {
     async save(){
       let blob = await fetch(this.urls[0]).then(r => r.blob());
       console.log(blob);
-      console.log('save');
+      console.log(this.post);
     },
     closedialog(){
       this.dialog = false;
