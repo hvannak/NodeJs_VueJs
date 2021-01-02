@@ -291,12 +291,9 @@ export default {
     },
     async save(){
       // let blob = await fetch(this.urls[0]).then(r => r.blob());
-      // this.post.image = this.image;
-      // console.log(this.post);
-      // const form_data = new FormData();
-      // form_data.append("file", this.image[0]);
-      // console.log(form_data);
-      const formData = new FormData();
+      this.post.image = this.image;
+      console.log(this.post);
+      // const formData = new FormData();
       // formData.append('categoryId',this.post.categoryId);
       // formData.append('category',this.post.category);
       // formData.append('title',this.post.title);
@@ -305,9 +302,8 @@ export default {
       // formData.append('email',this.post.email);
       // formData.append('location',this.post.location);
       // formData.append('image',this.image);
-      console.log(formData);
 
-      // this.addPost(formData);
+      // this.addPost(this.post);
     },
     closedialog(){
       this.dialog = false;

@@ -9,3 +9,4 @@
 {"message":"verify token:JsonWebTokenError: jwt malformed","level":"error","service":"user-interact"}
 {"message":"post post:ValidationError: image.0: Cast to Buffer failed for value \"{}\" at path \"image\", image: Cast to Array failed for value \"[ {}, {} ]\" at path \"image\"","level":"error","service":"user-interact"}
 {"message":"post post:ValidationError: image.0: Cast to Buffer failed for value \"{}\" at path \"image\", image: Cast to Array failed for value \"[ {}, {} ]\" at path \"image\"","level":"error","service":"user-interact"}
+{"message":"post post:ValidationError: image.0: Cast to Buffer failed for value \"{}\" at path \"image\", image: Cast to Array failed for value \"[ {}, {} ]\" at path \"image\"","level":"error","service":"user-interact"}

@@ -9,6 +9,16 @@ export function setToken (){
     return config;    
 }
 
+export function setFormDataToken (){
+    const config = {
+            headers: { 
+                // 'auth-token': localStorage.getItem('clienttoken'),
+                'Content-Type': "multipart/form-data"
+            }
+        };
+    return config;    
+}
+
 export function setclientToken (){
     const config = {
             headers: { 

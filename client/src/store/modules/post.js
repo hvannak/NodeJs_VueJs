@@ -39,7 +39,7 @@ const actions = {
     try {
       console.log(postObj);
       const response = await axios.post(
-        `${apihelper.api_url}/posts/post`,postObj,apihelper.setToken());
+        `${apihelper.api_url}/posts/post`,postObj);
       commit('newPost', response.data.obj);
       commit('updateMessage',response.data.message);
     } catch (err) {
