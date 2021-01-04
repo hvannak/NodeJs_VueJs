@@ -262,7 +262,7 @@ export default {
     url: null,
     urls: [],
     dialog: false,
-    image: [],
+    image:[],
   }),
   computed: {
     ...mapGetters(["allCategorys", "getCategoryMessage"]),
@@ -274,7 +274,11 @@ export default {
         e.forEach((element) => {
           this.url = URL.createObjectURL(element);
           this.urls.push(this.url);
-          this.image.push(element);
+          var reader = new FileReader();
+          reader.onload = function(e) {
+            this.image.push(e.target.result);
+          }.bind(this);
+          reader.readAsDataURL(element);
         });
       }
     },
@@ -292,7 +296,7 @@ export default {
     async save(){
       // let blob = await fetch(this.urls[0]).then(r => r.blob());
       this.post.image = this.image;
-      console.log(this.post);
+      // console.log(this.image);
       // const formData = new FormData();
       // formData.append('categoryId',this.post.categoryId);
       // formData.append('category',this.post.category);
@@ -303,7 +307,7 @@ export default {
       // formData.append('location',this.post.location);
       // formData.append('image',this.image);
 
-      // this.addPost(this.post);
+      this.addPost(this.post);
     },
     closedialog(){
       this.dialog = false;
