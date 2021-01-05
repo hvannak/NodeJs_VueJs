@@ -16,9 +16,11 @@ const Category = require('./models/Category');
 require('dotenv/config');
 //Middleware
 app.use(cors());
-app.use(express.json());
-
+// app.use(express.json());
+app.use(express.json({limit: '16mb'}));
+app.use(express.urlencoded({limit: '16mb'}));
 app.use(bodyParser.json());
+
 //Import Routes 
 const postsRoute = require('./routes/posts');
 const authRoute = require('./routes/auth');

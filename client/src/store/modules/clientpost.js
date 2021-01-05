@@ -1,5 +1,6 @@
 import axios from 'axios';
 import * as apihelper from './api-helper';
+import  router from '../../router';
 
 const state = {
   posts: [],
@@ -16,9 +17,21 @@ const getters = {
 
 const actions = {
 
+  async fetchPostByCat({ commit },pageObj) {
+    try {
+      const response = await axios.post(`${apihelper.api_url}/posts/searchByCat`,pageObj);
+      console.log(response.data.objList);
+      commit('setPostPages',response.data.objList);
+      commit('setTotalItems',response.data.totalDoc);
+      router.push({ name: 'Search Data'});
+    } catch (err) {
+      commit('updateMessage',err.response.data);
+    }
+  },
+
   async fetchPostPages({ commit },pageObj) {
     try {
-      const response = await axios.post(`${apihelper.api_url}/posts/page`,pageObj,apihelper.setToken());
+      const response = await axios.post(`${apihelper.api_url}/posts/page`,pageObj,apihelper.setclientToken());
       commit('setPostPages',response.data.objList);
       commit('setTotalItems',response.data.totalDoc);
     } catch (err) {
@@ -28,7 +41,7 @@ const actions = {
 
   async fetchPostById({ commit},_postId){
     try {
-      const response = await axios.get(`${apihelper.api_url}/posts/getById/${_postId}`,apihelper.setToken());
+      const response = await axios.get(`${apihelper.api_url}/posts/getById/${_postId}`,apihelper.setclientToken());
       commit('setPostObj',response.data);
     } catch (err) {
       commit('updateMessage',err.response.data);
@@ -39,7 +52,7 @@ const actions = {
     try {
       console.log(postObj);
       const response = await axios.post(
-        `${apihelper.api_url}/posts/post`,postObj);
+        `${apihelper.api_url}/posts/post`,postObj,apihelper.setclientToken());
       commit('newPost', response.data.obj);
       commit('updateMessage',response.data.message);
     } catch (err) {
@@ -49,7 +62,7 @@ const actions = {
 
   async deletePost({ commit }, _id) {
     try {
-      await axios.delete(`${apihelper.api_url}/posts/delete/${_id}`,apihelper.setToken());
+      await axios.delete(`${apihelper.api_url}/posts/delete/${_id}`,apihelper.setclientToken());
       commit('removePost', _id);
     } catch (err) {
       commit('updateMessage',err.response.data);
@@ -59,7 +72,7 @@ const actions = {
   async updatePost({ commit }, postObj) {
     try {
         const response = await axios.put(
-        `${apihelper.api_url}/posts/put/${postObj._id}`,postObj,apihelper.setToken());
+        `${apihelper.api_url}/posts/put/${postObj._id}`,postObj,apihelper.setclientToken());
         commit('updatePostObj', response.data.obj);
         commit('updateMessage',response.data.message);
     } catch (err) {

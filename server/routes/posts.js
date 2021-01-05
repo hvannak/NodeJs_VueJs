@@ -16,6 +16,45 @@ router.get('/all',verify, async (req,res) => {
     }
 });
 
+router.post('/searchByCat',async (req,res) => {
+    try{
+        // let opt = req.body.pageOpt;
+        // var pageSize = opt.itemsPerPage;
+        // var currentPage = opt.page;
+        var docObj;
+        var handlenull = (req.body.searchObj == null) ? '' : req.body.searchObj;
+        var filter = (handlenull != '' && req.body.categoryId != '-1') ? {
+            $or:[{title: { "$regex": req.body.searchObj, "$options": "i" }},
+            {description: { "$regex": req.body.searchObj, "$options": "i" }},
+            {location: { "$regex": req.body.searchObj, "$options": "i" }}] 
+        } : {};
+        // if(opt.sortBy.length == 1 && opt.sortDesc.length == 1){
+        //     if(opt.sortDesc[0] == false){
+        //         console.log('asc');
+        //         docObj = await Post.find(filter).limit(pageSize).skip(pageSize*(currentPage-1)).sort({
+        //             [opt.sortBy[0]]: 'asc'
+        //         });
+        //     } else {
+        //         console.log('desc');
+        //         docObj = await Post.find(filter).limit(pageSize).skip(pageSize*(currentPage-1)).sort({
+        //             [opt.sortBy[0]]: 'desc'
+        //         });
+        //     }
+        // } else{
+        //     docObj = await Post.find(filter).limit(pageSize).skip(pageSize*(currentPage-1)).sort({
+        //         _id: 'asc'
+        //     });
+        // }
+        docObj = await Post.find(filter);
+        var totalItems = await Post.count(filter);
+        res.json({objList:docObj,totalDoc:totalItems});
+
+    }catch(err){
+        logger.error('post page:' + err);
+        res.json(err);
+    }
+});
+
 router.post('/page',verify,async (req,res) => {
     try{
         let opt = req.body.pageOpt;
@@ -72,8 +111,7 @@ router.put('/put/:roleId',verify, async (req,res) => {
     }
 });
 
-router.post('/post',async (req,res)=> {
-    console.log(req.body);
+router.post('/post',verify,async (req,res)=> {
     const postsave = new Post({
         categoryId: req.body.categoryId,
         category: req.body.category,

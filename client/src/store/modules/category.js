@@ -3,12 +3,14 @@ import * as apihelper from './api-helper';
 
 const state = {
   categorys: [],
+  categorySearch:[],
   totalItems:0,
   message:''
 };
 
 const getters = {
   allCategorys: state => state.categorys,
+  getAllCategorys: state =>state.categorySearch,
   getCategoryMessage: state => state.message,
   getCategorytotalItems: state => state.totalItems
 };
@@ -19,6 +21,7 @@ async fetchCategories({ commit }) {
     try {
         const response = await axios.get(`${apihelper.api_url}/category/all`,apihelper.setToken());
         commit('setCategories',response.data);
+        commit('setAllCategories',response.data);
     } catch (err) {
         commit('updateMessage',err.response.data);
     }
@@ -80,6 +83,15 @@ const mutations = {
     updateMessage:(state,message) => (state.message = message),
     setTotalItems:(state,total) => (state.totalItems = total),
     setCategories:(state,category) => (state.categorys = category),
+    setAllCategories:(state,category) => {
+      category.forEach(element => {
+        state.categorySearch.push(element);
+      });
+      state.categorySearch.unshift({
+        _id: '-1',
+        title: 'All'
+      })
+    },
     setCategoryPages:(state,category) => (state.categorys = category),
     setCategorys: (state, category) => (state.categorys = category),
     setCategorySearch:(state,category) => (category.forEach(element => {

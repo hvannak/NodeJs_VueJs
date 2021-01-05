@@ -24,9 +24,9 @@
             >
               <v-select
                 v-model="value"
-                :items="selects"
-                item-text="text"
-                item-value="value"
+                :items="getAllCategorys"
+                item-text="title"
+                item-value="_id"
                 outlined
                 dense
               ></v-select>
@@ -37,13 +37,14 @@
               md="6"
             >
               <v-text-field
+                v-model="searchdata"
                 :append-icon="search ? 'mdi-arrow-right-bold-box' : 'mdi-arrow-right-bold-box-outline'"
                 clearable
                 label="What are you looking for ?"
                 required
                 outlined
                 dense
-                @click:append="toggleMarker"
+                @click:append="searchPost"
               ></v-text-field>
             </v-col>
 
@@ -237,28 +238,11 @@
 <script>
 import { mapGetters,mapActions } from "vuex";
 import { extend } from "vee-validate";
-import { required, email, min } from "vee-validate/dist/rules";
+import { required } from "vee-validate/dist/rules";
 
 extend("required", {
   ...required,
   message: "{_field_} can not be empty",
-});
-
-extend("password", {
-  params: ["target"],
-  validate(value, { target }) {
-    return value === target;
-  },
-  message: "Password confirmation does not match",
-});
-
-extend("min", {
-  ...min,
-  message: "{_field_} may not be lesser than {length} characters",
-});
-
-extend("email", {
-  ...email,
 });
 
 export default {
@@ -267,21 +251,21 @@ export default {
   },
   data: () => ({
       items: [],
-      value: { text: 'All', value: 'all' },
+      value: { _id: '-1', title: 'All' },
       user: {},
       selects: [
-          { text: 'All', value: 'all' },
-          { text: 'Others', value: 'others' }
+          { _id: '-1', title: 'All' },
         ],
       dialog: false,
       confirmPassword: "",
-      search: true
+      search: true,
+      searchdata: ""
   }),
    computed: {
-    ...mapGetters(["getUser","getIslogin", "getMessage"]),
+    ...mapGetters(["getUser", "getMessage","getAllCategorys","allPosts"]),
   },
   methods:{
-    ...mapActions(["fetchUserClient"]),
+    ...mapActions(["fetchUserClient","fetchCategories","fetchPostByCat"]),
      manageProfile() {
       this.$store.commit("updateMessage", "");
       this.user = Object.assign({},this.getUser);
@@ -296,8 +280,13 @@ export default {
       this.updateUser(this.user);
       this.$store.commit("updateMessage", "");
     },
-    toggleMarker(){
+    searchPost(){
       this.search = !this.search
+      let datasearch = {
+        categoryId: this.value,
+        searchObj: this.searchdata
+      };
+      this.fetchPostByCat(datasearch);
     }
   },
   watch: {
@@ -310,6 +299,7 @@ export default {
     else{
       this.$store.commit("setUser","{}");
     }
+    this.fetchCategories();
   },
   mounted() {
     this.$router.options.routes

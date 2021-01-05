@@ -146,6 +146,7 @@
                 </v-col>
                 <v-col cols="10" offset-md="1">
                   <v-file-input
+                    v-model="file"
                     chips
                     label="File input w/ chips"
                     outlined
@@ -263,6 +264,7 @@ export default {
     urls: [],
     dialog: false,
     image:[],
+    file:null
   }),
   computed: {
     ...mapGetters(["allCategorys", "getCategoryMessage"]),
@@ -296,18 +298,9 @@ export default {
     async save(){
       // let blob = await fetch(this.urls[0]).then(r => r.blob());
       this.post.image = this.image;
-      // console.log(this.image);
-      // const formData = new FormData();
-      // formData.append('categoryId',this.post.categoryId);
-      // formData.append('category',this.post.category);
-      // formData.append('title',this.post.title);
-      // formData.append('description',this.post.description);
-      // formData.append('phone',this.post.phone);
-      // formData.append('email',this.post.email);
-      // formData.append('location',this.post.location);
-      // formData.append('image',this.image);
-
       this.addPost(this.post);
+      this.urls = [];
+      this.file = null;
     },
     closedialog(){
       this.dialog = false;
