@@ -18,9 +18,10 @@ router.get('/all',verify, async (req,res) => {
 
 router.post('/searchByCat',async (req,res) => {
     try{
-        // let opt = req.body.pageOpt;
-        // var pageSize = opt.itemsPerPage;
-        // var currentPage = opt.page;
+        console.log(req.body);
+        let opt = req.body.pageOpt;
+        var pageSize = opt.itemsPerPage;
+        var currentPage = opt.page;
         var docObj;
         var handlenull = (req.body.searchObj == null) ? '' : req.body.searchObj;
         var filter = (handlenull != '' && req.body.categoryId != '-1') ? {
@@ -28,23 +29,12 @@ router.post('/searchByCat',async (req,res) => {
             {description: { "$regex": req.body.searchObj, "$options": "i" }},
             {location: { "$regex": req.body.searchObj, "$options": "i" }}] 
         } : {};
-        // if(opt.sortBy.length == 1 && opt.sortDesc.length == 1){
-        //     if(opt.sortDesc[0] == false){
-        //         console.log('asc');
-        //         docObj = await Post.find(filter).limit(pageSize).skip(pageSize*(currentPage-1)).sort({
-        //             [opt.sortBy[0]]: 'asc'
-        //         });
-        //     } else {
-        //         console.log('desc');
-        //         docObj = await Post.find(filter).limit(pageSize).skip(pageSize*(currentPage-1)).sort({
-        //             [opt.sortBy[0]]: 'desc'
-        //         });
-        //     }
-        // } else{
-        //     docObj = await Post.find(filter).limit(pageSize).skip(pageSize*(currentPage-1)).sort({
-        //         _id: 'asc'
-        //     });
-        // }
+        console.log(filter);
+
+        docObj = await Post.find(filter).limit(pageSize).skip(pageSize*(currentPage-1)).sort({
+            date: 'desc'
+        });
+
         docObj = await Post.find(filter);
         var totalItems = await Post.count(filter);
         res.json({objList:docObj,totalDoc:totalItems});

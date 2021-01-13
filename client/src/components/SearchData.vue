@@ -5,33 +5,8 @@
       :items-per-page.sync="itemsPerPage"
       :page="page"
       :search="search"
-      :sort-by="sortBy.toLowerCase()"
-      :sort-desc="sortDesc"
       hide-default-footer
     >
-      <template v-slot:header>
-        <v-toolbar dark color="blue darken-3" class="mb-1">
-          <template v-if="$vuetify.breakpoint.mdAndUp">
-            <v-select
-              v-model="sortBy"
-              flat
-              solo-inverted
-              hide-details
-              :items="keys"
-              prepend-inner-icon="mdi-magnify"
-              label="Sort by"
-            ></v-select>
-            <v-btn-toggle class="mx-2" v-model="sortDesc" mandatory>
-              <v-btn large depressed color="blue" :value="false">
-                <v-icon>mdi-arrow-up</v-icon>
-              </v-btn>
-              <v-btn large depressed color="blue" :value="true">
-                <v-icon>mdi-arrow-down</v-icon>
-              </v-btn>
-            </v-btn-toggle>
-          </template>
-        </v-toolbar>
-      </template>
 
       <template v-slot:default="props">
         <v-row>
@@ -131,7 +106,7 @@ export default {
   computed: {
     ...mapGetters(["allPosts", "getPosttotalItems"]),
     numberOfPages() {
-      return this.getPosttotalItems < 20 ? 0 : this.getPosttotalItems / 20;
+      return this.getPosttotalItems <= 20 ? 1 : this.getPosttotalItems / 20;
     },
   },
   methods: {

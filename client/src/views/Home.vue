@@ -282,11 +282,18 @@ export default {
     },
     searchPost(){
       this.search = !this.search
-      let datasearch = {
-        categoryId: this.value,
-        searchObj: this.searchdata
+      let options = {
+        itemsPerPage: 20,
+        page: 1,       
       };
-      this.fetchPostByCat(datasearch);
+
+      let pageObj = {
+          searchObj: this.searchdata,
+          categoryId: this.value,
+          pageOpt: options,
+        };
+        console.log(pageObj);
+      this.fetchPostByCat(pageObj);
     }
   },
   watch: {
