@@ -25,9 +25,9 @@ router.post('/searchByCat',async (req,res) => {
         var docObj;
         var handlenull = (req.body.searchObj == null) ? '' : req.body.searchObj;
         var filter = (handlenull != '' && req.body.categoryId != '-1') ? {
-            $or:[{title: { "$regex": req.body.searchObj, "$options": "i" }},
+            $and:[{categoryId: req.body.categoryId},{$or:[{title: { "$regex": req.body.searchObj, "$options": "i" }},
             {description: { "$regex": req.body.searchObj, "$options": "i" }},
-            {location: { "$regex": req.body.searchObj, "$options": "i" }}] 
+            {location: { "$regex": req.body.searchObj, "$options": "i" }}] }]
         } : {};
         console.log(filter);
 
