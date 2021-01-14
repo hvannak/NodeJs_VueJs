@@ -50,6 +50,31 @@
 
           </v-row>
       </v-form>
+      <v-dialog
+        transition="dialog-bottom-transition"
+        max-width="600"
+        v-model="messagedialog"
+      >
+        <template v-slot:default="dialog">
+          <v-card>
+            <v-toolbar
+              color="primary"
+              dark
+            >Opening Notification</v-toolbar>
+            <v-card-text>
+              <div class="text-h5 pa-12">Please define what are you looking for.</div>
+            </v-card-text>
+            <v-card-actions class="justify-end">
+              <v-btn
+                text
+                @click="dialog.value = false"
+              >Close</v-btn>
+            </v-card-actions>
+          </v-card>
+        </template>
+      </v-dialog>
+
+
       </div>
 
       <v-spacer></v-spacer>
@@ -208,6 +233,14 @@
 
       <v-row no-gutters>
         <v-col cols="10" md="10" sm="8">
+          <div v-if="getWaiting" class="text-center">
+            <v-progress-circular class="text-center"
+              :size="70"
+              :width="7"
+              color="purple"
+              indeterminate
+            ></v-progress-circular>
+          </div>
           <router-view></router-view>
         </v-col>
         <v-col cols="2" md="2" sm="1">
@@ -259,10 +292,11 @@ export default {
       dialog: false,
       confirmPassword: "",
       search: true,
-      searchdata: ""
+      searchdata: null,
+      messagedialog: false
   }),
    computed: {
-    ...mapGetters(["getUser", "getMessage","getAllCategorys","allPosts"]),
+    ...mapGetters(["getUser", "getMessage","getAllCategorys","allPosts","getWaiting"]),
   },
   methods:{
     ...mapActions(["fetchUserClient","fetchCategories","fetchPostByCat"]),
@@ -281,20 +315,24 @@ export default {
       this.$store.commit("updateMessage", "");
     },
     searchPost(){
-      this.search = !this.search
-      let options = {
-        itemsPerPage: 20,
-        page: 1,       
-      };
+      if(this.searchdata != null){
+          this.search = !this.search
+          let options = {
+            itemsPerPage: 20,
+            page: 1,       
+          };
 
-      let pageObj = {
-          searchObj: this.searchdata,
-          categoryId: this.value,
-          pageOpt: options,
-        };
-        console.log(pageObj);
-      this.fetchPostByCat(pageObj);
-    }
+          let pageObj = {
+              searchObj: this.searchdata,
+              categoryId: this.value._id,
+              pageOpt: options,
+            };
+          this.fetchPostByCat(pageObj);
+        } else {
+          this.messagedialog = true;
+        }
+      }
+      
   },
   watch: {
     

@@ -6,21 +6,25 @@ const state = {
   posts: [],
   post:{},
   totalItems:0,
-  message:''
+  message:'',
+  waiting: false
 };
 
 const getters = {
   allPosts: state => state.posts,
   getPostMessage: state => state.message,
-  getPosttotalItems: state => state.totalItems
+  getPosttotalItems: state => state.totalItems,
+  getWaiting: state => state.waiting
 };
 
 const actions = {
 
   async fetchPostByCat({ commit },pageObj) {
     try {
+      commit('setWaiting',true);
       const response = await axios.post(`${apihelper.api_url}/posts/searchByCat`,pageObj);
       console.log(response.data.objList);
+      commit('setWaiting',false);
       commit('setPostPages',response.data.objList);
       commit('setTotalItems',response.data.totalDoc);
       router.push({ name: 'Search Data'});
@@ -86,6 +90,7 @@ const mutations = {
     setTotalItems:(state,total) => (state.totalItems = total),
     setPostPages:(state,post) => (state.posts = post),
     setPostObj: (state, role) => (state.role = role),
+    setWaiting: (state,wait) => (state.waiting = wait),
     setRoleSearch:(state,role) => (role.forEach(element => {
       state.roles.push(element)
     })),

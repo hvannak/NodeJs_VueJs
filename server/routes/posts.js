@@ -23,12 +23,15 @@ router.post('/searchByCat',async (req,res) => {
         var pageSize = opt.itemsPerPage;
         var currentPage = opt.page;
         var docObj;
-        var handlenull = (req.body.searchObj == null) ? '' : req.body.searchObj;
-        var filter = (handlenull != '' && req.body.categoryId != '-1') ? {
+        var filter = (req.body.categoryId != '-1') ? {
             $and:[{categoryId: req.body.categoryId},{$or:[{title: { "$regex": req.body.searchObj, "$options": "i" }},
             {description: { "$regex": req.body.searchObj, "$options": "i" }},
             {location: { "$regex": req.body.searchObj, "$options": "i" }}] }]
-        } : {};
+        } : {
+            $or:[{title: { "$regex": req.body.searchObj, "$options": "i" }},
+            {description: { "$regex": req.body.searchObj, "$options": "i" }},
+            {location: { "$regex": req.body.searchObj, "$options": "i" }}]
+        };
         console.log(filter);
 
         docObj = await Post.find(filter).limit(pageSize).skip(pageSize*(currentPage-1)).sort({
