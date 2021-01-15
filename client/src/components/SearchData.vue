@@ -18,7 +18,50 @@
             md="4"
             lg="4"
           >
-            <v-card class="mx-auto my-2">
+
+            <v-hover v-slot="{ hover }" open-delay="200">
+              <v-card
+                class="mx-auto"
+                color="grey lighten-4"
+                max-width="600"
+                :elevation="hover ? 16 : 2"
+                :class="{ 'on-hover': hover }"
+              >
+                <v-img
+                  :aspect-ratio="16/9"
+                  :src="readBufferImg(item.image[0])"
+                >
+                </v-img>
+                <v-card-text
+                  class="pt-6"
+                  style="position: relative;"
+                >
+                  <v-btn
+                    absolute
+                    color="orange"
+                    class="white--text"
+                    fab
+                    large
+                    right
+                    top
+                  >
+                    <v-icon>mdi-chevron-double-right</v-icon>
+                  </v-btn>
+                  <div class="font-weight-light grey--text title mb-2">
+                    For the {{item.category}}
+                  </div>
+                  <h3 class="display-1 font-weight-light orange--text mb-2">
+                    {{item.title}}
+                  </h3>
+                  <div class="font-weight-light title mb-2">
+                    {{item.description}}
+                  </div>
+                </v-card-text>
+              </v-card>
+            </v-hover>
+
+
+            <!-- <v-card class="mx-auto my-2">
               <v-img height="250" :src="readBufferImg(item.image[0])"></v-img>
 
               <v-card-title>{{ item.title }}</v-card-title>
@@ -37,24 +80,24 @@
                   <div class="grey--text ml-4">4.5 (413)</div>
                 </v-row>
 
-                <div class="my-4 subtitle-1">$ • Italian, Cafe</div>
+                <div class="my-4 subtitle-1">{{item.category}}</div>
 
                 <div>
-                  Small plates, salads & sandwiches - an intimate setting with
-                  12 indoor seats plus patio seating.
+                  {{item.description}}
                 </div>
               </v-card-text>
 
               <v-divider class="mx-4"></v-divider>
 
-              <v-card-title>Tonight's availability</v-card-title>
+              <v-card-title>Tel: {{item.phone}}</v-card-title>
 
               <v-card-text> </v-card-text>
 
               <v-card-actions>
                 <v-btn color="deep-purple lighten-2" text> VIEW </v-btn>
               </v-card-actions>
-            </v-card>
+            </v-card> -->
+
           </v-col>
         </v-row>
       </template>
@@ -89,7 +132,7 @@ export default {
       filter: {},
       sortDesc: false,
       page: 1,
-      itemsPerPage: 20,
+      itemsPerPage: 9,
       sortBy: "name",
       keys: [
         "Name",
@@ -106,7 +149,7 @@ export default {
   computed: {
     ...mapGetters(["allPosts", "getPosttotalItems"]),
     numberOfPages() {
-      return this.getPosttotalItems <= 20 ? 1 : this.getPosttotalItems / 20;
+      return this.getPosttotalItems <= 9 ? 1 : this.getPosttotalItems / 9;
     },
   },
   methods: {
@@ -121,3 +164,9 @@ export default {
   },
 };
 </script>
+<style lang="sass" scoped>
+  .v-card.on-hover.theme--dark
+    background-color: rgba(#FFF, 0.8)
+    >.v-card__text
+      color: #000
+</style>

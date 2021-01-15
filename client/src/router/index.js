@@ -117,6 +117,6 @@ router.beforeEach((to, from, next) => {
     next({name:'Welcome'});
   }
   else next()
-})
+});
 
 export default router

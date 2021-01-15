@@ -32,7 +32,6 @@ router.post('/searchByCat',async (req,res) => {
             {description: { "$regex": req.body.searchObj, "$options": "i" }},
             {location: { "$regex": req.body.searchObj, "$options": "i" }}]
         };
-        console.log(filter);
 
         docObj = await Post.find(filter).limit(pageSize).skip(pageSize*(currentPage-1)).sort({
             date: 'desc'
