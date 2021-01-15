@@ -107,15 +107,6 @@ const router = new VueRouter({
 })
 
 router.beforeEach((to, from, next) => {
-  // if (to.name !== 'Login' && localStorage.getItem('token') == null) {
-  //   if(to.name == 'Home') next()
-  //   else next({ name: 'Login' })
-  // }
-  // else if((to.name == 'Login' && localStorage.getItem('token') != null) || 
-  // (to.name == 'Home' && localStorage.getItem('token') != null)){
-  //   next({name:'ControlPanel'})
-  // }
-  // else next()
   if(to.name == 'Home') {
     next({name: 'Welcome'})
   }

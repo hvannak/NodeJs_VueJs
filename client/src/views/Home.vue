@@ -29,6 +29,7 @@
                 item-value="_id"
                 outlined
                 dense
+                return-object
               ></v-select>
             </v-col>
 
@@ -233,15 +234,15 @@
 
       <v-row no-gutters>
         <v-col cols="10" md="10" sm="8">
-          <div v-if="getWaiting" class="text-center">
-            <v-progress-circular class="text-center"
+          <div v-if="getWaiting" class="pdiv">
+            <v-progress-circular
               :size="70"
               :width="7"
               color="purple"
               indeterminate
             ></v-progress-circular>
           </div>
-          <router-view></router-view>
+          <router-view v-else></router-view>
         </v-col>
         <v-col cols="2" md="2" sm="1">
           <v-card height="100%">
@@ -321,7 +322,7 @@ export default {
             itemsPerPage: 20,
             page: 1,       
           };
-
+          console.log(this.value);
           let pageObj = {
               searchObj: this.searchdata,
               categoryId: this.value._id,
@@ -359,3 +360,11 @@ export default {
   },
 };
 </script>
+<style>
+  .pdiv {
+    height: 100vh;
+    line-height: 100vh;
+    text-align: center;
+    border: 1px dashed #f69c55;
+  }
+</style>
