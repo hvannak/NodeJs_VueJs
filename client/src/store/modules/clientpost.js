@@ -7,14 +7,16 @@ const state = {
   post:{},
   totalItems:0,
   message:'',
-  waiting: false
+  waiting: false,
+  searchObj: {}
 };
 
 const getters = {
   allPosts: state => state.posts,
   getPostMessage: state => state.message,
   getPosttotalItems: state => state.totalItems,
-  getWaiting: state => state.waiting
+  getWaiting: state => state.waiting,
+  getSearchObj: state => state.searchObj
 };
 
 const actions = {
@@ -105,7 +107,8 @@ const mutations = {
         if (index !== -1) {
         state.roles.splice(index, 1, postObj);
         }
-    }
+    },
+    setSearchObj: (state,searchObj) => (state.searchObj = searchObj)
 };
 
 export default {

@@ -112,6 +112,7 @@
                     v-model="page"
                     class="my-4"
                     :length="numberOfPages"
+                    @input="navigationPage()"
                   ></v-pagination>
                 </v-container>
               </v-col>
@@ -123,7 +124,7 @@
   </v-app>
 </template>
 <script>
-import { mapGetters } from "vuex";
+import { mapGetters,mapActions } from "vuex";
 
 export default {
   data() {
@@ -132,27 +133,17 @@ export default {
       filter: {},
       sortDesc: false,
       page: 1,
-      itemsPerPage: 9,
-      sortBy: "name",
-      keys: [
-        "Name",
-        "Calories",
-        "Fat",
-        "Carbs",
-        "Protein",
-        "Sodium",
-        "Calcium",
-        "Iron",
-      ],
+      itemsPerPage: 9
     };
   },
   computed: {
-    ...mapGetters(["allPosts", "getPosttotalItems"]),
+    ...mapGetters(["allPosts", "getPosttotalItems","getSearchObj"]),
     numberOfPages() {
-      return this.getPosttotalItems <= 9 ? 1 : this.getPosttotalItems / 9;
+      return this.getPosttotalItems <= 9 ? 1 : Math.ceil(this.getPosttotalItems / 9);
     },
   },
   methods: {
+    ...mapActions(["fetchPostByCat"]),
     readBufferImg(image) {
       var bytes = new Uint8Array(image.data);
       var binary = bytes.reduce(
@@ -161,6 +152,12 @@ export default {
       );
       return binary;
     },
+    navigationPage(){
+      let pageObj = Object.assign({},this.getSearchObj);
+      pageObj.pageOpt.page = this.page;
+      this.fetchPostByCat(pageObj);
+      console.log(this.page);
+    }
   },
 };
 </script>

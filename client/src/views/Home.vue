@@ -319,7 +319,7 @@ export default {
       if(this.searchdata != null){
           this.search = !this.search
           let options = {
-            itemsPerPage: 20,
+            itemsPerPage: 9,
             page: 1,       
           };
           console.log(this.value);
@@ -328,6 +328,9 @@ export default {
               categoryId: this.value._id,
               pageOpt: options,
             };
+
+          //store vuex
+          this.$store.commit("setSearchObj",pageObj);
           this.fetchPostByCat(pageObj);
         } else {
           this.messagedialog = true;
