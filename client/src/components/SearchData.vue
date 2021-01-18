@@ -112,7 +112,7 @@
                     v-model="page"
                     class="my-4"
                     :length="numberOfPages"
-                    @input="navigationPage()"
+                    @input="navigationPage"
                   ></v-pagination>
                 </v-container>
               </v-col>
@@ -152,11 +152,12 @@ export default {
       );
       return binary;
     },
-    navigationPage(){
+    navigationPage(value){
       let pageObj = Object.assign({},this.getSearchObj);
-      pageObj.pageOpt.page = this.page;
+      pageObj.pageOpt.page = value;
       this.fetchPostByCat(pageObj);
-      console.log(this.page);
+      console.log(value);
+      this.page = value;
     }
   },
 };
