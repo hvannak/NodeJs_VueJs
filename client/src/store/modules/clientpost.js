@@ -8,7 +8,8 @@ const state = {
   totalItems:0,
   message:'',
   waiting: false,
-  searchObj: {}
+  searchObj: {},
+  currentPage: 1
 };
 
 const getters = {
@@ -16,7 +17,8 @@ const getters = {
   getPostMessage: state => state.message,
   getPosttotalItems: state => state.totalItems,
   getWaiting: state => state.waiting,
-  getSearchObj: state => state.searchObj
+  getSearchObj: state => state.searchObj,
+  getCurrentPage: state => state.currentPage
 };
 
 const actions = {
@@ -108,7 +110,8 @@ const mutations = {
         state.roles.splice(index, 1, postObj);
         }
     },
-    setSearchObj: (state,searchObj) => (state.searchObj = searchObj)
+    setSearchObj: (state,searchObj) => (state.searchObj = searchObj),
+    setCurrentPage: (state,page) => (state.currentPage = page)
 };
 
 export default {

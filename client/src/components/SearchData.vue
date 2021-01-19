@@ -60,44 +60,6 @@
               </v-card>
             </v-hover>
 
-
-            <!-- <v-card class="mx-auto my-2">
-              <v-img height="250" :src="readBufferImg(item.image[0])"></v-img>
-
-              <v-card-title>{{ item.title }}</v-card-title>
-
-              <v-card-text>
-                <v-row align="center" class="mx-0">
-                  <v-rating
-                    :value="4.5"
-                    color="amber"
-                    dense
-                    half-increments
-                    readonly
-                    size="14"
-                  ></v-rating>
-
-                  <div class="grey--text ml-4">4.5 (413)</div>
-                </v-row>
-
-                <div class="my-4 subtitle-1">{{item.category}}</div>
-
-                <div>
-                  {{item.description}}
-                </div>
-              </v-card-text>
-
-              <v-divider class="mx-4"></v-divider>
-
-              <v-card-title>Tel: {{item.phone}}</v-card-title>
-
-              <v-card-text> </v-card-text>
-
-              <v-card-actions>
-                <v-btn color="deep-purple lighten-2" text> VIEW </v-btn>
-              </v-card-actions>
-            </v-card> -->
-
           </v-col>
         </v-row>
       </template>
@@ -137,10 +99,13 @@ export default {
     };
   },
   computed: {
-    ...mapGetters(["allPosts", "getPosttotalItems","getSearchObj"]),
+    ...mapGetters(["allPosts", "getPosttotalItems","getSearchObj","getCurrentPage"]),
     numberOfPages() {
       return this.getPosttotalItems <= 9 ? 1 : Math.ceil(this.getPosttotalItems / 9);
     },
+  },
+  created() {
+    this.page = this.getCurrentPage;
   },
   methods: {
     ...mapActions(["fetchPostByCat"]),
@@ -155,9 +120,8 @@ export default {
     navigationPage(value){
       let pageObj = Object.assign({},this.getSearchObj);
       pageObj.pageOpt.page = value;
+      this.$store.commit("setCurrentPage", value);
       this.fetchPostByCat(pageObj);
-      console.log(value);
-      this.page = value;
     }
   },
 };
