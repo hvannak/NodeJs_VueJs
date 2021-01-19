@@ -191,41 +191,37 @@
                   </div>
                 </v-col>
                 <v-col cols="10" offset-md="1" class="text-center">
-
-                          <v-dialog
-                            transition="dialog-bottom-transition"
-                            max-width="600"
-                            persistent
-                            v-model="dialog"
-                          >
-                            <template v-slot:activator="{ on, attrs }">
-                              <v-btn tile color="success" :disabled="invalid" x-large
-                                v-bind="attrs"
-                                v-on="on"
-                                @click="save">
-                                <v-icon left> mdi-pencil </v-icon>
-                                POST
-                              </v-btn>
-                            </template>
-                              <v-card>
-                                <v-toolbar
-                                  color="primary"
-                                  dark
-                                >Opening Post Message</v-toolbar>
-                                <v-card-text>
-                                  <div class="text-h2 pa-12">Status when save</div>
-                                </v-card-text>
-                                <v-card-actions class="justify-end">
-                                  <v-btn
-                                    text
-                                    @click="closedialog()"
-                                  >Close</v-btn>
-                                </v-card-actions>
-                              </v-card>
-                          </v-dialog>
-
-
-
+                  <v-dialog
+                    transition="dialog-bottom-transition"
+                    max-width="600"
+                    persistent
+                    v-model="dialog"
+                  >
+                    <template v-slot:activator="{ on, attrs }">
+                      <v-btn tile color="success" :disabled="invalid" x-large
+                        v-bind="attrs"
+                        v-on="on"
+                        @click="save">
+                        <v-icon left> mdi-pencil </v-icon>
+                        POST
+                      </v-btn>
+                    </template>
+                      <v-card>
+                        <v-toolbar
+                          color="primary"
+                          dark
+                        >Status when save</v-toolbar>
+                        <v-card-text>
+                          <div class="text-h4 pa-12">Your post is successful.</div>
+                        </v-card-text>
+                        <v-card-actions class="justify-end">
+                          <v-btn
+                            text
+                            @click="closedialog()"
+                          >Close</v-btn>
+                        </v-card-actions>
+                      </v-card>
+                  </v-dialog>
                 </v-col>
               </v-row>
             </v-form>

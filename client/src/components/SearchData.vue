@@ -29,6 +29,7 @@
               >
                 <v-img
                   :aspect-ratio="16/9"
+                  contain
                   :src="readBufferImg(item.image[0])"
                 >
                 </v-img>
