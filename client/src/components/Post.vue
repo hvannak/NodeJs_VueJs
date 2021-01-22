@@ -276,9 +276,17 @@ export default {
           reader.onload = function(e) {
             this.image.push(e.target.result);
           }.bind(this);
-          reader.readAsDataURL(element);
+          reader.readAsDataURL(element);         
         });
       }
+    },
+    scaleDownSize(width, height, maxWidth, maxHeight) {
+      if (width <= maxWidth && height <= maxHeight)
+        return { width, height };
+      else if (width / maxWidth > height / maxHeight)
+        return { width: maxWidth, height: height * maxWidth / width};
+      else
+        return { width: width * maxHeight / height, height: maxHeight };
     },
     selectCategory(item){
       this.e1 = 2;
