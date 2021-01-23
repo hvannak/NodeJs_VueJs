@@ -4,6 +4,7 @@ const Post = require('../models/Post');
 const verify = require('../routes/verifyToken');
 const {updatemessage, savemessage} = require('../helper');
 const {logger} = require('../logger');
+const sharp = require('sharp');
 
 //GET BACK ALL THE POSTS
 router.get('/all',verify, async (req,res) => {
@@ -103,6 +104,26 @@ router.put('/put/:roleId',verify, async (req,res) => {
 });
 
 router.post('/post',verify,async (req,res)=> {
+    let imageStore = [];
+    req.body.image.forEach(element => {
+        let parts = element.split(';');
+        let mimType = parts[0].split(':')[1];
+        let imageData = parts[1].split(',')[1];
+        var img = new Buffer(imageData, 'base64');
+        sharp(img).resize(64, 64).toBuffer()
+        .then(resizedImageBuffer => {
+            let resizedImageData = resizedImageBuffer.toString('base64');
+            let resizedBase64 = `data:${mimType};base64,${resizedImageData}`;
+            console.log(resizedBase64);
+            imageStore.push(resizedBase64);
+        })
+        .catch(error => {
+            res.send(error)
+        });
+
+    });
+
+
     const postsave = new Post({
         categoryId: req.body.categoryId,
         category: req.body.category,
@@ -111,7 +132,7 @@ router.post('/post',verify,async (req,res)=> {
         phone: req.body.phone,
         email: req.body.email,
         location: req.body.location,
-        image: req.body.image
+        image: imageStore
     });
     try{
         const result = await postsave.save();

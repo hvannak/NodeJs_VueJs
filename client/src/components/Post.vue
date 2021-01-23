@@ -145,9 +145,11 @@
                   </ValidationProvider>
                 </v-col>
                 <v-col cols="10" offset-md="1">
+                  <ValidationProvider rules="size:2000000" v-slot="{ errors }">
                   <v-file-input
                     v-model="file"
                     chips
+                    :error-messages="errors"
                     label="File input w/ chips"
                     outlined
                     multiple
@@ -155,6 +157,7 @@
                     prepend-icon="mdi-camera"
                     @change="Preview_image($event)"
                   ></v-file-input>
+                  </ValidationProvider>
                 </v-col>
                 <v-col cols="10" offset-md="1" class="text-center">
                   <div
@@ -235,7 +238,7 @@
 <script>
 import { mapGetters, mapActions } from "vuex";
 import { extend } from "vee-validate";
-import { required, email, min } from "vee-validate/dist/rules";
+import { required, email, min,size } from "vee-validate/dist/rules";
 
 extend("required", {
   ...required,
@@ -249,6 +252,11 @@ extend("min", {
 
 extend("email", {
   ...email,
+});
+
+extend("size", {
+  ...size,
+  message: "File size may not be geater than 2MB",
 });
 
 export default {
@@ -268,16 +276,22 @@ export default {
   methods: {
     ...mapActions(["fetchCategories","addPost"]),
     Preview_image(e) {
-      if (e.length > 0) {
+      if (e.length > 0 && e.length <=8) {
         e.forEach((element) => {
-          this.url = URL.createObjectURL(element);
-          this.urls.push(this.url);
-          var reader = new FileReader();
-          reader.onload = function(e) {
-            this.image.push(e.target.result);
-          }.bind(this);
-          reader.readAsDataURL(element);         
+          if(element.size <= 2000000){
+            this.url = URL.createObjectURL(element);
+            this.urls.push(this.url);
+            var reader = new FileReader();
+            reader.onload = function(e) {
+              this.image.push(e.target.result);
+            }.bind(this);
+            reader.readAsDataURL(element);        
+          }
         });
+      }
+      else{
+        this.file = [];
+        alert('You allow only 8 attach files');
       }
     },
     scaleDownSize(width, height, maxWidth, maxHeight) {
