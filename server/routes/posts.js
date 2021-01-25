@@ -105,17 +105,13 @@ router.put('/put/:roleId',verify, async (req,res) => {
 
 router.post('/post',verify,async (req,res)=> {
     let imageStore = [];
-    req.body.image.forEach(element => {
-        let bufferimg = element.split(',')[1];
-        Jimp.read(bufferimg).then(img => {
-          img.quality(70).getBase64(Jimp.MIME_PNG);
-          imageStore.push(img);
-        }).catch(err => {
-            console.log(err);
-        })
-    });
-
-    console.log(imageStore);
+    // use forof with async cannot use foreach
+    for (const element of req.body.image) {
+        let bufferimg = new Buffer(element.split(',')[1],'base64');
+        let quality = await (await Jimp.read(bufferimg)).quality(60);
+        let imgbase = await quality.getBase64Async(Jimp.MIME_PNG);
+        imageStore.push(imgbase);
+    }
 
     const postsave = new Post({
         categoryId: req.body.categoryId,
@@ -125,7 +121,7 @@ router.post('/post',verify,async (req,res)=> {
         phone: req.body.phone,
         email: req.body.email,
         location: req.body.location,
-        image: req.body.image
+        image: imageStore
     });
     try{
         const result = await postsave.save();

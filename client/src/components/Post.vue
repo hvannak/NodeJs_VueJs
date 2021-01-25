@@ -319,6 +319,7 @@ export default {
       this.addPost(this.post);
       this.urls = [];
       this.file = null;
+      this.image = [];
     },
     closedialog(){
       this.dialog = false;
