@@ -108,7 +108,9 @@ router.post('/post',verify,async (req,res)=> {
     // use forof with async cannot use foreach
     for (const element of req.body.image) {
         let bufferimg = new Buffer(element.split(',')[1],'base64');
-        let quality = await (await Jimp.read(bufferimg)).quality(60);
+        let quality = await (await Jimp.read(bufferimg))
+                                       .quality(60)
+                                       .scale(16/9);
         let imgbase = await quality.getBase64Async(Jimp.MIME_PNG);
         imageStore.push(imgbase);
     }
