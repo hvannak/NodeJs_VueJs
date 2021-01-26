@@ -7,7 +7,6 @@
       :search="search"
       hide-default-footer
     >
-
       <template v-slot:default="props">
         <v-row>
           <v-col
@@ -18,7 +17,6 @@
             md="4"
             lg="4"
           >
-
             <v-hover v-slot="{ hover }" open-delay="200">
               <v-card
                 class="mx-auto"
@@ -28,75 +26,37 @@
                 :class="{ 'on-hover': hover }"
               >
                 <v-img
-                  :aspect-ratio="16/9"
+                  :aspect-ratio="16 / 9"
                   contain
                   :src="readBufferImg(item.image[0])"
                 >
                 </v-img>
-                <v-card-text
-                  class="pt-6"
-                  style="position: relative;"
-                >
-                      <v-dialog
-                        transition="dialog-top-transition"
-                        max-width="800"
-                      >
-                        <template v-slot:activator="{ on, attrs }">
-                          <v-btn
-                            absolute
-                            color="orange"
-                            class="white--text"
-                            fab
-                            large
-                            right
-                            top
-                            v-bind="attrs"
-                            v-on="on"
-                          >
-                            <v-icon>mdi-chevron-double-right</v-icon>
-                          </v-btn>
-                        </template>
-                        <template v-slot:default="dialog">
-                          <v-card>
-                            <v-toolbar
-                              color="primary"
-                              dark
-                            >Details Contact</v-toolbar>
-
-
-                            <v-carousel hide-delimiters>
-                              <v-carousel-item
-                                v-for="(itm,i) in item.image"
-                                :key="i"
-                                :src="readBufferImg(itm[i])"
-                              ></v-carousel-item>
-                            </v-carousel>
-                            <v-card-text>
-                              <div class="text-h2 pa-12">Hello world!</div>
-                            </v-card-text>
-                            <v-card-actions class="justify-end">
-                              <v-btn
-                                text
-                                @click="dialog.value = false"
-                              >Close</v-btn>
-                            </v-card-actions>
-                          </v-card>
-                        </template>
-                      </v-dialog>
+                <v-card-text class="pt-6" style="position: relative">
+                  <v-btn
+                    absolute
+                    color="orange"
+                    class="white--text"
+                    fab
+                    large
+                    right
+                    top
+                    @click="showDetails(item)"
+                  >
+                    <v-icon>mdi-chevron-double-right</v-icon>
+                  </v-btn>
 
                   <div class="font-weight-light grey--text title mb-2">
-                    For the {{item.category}}
+                    For the {{ item.category }}
                   </div>
                   <h3 class="display-1 font-weight-light orange--text mb-2">
-                    {{item.title}}
+                    {{ item.title }}
                   </h3>
                   <div class="font-weight-light title mb-2">
-                    {{item.description}}
+                    {{ item.description }}
                   </div>
                 </v-card-text>
               </v-card>
             </v-hover>
-
           </v-col>
         </v-row>
       </template>
@@ -120,10 +80,55 @@
         </div>
       </template>
     </v-data-iterator>
+
+    <v-row justify="space-around">
+      <v-col cols="auto">
+        <v-dialog
+          transition="dialog-top-transition"
+          max-width="800"
+          v-model="dialog"
+        >
+        <v-card>
+          <v-toolbar
+            color="primary"
+            dark
+          >Opening details</v-toolbar>
+          <v-carousel>
+            <v-carousel-item
+              v-for="(itm,i) in images"
+              :key="i"
+              :src="readBufferImg(itm)"
+              reverse-transition="fade-transition"
+              transition="fade-transition"
+              contain
+            ></v-carousel-item>
+          </v-carousel>
+          <v-card-text>
+            <div class="text-h2">
+              <v-alert
+                border="top"
+                color="red lighten-2"
+                dark
+              >
+                I'm an alert with a top border and red color
+              </v-alert>
+            </div>
+          </v-card-text>
+          <v-card-actions class="justify-end">
+            <v-btn
+              text
+              @click="dialog = false"
+            >Close</v-btn>
+          </v-card-actions>
+        </v-card>
+        </v-dialog>
+      </v-col>
+    </v-row>
+
   </v-app>
 </template>
 <script>
-import { mapGetters,mapActions } from "vuex";
+import { mapGetters, mapActions } from "vuex";
 
 export default {
   data() {
@@ -133,26 +138,22 @@ export default {
       sortDesc: false,
       page: 1,
       itemsPerPage: 9,
-      items: [
-          {
-            src: 'https://cdn.vuetifyjs.com/images/carousel/squirrel.jpg',
-          },
-          {
-            src: 'https://cdn.vuetifyjs.com/images/carousel/sky.jpg',
-          },
-          {
-            src: 'https://cdn.vuetifyjs.com/images/carousel/bird.jpg',
-          },
-          {
-            src: 'https://cdn.vuetifyjs.com/images/carousel/planet.jpg',
-          },
-        ],
+      dialog: false,
+      images: [],
+      details: {}
     };
   },
   computed: {
-    ...mapGetters(["allPosts", "getPosttotalItems","getSearchObj","getCurrentPage"]),
+    ...mapGetters([
+      "allPosts",
+      "getPosttotalItems",
+      "getSearchObj",
+      "getCurrentPage",
+    ]),
     numberOfPages() {
-      return this.getPosttotalItems <= 9 ? 1 : Math.ceil(this.getPosttotalItems / 9);
+      return this.getPosttotalItems <= 9
+        ? 1
+        : Math.ceil(this.getPosttotalItems / 9);
     },
   },
   created() {
@@ -168,18 +169,23 @@ export default {
       );
       return binary;
     },
-    navigationPage(value){
-      let pageObj = Object.assign({},this.getSearchObj);
+    navigationPage(value) {
+      let pageObj = Object.assign({}, this.getSearchObj);
       pageObj.pageOpt.page = value;
       this.$store.commit("setCurrentPage", value);
       this.fetchPostByCat(pageObj);
+    },
+    showDetails(item){
+      this.images = item.image;
+      this.details = item;
+      this.dialog = true;
     }
   },
 };
 </script>
 <style lang="sass" scoped>
-  .v-card.on-hover.theme--dark
-    background-color: rgba(#FFF, 0.8)
-    >.v-card__text
-      color: #000
+.v-card.on-hover.theme--dark
+  background-color: rgba(#FFF, 0.8)
+  >.v-card__text
+    color: #000
 </style>
