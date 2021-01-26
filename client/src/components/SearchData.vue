@@ -19,18 +19,20 @@
           >
             <v-hover v-slot="{ hover }" open-delay="200">
               <v-card
-                class="mx-auto cyan lighten-1"
+                class="mx-auto"
                 max-width="600"
                 :elevation="hover ? 16 : 2"
                 :class="{ 'on-hover': hover }"
               >
-                <v-img
-                  :aspect-ratio="16 / 9"
-                  contain
-                  :src="readBufferImg(item.image[0])"
-                >
-                </v-img>
-                <v-card-text class="pt-6 red lighten-4" style="position: relative">
+                <v-container>
+                    <v-img
+                      :aspect-ratio="16 / 9"
+                      contain
+                      :src="readBufferImg(item.image[0])"
+                    >
+                    </v-img>
+                </v-container>
+                <v-card-text class="pt-6 blue lighten-5" style="position: relative">
                   <v-btn
                     absolute
                     color="orange"
@@ -103,7 +105,7 @@
             ></v-carousel-item>
           </v-carousel>
           <v-card-text>
-          <v-timeline :dense="$vuetify.breakpoint.smAndDown">
+          <v-timeline dense>
             <v-timeline-item
               color="purple lighten-2"
               fill-dot
@@ -138,7 +140,7 @@
             <v-timeline-item
               color="amber lighten-1"
               fill-dot
-              left
+              right
               small
             >
               <v-card>
