@@ -19,8 +19,7 @@
           >
             <v-hover v-slot="{ hover }" open-delay="200">
               <v-card
-                class="mx-auto"
-                color="grey lighten-4"
+                class="mx-auto cyan lighten-1"
                 max-width="600"
                 :elevation="hover ? 16 : 2"
                 :class="{ 'on-hover': hover }"
@@ -31,7 +30,7 @@
                   :src="readBufferImg(item.image[0])"
                 >
                 </v-img>
-                <v-card-text class="pt-6" style="position: relative">
+                <v-card-text class="pt-6 red lighten-4" style="position: relative">
                   <v-btn
                     absolute
                     color="orange"
@@ -104,15 +103,102 @@
             ></v-carousel-item>
           </v-carousel>
           <v-card-text>
-            <div class="text-h2">
-              <v-alert
-                border="top"
-                color="red lighten-2"
-                dark
-              >
-                I'm an alert with a top border and red color
-              </v-alert>
-            </div>
+          <v-timeline :dense="$vuetify.breakpoint.smAndDown">
+            <v-timeline-item
+              color="purple lighten-2"
+              fill-dot
+              right
+            >
+              <v-card>
+                <v-card-title class="purple lighten-2">
+                  <v-icon
+                    dark
+                    size="42"
+                    class="mr-4"
+                  >
+                    mdi-magnify
+                  </v-icon>
+                  <h2 class="display-1 white--text font-weight-light">
+                    {{details.title}}
+                  </h2>
+                </v-card-title>
+                <v-container>
+                  <v-row>
+                    <v-col
+                      cols="12"
+                      md="10"
+                    >
+                      {{details.description}}
+                    </v-col>
+                  </v-row>
+                </v-container>
+              </v-card>
+            </v-timeline-item>
+
+            <v-timeline-item
+              color="amber lighten-1"
+              fill-dot
+              left
+              small
+            >
+              <v-card>
+                <v-card-title class="amber lighten-1 justify-end">
+                  <h2 class="display-1 mr-4 white--text font-weight-light">
+                    Contacts
+                  </h2>
+                  <v-icon
+                    dark
+                    size="42"
+                  >
+                    mdi-email-outline          
+                  </v-icon>
+                </v-card-title>
+                <v-container>
+                  <v-row>
+                    <v-col
+                      cols="12"
+                      md="10"
+                    >
+                      {{details.phone}}
+                      <v-divider></v-divider>
+                      {{details.email}}
+                    </v-col>           
+                  </v-row>
+                </v-container>
+              </v-card>
+            </v-timeline-item>
+
+            <v-timeline-item
+              color="cyan lighten-1"
+              fill-dot
+              right
+            >
+              <v-card>
+                <v-card-title class="cyan lighten-1">
+                  <v-icon
+                    class="mr-4"
+                    dark
+                    size="42"
+                  >
+                    mdi-home-outline
+                  </v-icon>
+                  <h2 class="display-1 white--text font-weight-light">
+                    Address
+                  </h2>
+                </v-card-title>
+                <v-container>
+                  <v-row>
+                    <v-col
+                      cols="12"
+                      md="10"
+                    >
+                      {{details.location}}
+                    </v-col>
+                  </v-row>
+                </v-container>
+              </v-card>
+            </v-timeline-item>            
+          </v-timeline>
           </v-card-text>
           <v-card-actions class="justify-end">
             <v-btn
@@ -188,4 +274,5 @@ export default {
   background-color: rgba(#FFF, 0.8)
   >.v-card__text
     color: #000
+
 </style>
