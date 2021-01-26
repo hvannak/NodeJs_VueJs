@@ -37,17 +37,53 @@
                   class="pt-6"
                   style="position: relative;"
                 >
-                  <v-btn
-                    absolute
-                    color="orange"
-                    class="white--text"
-                    fab
-                    large
-                    right
-                    top
-                  >
-                    <v-icon>mdi-chevron-double-right</v-icon>
-                  </v-btn>
+                      <v-dialog
+                        transition="dialog-top-transition"
+                        max-width="800"
+                      >
+                        <template v-slot:activator="{ on, attrs }">
+                          <v-btn
+                            absolute
+                            color="orange"
+                            class="white--text"
+                            fab
+                            large
+                            right
+                            top
+                            v-bind="attrs"
+                            v-on="on"
+                          >
+                            <v-icon>mdi-chevron-double-right</v-icon>
+                          </v-btn>
+                        </template>
+                        <template v-slot:default="dialog">
+                          <v-card>
+                            <v-toolbar
+                              color="primary"
+                              dark
+                            >Details Contact</v-toolbar>
+
+
+                            <v-carousel hide-delimiters>
+                              <v-carousel-item
+                                v-for="(itm,i) in item.image"
+                                :key="i"
+                                :src="readBufferImg(itm[i])"
+                              ></v-carousel-item>
+                            </v-carousel>
+                            <v-card-text>
+                              <div class="text-h2 pa-12">Hello world!</div>
+                            </v-card-text>
+                            <v-card-actions class="justify-end">
+                              <v-btn
+                                text
+                                @click="dialog.value = false"
+                              >Close</v-btn>
+                            </v-card-actions>
+                          </v-card>
+                        </template>
+                      </v-dialog>
+
                   <div class="font-weight-light grey--text title mb-2">
                     For the {{item.category}}
                   </div>
@@ -96,7 +132,21 @@ export default {
       filter: {},
       sortDesc: false,
       page: 1,
-      itemsPerPage: 9
+      itemsPerPage: 9,
+      items: [
+          {
+            src: 'https://cdn.vuetifyjs.com/images/carousel/squirrel.jpg',
+          },
+          {
+            src: 'https://cdn.vuetifyjs.com/images/carousel/sky.jpg',
+          },
+          {
+            src: 'https://cdn.vuetifyjs.com/images/carousel/bird.jpg',
+          },
+          {
+            src: 'https://cdn.vuetifyjs.com/images/carousel/planet.jpg',
+          },
+        ],
     };
   },
   computed: {
