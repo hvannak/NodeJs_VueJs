@@ -1,236 +1,252 @@
 <template>
-<v-app>
-  <v-main>
-    <v-app-bar app color="primary" dark>
-      <div class="d-flex align-center">
-        <v-img
-          alt="Vuetify Logo"
-          class="shrink mr-2"
-          contain
-          src="https://cdn.vuetifyjs.com/images/logos/vuetify-logo-dark.png"
-          transition="scale-transition"
-          width="40"
-        />
-      </div>
+  <v-app>
+    <v-main>
+      <v-app-bar app color="primary" dark>
+        <div class="d-flex align-center">
+          <v-img
+            alt="Vuetify Logo"
+            class="shrink mr-2"
+            contain
+            src="https://cdn.vuetifyjs.com/images/logos/vuetify-logo-dark.png"
+            transition="scale-transition"
+            width="40"
+          />
 
-      <v-spacer></v-spacer>
+          <v-speed-dial
+            v-model="fab"
+            :top="top"
+            :bottom="bottom"
+            :right="right"
+            :left="left"
+            :direction="direction"
+            :open-on-hover="hover"
+            :transition="transition"
+          >
+            <template v-slot:activator>
+              <v-btn v-model="fab" color="blue darken-2" dark fab>
+                <v-icon v-if="fab"> mdi-close </v-icon>
+                <v-icon v-else> mdi-web </v-icon>
+              </v-btn>
+            </template>
+            <v-btn fab dark small color="green">
+              EN
+            </v-btn>
+            <v-btn fab dark small color="indigo">
+              KH
+            </v-btn>
+          </v-speed-dial>
+        </div>
 
-      <div class="mx-auto mt-6">
-      <v-form>
-          <v-row>
-            <v-col
-              cols="6"
-              md="6"
-            >
-              <v-select
-                v-model="value"
-                :items="getAllCategorys"
-                item-text="title"
-                item-value="_id"
-                outlined
-                dense
-                return-object
-              ></v-select>
-            </v-col>
+        <v-spacer></v-spacer>
 
-            <v-col
-              cols="6"
-              md="6"
-            >
-              <v-text-field
-                v-model="searchdata"
-                :append-icon="search ? 'mdi-arrow-right-bold-box' : 'mdi-arrow-right-bold-box-outline'"
-                clearable
-                label="What are you looking for ?"
-                required
-                outlined
-                dense
-                @click:append="searchPost"
-              ></v-text-field>
-            </v-col>
+        <div class="mx-auto mt-6">
+          <v-form>
+            <v-row>
+              <v-col cols="6" md="6">
+                <v-select
+                  v-model="value"
+                  :items="getAllCategorys"
+                  item-text="title"
+                  item-value="_id"
+                  outlined
+                  dense
+                  return-object
+                ></v-select>
+              </v-col>
 
-          </v-row>
-      </v-form>
-      <v-dialog
-        transition="dialog-bottom-transition"
-        max-width="600"
-        v-model="messagedialog"
-      >
-        <template v-slot:default="dialog">
-          <v-card>
-            <v-toolbar
-              color="primary"
-              dark
-            >Opening Notification</v-toolbar>
-            <v-card-text>
-              <div class="text-h5 pa-12">Please define what are you looking for.</div>
-            </v-card-text>
-            <v-card-actions class="justify-end">
-              <v-btn
-                text
-                @click="dialog.value = false"
-              >Close</v-btn>
-            </v-card-actions>
-          </v-card>
-        </template>
-      </v-dialog>
+              <v-col cols="6" md="6">
+                <v-text-field
+                  v-model="searchdata"
+                  :append-icon="
+                    search
+                      ? 'mdi-arrow-right-bold-box'
+                      : 'mdi-arrow-right-bold-box-outline'
+                  "
+                  clearable
+                  label="What are you looking for ?"
+                  required
+                  outlined
+                  dense
+                  @click:append="searchPost"
+                ></v-text-field>
+              </v-col>
+            </v-row>
+          </v-form>
+          <v-dialog
+            transition="dialog-bottom-transition"
+            max-width="600"
+            v-model="messagedialog"
+          >
+            <template v-slot:default="dialog">
+              <v-card>
+                <v-toolbar color="primary" dark>Opening Notification</v-toolbar>
+                <v-card-text>
+                  <div class="text-h5 pa-12">
+                    Please define what are you looking for.
+                  </div>
+                </v-card-text>
+                <v-card-actions class="justify-end">
+                  <v-btn text @click="dialog.value = false">Close</v-btn>
+                </v-card-actions>
+              </v-card>
+            </template>
+          </v-dialog>
+        </div>
 
-
-      </div>
-
-      <v-spacer></v-spacer>
-      <v-btn href="/post" elevation="2" text>
-        <span class="mr-2">POST FREE ADVERTISEMENT</span>
-        <v-icon>mdi-open-in-new</v-icon>
-      </v-btn>
-      <v-spacer></v-spacer>
-      <div v-if="getUser === '{}'" class="d-flex align-center">
-      <v-btn href="/loginclient" elevation="2" text>
-        <span class="mr-2">LOG IN</span>
-        <v-icon>mdi-account-check</v-icon>
-      </v-btn>
-      <v-btn href="/registerclient" elevation="2" text>
-        <span class="mr-2">REGISTER</span>
-        <v-icon>mdi-account-key</v-icon>
-      </v-btn>
-      </div>
-      <div v-else>
-        <div class="d-flex align-center text-center">
-        <v-menu offset-y>
-          <template v-slot:activator="{ on, attrs }">
-            <span class="mr-2">{{getUser.email}}</span>
-            <v-icon
-              size="32"
-              color="blue-grey darken-2"
-              v-bind="attrs"
-              v-on="on"
-              >mdi-account-reactivate</v-icon
-            >
-          </template>
-          <v-list width="300" dense dark>
-            <v-list-item link>
-              <v-dialog v-model="dialog" width="700">
-                <template v-slot:activator="{ on, attrs }">
-                  <v-list-item-title
-                    v-bind="attrs"
-                    v-on="on"
-                    @click="manageProfile()"
-                    >Manage Profile</v-list-item-title
-                  >
-                </template>
-
-                <v-card>
-                  <v-card-title class="headline grey lighten-2">
-                    Manage Profile
-                  </v-card-title>
-
-                  <ValidationObserver v-slot="{ invalid }">
-                    <v-card-text>
-                      <v-container>
-                        <v-form
-                          @submit.prevent="submit"
-                          ref="form"
-                          lazy-validation
-                        >
-                          <v-row>
-                            <v-col cols="12" sm="6" md="6">
-                              <ValidationProvider
-                                name="Name"
-                                rules="required"
-                                v-slot="{ errors }"
-                              >
-                                <v-text-field
-                                  v-model="user.name"
-                                  label="Name"
-                                  :error-messages="errors"
-                                  required
-                                >
-                                </v-text-field>
-                              </ValidationProvider>
-                            </v-col>
-                            <v-col cols="12" sm="6" md="6">
-                              <ValidationProvider
-                                name="Email"
-                                rules="required|email"
-                                v-slot="{ errors }"
-                              >
-                                <v-text-field
-                                  v-model="user.email"
-                                  label="Email"
-                                  :error-messages="errors"
-                                  required
-                                >
-                                </v-text-field>
-                              </ValidationProvider>
-                            </v-col>
-                            <v-col cols="12" sm="6" md="6">
-                              <ValidationProvider
-                                name="Password"
-                                rules="required|min:6"
-                                v-slot="{ errors }"
-                              >
-                                <v-text-field
-                                  :type="'password'"
-                                  label="Password"
-                                  :error-messages="errors"
-                                  v-model="user.password"
-                                  required
-                                >
-                                </v-text-field>
-                              </ValidationProvider>
-                            </v-col>
-                            <v-col cols="12" sm="6" md="6">
-                              <ValidationProvider
-                                name="Confirm"
-                                rules="required|password:@Password"
-                                v-slot="{ errors }"
-                              >
-                                <v-text-field
-                                  :type="'password'"
-                                  label="Confirm Password"
-                                  :error-messages="errors"
-                                  v-model="confirmPassword"
-                                  required
-                                >
-                                </v-text-field>
-                              </ValidationProvider>
-                            </v-col>
-                          </v-row>
-                        </v-form>
-                      </v-container>
-                    </v-card-text>
-
-                    <v-card-actions>
-                      <v-spacer></v-spacer>
-                      <v-btn
-                        color="blue darken-1"
-                        :disabled="invalid"
-                        text
-                        @click="save"
+        <v-spacer></v-spacer>
+        <v-btn href="/post" elevation="2" text>
+          <span class="mr-2">POST FREE ADVERTISEMENT</span>
+          <v-icon>mdi-open-in-new</v-icon>
+        </v-btn>
+        <v-spacer></v-spacer>
+        <div v-if="getUser === '{}'" class="d-flex align-center">
+          <v-btn href="/loginclient" elevation="2" text>
+            <span class="mr-2">LOG IN</span>
+            <v-icon>mdi-account-check</v-icon>
+          </v-btn>
+          <v-btn href="/registerclient" elevation="2" text>
+            <span class="mr-2">REGISTER</span>
+            <v-icon>mdi-account-key</v-icon>
+          </v-btn>
+        </div>
+        <div v-else>
+          <div class="d-flex align-center text-center">
+            <v-menu offset-y>
+              <template v-slot:activator="{ on, attrs }">
+                <span class="mr-2">{{ getUser.email }}</span>
+                <v-icon
+                  size="32"
+                  color="blue-grey darken-2"
+                  v-bind="attrs"
+                  v-on="on"
+                  >mdi-account-reactivate</v-icon
+                >
+              </template>
+              <v-list width="300" dense dark>
+                <v-list-item link>
+                  <v-dialog v-model="dialog" width="700">
+                    <template v-slot:activator="{ on, attrs }">
+                      <v-list-item-title
+                        v-bind="attrs"
+                        v-on="on"
+                        @click="manageProfile()"
+                        >Manage Profile</v-list-item-title
                       >
-                        Save
-                      </v-btn>
-                    </v-card-actions>
-                  </ValidationObserver>
-                </v-card>
-              </v-dialog>
+                    </template>
 
-              <v-list-item-icon
-                ><v-icon>mdi-account-settings</v-icon></v-list-item-icon
-              >
-            </v-list-item>
-            <v-list-item link>
-              <v-list-item-title @click="logout()">Log out</v-list-item-title>
-              <v-list-item-icon
-                ><v-icon>mdi-account-arrow-right</v-icon></v-list-item-icon
-              >
-            </v-list-item>
-          </v-list>
-        </v-menu>
-      </div>
+                    <v-card>
+                      <v-card-title class="headline grey lighten-2">
+                        Manage Profile
+                      </v-card-title>
 
-      </div>
-    </v-app-bar>
+                      <ValidationObserver v-slot="{ invalid }">
+                        <v-card-text>
+                          <v-container>
+                            <v-form
+                              @submit.prevent="submit"
+                              ref="form"
+                              lazy-validation
+                            >
+                              <v-row>
+                                <v-col cols="12" sm="6" md="6">
+                                  <ValidationProvider
+                                    name="Name"
+                                    rules="required"
+                                    v-slot="{ errors }"
+                                  >
+                                    <v-text-field
+                                      v-model="user.name"
+                                      label="Name"
+                                      :error-messages="errors"
+                                      required
+                                    >
+                                    </v-text-field>
+                                  </ValidationProvider>
+                                </v-col>
+                                <v-col cols="12" sm="6" md="6">
+                                  <ValidationProvider
+                                    name="Email"
+                                    rules="required|email"
+                                    v-slot="{ errors }"
+                                  >
+                                    <v-text-field
+                                      v-model="user.email"
+                                      label="Email"
+                                      :error-messages="errors"
+                                      required
+                                    >
+                                    </v-text-field>
+                                  </ValidationProvider>
+                                </v-col>
+                                <v-col cols="12" sm="6" md="6">
+                                  <ValidationProvider
+                                    name="Password"
+                                    rules="required|min:6"
+                                    v-slot="{ errors }"
+                                  >
+                                    <v-text-field
+                                      :type="'password'"
+                                      label="Password"
+                                      :error-messages="errors"
+                                      v-model="user.password"
+                                      required
+                                    >
+                                    </v-text-field>
+                                  </ValidationProvider>
+                                </v-col>
+                                <v-col cols="12" sm="6" md="6">
+                                  <ValidationProvider
+                                    name="Confirm"
+                                    rules="required|password:@Password"
+                                    v-slot="{ errors }"
+                                  >
+                                    <v-text-field
+                                      :type="'password'"
+                                      label="Confirm Password"
+                                      :error-messages="errors"
+                                      v-model="confirmPassword"
+                                      required
+                                    >
+                                    </v-text-field>
+                                  </ValidationProvider>
+                                </v-col>
+                              </v-row>
+                            </v-form>
+                          </v-container>
+                        </v-card-text>
+
+                        <v-card-actions>
+                          <v-spacer></v-spacer>
+                          <v-btn
+                            color="blue darken-1"
+                            :disabled="invalid"
+                            text
+                            @click="save"
+                          >
+                            Save
+                          </v-btn>
+                        </v-card-actions>
+                      </ValidationObserver>
+                    </v-card>
+                  </v-dialog>
+
+                  <v-list-item-icon
+                    ><v-icon>mdi-account-settings</v-icon></v-list-item-icon
+                  >
+                </v-list-item>
+                <v-list-item link>
+                  <v-list-item-title @click="logout()"
+                    >Log out</v-list-item-title
+                  >
+                  <v-list-item-icon
+                    ><v-icon>mdi-account-arrow-right</v-icon></v-list-item-icon
+                  >
+                </v-list-item>
+              </v-list>
+            </v-menu>
+          </div>
+        </div>
+      </v-app-bar>
 
       <v-row no-gutters>
         <v-col cols="10" md="10" sm="8">
@@ -247,11 +263,15 @@
         <v-col cols="2" md="2" sm="1">
           <v-card height="100%">
             <v-navigation-drawer class="mx-auto" permanent right>
-
               <v-divider></v-divider>
 
               <v-list dense>
-                <v-list-item link v-for="item in items" :key="item.name" :to="item.path">
+                <v-list-item
+                  link
+                  v-for="item in items"
+                  :key="item.name"
+                  :to="item.path"
+                >
                   <v-list-item-icon>
                     <v-icon>{{ item.meta.icon }}</v-icon>
                   </v-list-item-icon>
@@ -265,12 +285,12 @@
           </v-card>
         </v-col>
       </v-row>
-  </v-main>
-</v-app>
+    </v-main>
+  </v-app>
 </template>
 
 <script>
-import { mapGetters,mapActions } from "vuex";
+import { mapGetters, mapActions } from "vuex";
 import { extend } from "vee-validate";
 import { required } from "vee-validate/dist/rules";
 
@@ -281,78 +301,88 @@ extend("required", {
 
 export default {
   name: "Home",
-  components: {
-  },
+  components: {},
   data: () => ({
-      items: [],
-      value: { _id: '-1', title: 'All' },
-      user: {},
-      selects: [
-          { _id: '-1', title: 'All' },
-        ],
-      dialog: false,
-      confirmPassword: "",
-      search: true,
-      searchdata: null,
-      messagedialog: false
+    items: [],
+    value: { _id: "-1", title: "All" },
+    user: {},
+    selects: [{ _id: "-1", title: "All" }],
+    dialog: false,
+    confirmPassword: "",
+    search: true,
+    searchdata: null,
+    messagedialog: false,
+
+    direction: "right",
+    fab: false,
+    fling: false,
+    hover: false,
+    tabs: null,
+    top: false,
+    right: true,
+    bottom: true,
+    left: false,
+    transition: "slide-y-reverse-transition",
   }),
-   computed: {
-    ...mapGetters(["getUser", "getMessage","getAllCategorys","allPosts","getWaiting"]),
+  computed: {
+    ...mapGetters([
+      "getUser",
+      "getMessage",
+      "getAllCategorys",
+      "allPosts",
+      "getWaiting",
+    ]),
   },
-  methods:{
-    ...mapActions(["fetchUserClient","fetchCategories","fetchPostByCat"]),
-     manageProfile() {
+  methods: {
+    ...mapActions(["fetchUserClient", "fetchCategories", "fetchPostByCat"]),
+    manageProfile() {
       this.$store.commit("updateMessage", "");
-      this.user = Object.assign({},this.getUser);
+      this.user = Object.assign({}, this.getUser);
     },
     logout() {
       localStorage.removeItem("clienttoken");
-      this.$store.commit("setUser","{}");
-      console.log(this.getUser)
+      this.$store.commit("setUser", "{}");
+      console.log(this.getUser);
     },
     save() {
       this.dialog = false;
       this.updateUser(this.user);
       this.$store.commit("updateMessage", "");
     },
-    searchPost(){
-      if(this.searchdata != null){
-          this.search = !this.search
-          let options = {
-            itemsPerPage: 9,
-            page: 1,       
-          };
-          console.log(this.value);
-          let pageObj = {
-              searchObj: this.searchdata,
-              categoryId: this.value._id,
-              pageOpt: options,
-            };
+    searchPost() {
+      if (this.searchdata != null) {
+        this.search = !this.search;
+        let options = {
+          itemsPerPage: 9,
+          page: 1,
+        };
+        console.log(this.value);
+        let pageObj = {
+          searchObj: this.searchdata,
+          categoryId: this.value._id,
+          pageOpt: options,
+        };
 
-          //store vuex
-          this.$store.commit("setSearchObj",pageObj);
-          this.fetchPostByCat(pageObj);
-        } else {
-          this.messagedialog = true;
-        }
+        //store vuex
+        this.$store.commit("setSearchObj", pageObj);
+        this.fetchPostByCat(pageObj);
+      } else {
+        this.messagedialog = true;
       }
-      
+    },
   },
-  watch: {
-    
-  },
+  watch: {},
   created() {
-    if(localStorage.getItem('clienttoken') != null){
+    if (localStorage.getItem("clienttoken") != null) {
       this.fetchUserClient();
-    }
-    else{
-      this.$store.commit("setUser","{}");
+    } else {
+      this.$store.commit("setUser", "{}");
     }
     this.fetchCategories();
   },
   mounted() {
     this.$router.options.routes
-      .filter((x) => x.name == 'Home')
+      .filter((x) => x.name == "Home")
       .forEach((route) => {
         route.children
           .filter((x) => x.meta.back == true)
@@ -364,10 +394,10 @@ export default {
 };
 </script>
 <style>
-  .pdiv {
-    height: 100vh;
-    line-height: 100vh;
-    text-align: center;
-    border: 1px dashed #f69c55;
-  }
+.pdiv {
+  height: 100vh;
+  line-height: 100vh;
+  text-align: center;
+  border: 1px dashed #f69c55;
+}
 </style>
