@@ -125,6 +125,7 @@ router.post('/post',verify,async (req,res)=> {
         location: req.body.location,
         image: imageStore
     });
+
     try{
         const result = await postsave.save();
         res.send({obj:result,message:savemessage});

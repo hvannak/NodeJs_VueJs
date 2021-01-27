@@ -53,7 +53,7 @@
                     {{ item.title }}
                   </h3>
                   <div class="font-weight-light title mb-2">
-                    {{ item.description }}
+                    {{ item.location }}
                   </div>
                 </v-card-text>
               </v-card>
