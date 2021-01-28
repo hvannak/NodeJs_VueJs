@@ -97,9 +97,6 @@ const mutations = {
     setPostPages:(state,post) => (state.posts = post),
     setPostObj: (state, role) => (state.role = role),
     setWaiting: (state,wait) => (state.waiting = wait),
-    setRoleSearch:(state,role) => (role.forEach(element => {
-      state.roles.push(element)
-    })),
     newPost: (state, post) => state.posts.unshift(post),
     removePost: (state, _id) =>
         (state.posts = state.posts.filter(post => post._id !== _id)),

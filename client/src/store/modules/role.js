@@ -72,12 +72,8 @@ const mutations = {
     setTotalItems:(state,total) => (state.totalItems = total),
     setRolePages:(state,role) => (state.roles = role),
     setRoles: (state, role) => (state.roles = role),
-    // setRoleSearch:(state,role) => (role.forEach(element => {
-    //   state.roles.push(element)
-    // })),
     setRoleSearch:(state, role) => {
       state.roles = role;
-      console.log(state.roles);
     },
     newRoles: (state, role) => state.roles.unshift(role),
     removeRole: (state, _id) =>
