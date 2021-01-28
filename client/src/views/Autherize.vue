@@ -218,7 +218,8 @@ export default {
       this.valueOfroles = null;
     },
     changeRole() {
-      this.fetchAutherizeearch(this.valueOfroles._id);
+      if(this.valueOfroles != null)
+        this.fetchAutherizeearch(this.valueOfroles._id);
     },
     saveAuth() {
       if (this.valueOfroles != null && this.valueOfItem.length > 0) {

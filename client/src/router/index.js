@@ -8,6 +8,7 @@ import Account from '../views/Account.vue'
 import Role from '../views/Role.vue'
 import Autherize from '../views/Autherize.vue'
 import Category from '../views/Category.vue'
+import Language from '../views/Language.vue'
 import HelloWorld from "@/components/HelloWorld.vue";
 import SearchData from "@/components/SearchData.vue";
 import LoginClient from "@/components/LoginClient.vue";
@@ -95,6 +96,12 @@ Vue.use(VueRouter)
           name: 'Category',
           meta: { back: true,icon: 'mdi-alpha-c-circle-outline',group:'Configurations',gicon:'mdi-folder' },
           component: Category
+        },
+        {
+          path: 'language',
+          name: 'Language',
+          meta: { back: true,icon: 'mdi-alpha-c-circle-outline',group:'Configurations',gicon:'mdi-folder' },
+          component: Language
         }
       ],
     },
