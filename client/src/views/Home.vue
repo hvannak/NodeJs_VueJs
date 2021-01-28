@@ -94,7 +94,7 @@
         </div>
 
         <v-spacer></v-spacer>
-        <v-btn href="/post" elevation="2" text>
+        <v-btn elevation="2" text @click="navtoPost()">
           <span class="mr-2">POST FREE ADVERTISEMENT</span>
           <v-icon>mdi-open-in-new</v-icon>
         </v-btn>
@@ -286,6 +286,28 @@
         </v-col>
       </v-row>
     </v-main>
+    <v-dialog
+      transition="dialog-bottom-transition"
+      max-width="700"
+      persistent
+      v-model="info_dialog"
+    >
+    <v-card>
+      <v-toolbar
+        color="primary"
+        dark
+      >Information Status</v-toolbar>
+      <v-card-text>
+        <div class="text-h4 pa-12">You cannot post without account.</div>
+      </v-card-text>
+      <v-card-actions class="justify-end">
+        <v-btn
+          text
+          @click="closedialog()"
+        >Close</v-btn>
+      </v-card-actions>
+    </v-card>
+    </v-dialog>
   </v-app>
 </template>
 
@@ -308,6 +330,7 @@ export default {
     user: {},
     selects: [{ _id: "-1", title: "All" }],
     dialog: false,
+    info_dialog:false,
     confirmPassword: "",
     search: true,
     searchdata: null,
@@ -343,6 +366,17 @@ export default {
       localStorage.removeItem("clienttoken");
       this.$store.commit("setUser", "{}");
       console.log(this.getUser);
+    },
+    navtoPost(){
+      if(localStorage.getItem('clienttoken') != null){
+        this.$router.push('/post');
+      }
+      else {
+        this.info_dialog = true;
+      }
+    },
+    closedialog(){
+      this.info_dialog = false;
     },
     save() {
       this.dialog = false;
