@@ -80,13 +80,13 @@
                       </v-col>
                       <v-col cols="12" sm="6" md="6">
                         <ValidationProvider
-                          name="Icon"
+                          name="Shortcode"
                           rules="required"
                           v-slot="{ errors }"
                         >
                           <v-text-field
                             v-model="language.shortcode"
-                            label="Icon"
+                            label="Shortcode"
                             :error-messages="errors"
                             required
                           >
@@ -166,7 +166,7 @@ export default {
     searchBy: "",
     headers: [
       { text: "Title", value: "title", class: "text-success indigo darken-5" },
-      { text: "Icon", value: "icon", class: "text-success indigo darken-5" },
+      { text: "Shortcode", value: "shortcode", class: "text-success indigo darken-5" },
       { text: "Date", value: "date", class: "text-success indigo darken-5" },
       {
         text: "Actions",

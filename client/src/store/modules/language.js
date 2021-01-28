@@ -38,7 +38,6 @@ async fetchLanguages({ commit }) {
     try {
       const response = await axios.post(
         `${apihelper.api_url}/language/post`,langObj,apihelper.setToken());
-        console.log(response.data.obj);
       commit('newLanguages', response.data.obj);
       commit('updateMessage',response.data.message);
     } catch (err) {

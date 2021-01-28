@@ -68,7 +68,7 @@ router.post('/post',verify,async (req,res)=> {
         shortcode: req.body.shortcode
     });
     try{
-        const savestate = await docObj.save();
+        await docObj.save();
         res.json({obj:docObj,message:savemessage});
     } catch(err) {
         logger.error('language post:' + err);
