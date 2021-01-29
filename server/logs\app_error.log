@@ -62,3 +62,8 @@
 {"message":"verify token:MongooseServerSelectionError: connection <monitor> to 34.225.212.207:27017 timed out","level":"error","service":"user-interact"}
 {"message":"verify token:MongooseServerSelectionError: connection <monitor> to 34.225.212.207:27017 timed out","level":"error","service":"user-interact"}
 {"message":"category page:MongooseServerSelectionError: connection <monitor> to 34.225.212.207:27017 timed out","level":"error","service":"user-interact"}
+{"message":"language page:TypeError: Cannot read property 'length' of undefined","level":"error","service":"user-interact"}
+{"message":"language page:TypeError: Cannot read property 'length' of undefined","level":"error","service":"user-interact"}
+{"message":"language page:TypeError: Cannot read property 'length' of undefined","level":"error","service":"user-interact"}
+{"message":"role page:TypeError: Cannot read property 'length' of undefined","level":"error","service":"user-interact"}
+{"message":"role page:TypeError: Cannot read property 'length' of undefined","level":"error","service":"user-interact"}

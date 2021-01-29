@@ -13,6 +13,7 @@ const Post = require('./models/Post');
 const Autherize = require('./models/Autherize');
 const Category = require('./models/Category');
 const Language = require('./models/Language');
+const Localization = require('./models/Localization');
 
 require('dotenv/config');
 //Middleware
@@ -29,6 +30,7 @@ const roleRoute = require('./routes/role');
 const autherizeRoute = require('./routes/autherize');
 const categoryRoute = require('./routes/category');
 const languageRoute = require('./routes/language');
+const localizationRoute = require('./routes/localization');
 
 app.use('/api/posts',postsRoute);
 app.use('/api/user',authRoute);
@@ -36,6 +38,7 @@ app.use('/api/role',roleRoute);
 app.use('/api/autherize',autherizeRoute);
 app.use('/api/category',categoryRoute);
 app.use('/api/language',languageRoute);
+app.use('/api/localization',localizationRoute);
 
 app.get('/api/router',verify,(req,res) => {
     try {
@@ -170,8 +173,26 @@ app.get('/api/router',verify,(req,res) => {
                 }
             ]
         };
+        let localizationendpoints = {
+            id: 8,
+            name:'localization',
+            children:[
+                {
+                    id: 1,
+                    parent:'localization',
+                    name:'props',
+                    props: Object.keys(Localization.schema.paths)
+                },
+                {
+                    id: 2,
+                    parent:'localization',
+                    name:'routers',
+                    routers: getendpoints(localizationRoute)
+                }
+            ]
+        };
         res.send([routerendpoints,postendpoints,authendpoints,roleendpoints,autherizeendpoints,categoryendpoints,
-            languageendpoints]);
+            languageendpoints,localizationendpoints]);
     } catch (err) {
         console.log(err);
     }

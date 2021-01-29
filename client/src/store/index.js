@@ -6,6 +6,7 @@ import Autherize from './modules/autherize'
 import Category from './modules/category'
 import ClientPost from './modules/clientpost'
 import Language from './modules/language'
+import Localization from './modules/localization'
 
 Vue.use(Vuex)
 
@@ -16,6 +17,7 @@ export default new Vuex.Store({
     Autherize,
     Category,
     ClientPost,
-    Language
+    Language,
+    Localization
   }
 })

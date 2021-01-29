@@ -1,11 +1,18 @@
 const mongoose = require('mongoose');
 
 const localizationSchema = mongoose.Schema({
-    title:{
+    parent:{
         type:String,
         require:true
     },
-    shortcode:{
+    props:{
+        type:String,
+        require:true
+    },
+    lang:{ 
+        type: mongoose.Schema.Types.ObjectId, ref: 'Language' 
+    },
+    text:{
         type:String,
         require:true
     },

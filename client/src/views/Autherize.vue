@@ -43,30 +43,10 @@
         </v-form>
 
         <v-card class="mx-auto">
-          <v-sheet class="pa-4 primary lighten-2">
-            <v-text-field
-              v-model="search"
-              label="Search Directory"
-              dark
-              flat
-              solo-inverted
-              hide-details
-              clearable
-              clear-icon="mdi-close-circle-outline"
-            ></v-text-field>
-            <v-checkbox
-              v-model="caseSensitive"
-              dark
-              hide-details
-              label="Case sensitive search"
-            ></v-checkbox>
-          </v-sheet>
           <v-card-text>
             <v-row class="pa-4" justify="space-between">
               <v-treeview
                 :items="allRouter_Screen"
-                :search="search"
-                :filter="filter"
                 :open.sync="open"
                 open-on-click
                 selection-type="independent"
@@ -166,7 +146,6 @@ export default {
     valueOfroles: null,
     searchroles: null,
     open: [1],
-    search: null,
     caseSensitive: false,
     selected: false,
     isprops: false,
@@ -257,11 +236,6 @@ export default {
       "allAutherizes",
       "getAutherizeMessage",
     ]),
-    filter() {
-      return this.caseSensitive
-        ? (item, search, textKey) => item[textKey].indexOf(search) > -1
-        : undefined;
-    },
   },
   watch: {
     searchroles(val) {

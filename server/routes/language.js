@@ -104,7 +104,7 @@ router.put('/put/:langId',verify, async (req,res) => {
             title: req.body.title,
             shortcode: req.body.shortcode     
         });
-        await Category.update(filter,update);
+        await Language.update(filter,update);
         res.json({obj:update,message:updatemessage});
     }catch(err){
         logger.error('category put:' + err);

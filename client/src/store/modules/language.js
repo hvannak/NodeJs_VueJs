@@ -75,9 +75,9 @@ const mutations = {
     removeLanguage: (state, _id) =>
         (state.languages = state.languages.filter(lang => lang._id !== _id)),
     updateLanguage: (state, langObj) => {
-        const index = state.categorys.findIndex(lang => lang._id === langObj._id);
+        const index = state.languages.findIndex(lang => lang._id === langObj._id);
         if (index !== -1) {
-        state.categorys.splice(index, 1, langObj);
+          state.languages.splice(index, 1, langObj);
         }
     }
 };
