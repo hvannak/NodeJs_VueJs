@@ -30,8 +30,7 @@ const actions = {
       const response = await axios.get(`${apihelper.api_url}/role/search/${_search}`,apihelper.setToken());
       commit('setRoleSearch',response.data);
     } catch (err) {
-      console.log(err);
-      // commit('updateMessage',err.response.data);
+      commit('updateMessage',err.response.data);
     }
   },
 

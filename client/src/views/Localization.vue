@@ -11,7 +11,7 @@
                 selection-type="independent"
               >
                 <template v-slot:prepend="{ item }">
-                  <v-list-item @click="showPermission(item)">
+                  <v-list-item @click="showLocalization(item)">
                     <v-icon v-if="item" v-text="'mdi-folder-network'"></v-icon>
                   </v-list-item>
                 </template>
@@ -29,14 +29,16 @@
                     Select Items
                   </div>
                   <div v-else>
+                    <ValidationObserver v-slot="{ invalid }">
                     <v-card height="100%">
                       <v-btn
                         large
                         color="red lighten-2"
                         dark
-                        @click="saveAuth()"
+                        :disabled="invalid"
+                        @click="saveLocal()"
                       >
-                        SAVE {{ permissionHeader }}
+                        SAVE
                       </v-btn>
                       <v-alert
                         v-if="getAutherizeMessage != ''"
@@ -48,19 +50,67 @@
                       </v-alert>
                       <v-card-text>
                         <v-divider></v-divider>
-                        <v-autocomplete
-                          v-model="valueOfItem"
-                          :items="screens"
-                          outlined
-                          dense
-                          chips
-                          small-chips
-                          label="Props"
-                          multiple
-                          return-object
-                        ></v-autocomplete>                       
+                        <v-form @submit.prevent="submit" ref="form" lazy-validation>
+                          <v-col class="mx-auto my-auto" cols="12">
+                            <ValidationProvider
+                              name="Props"
+                              rules="required"
+                              v-slot="{ errors }"
+                            >
+                              <v-autocomplete
+                                v-model="localizeObj.props"
+                                :items="screens"
+                                :error-messages="errors"
+                                outlined
+                                chips
+                                small-chips
+                                label="Props"
+                                return-object
+                                @change="onChangeLocal()"
+                              ></v-autocomplete>
+                            </ValidationProvider>
+                          </v-col>
+                          <v-col class="mx-auto my-auto" cols="12">
+                            <ValidationProvider
+                              name="Lang"
+                              rules="required"
+                              v-slot="{ errors }"
+                            >
+                              <v-autocomplete
+                                v-model="localizeObj.lang"
+                                :items="allLanguages"
+                                :error-messages="errors"
+                                outlined
+                                chips
+                                small-chips
+                                label="Language"
+                                item-text="title"
+                                item-value="_id"
+                                @change="onChangeLocal()"
+                              ></v-autocomplete>
+                            </ValidationProvider>
+                          </v-col>
+                          <v-col class="mx-auto my-auto" cols="12">
+                            <ValidationProvider
+                              name="Text"
+                              rules="required"
+                              v-slot="{ errors }"
+                            >
+                              <v-text-field
+                                v-model="localizeObj.text"
+                                chips
+                                outlined
+                                label="Text"
+                                :error-messages="errors"
+                                required
+                              >
+                              </v-text-field>
+                            </ValidationProvider>
+                          </v-col>
+                        </v-form>                       
                       </v-card-text>
                     </v-card>
+                    </ValidationObserver>
                   </div>
                 </v-scroll-y-transition>
               </v-col>
@@ -85,107 +135,47 @@ export default {
   data: () => ({
     isLoading: false,
     valueOfroles: null,
-    searchroles: null,
     open: [1],
-    caseSensitive: false,
     selected: false,
-    isprops: false,
     screens: [],
-    routers: [],
-    permissionHeader: "",
-    valuesOfAuth: [],
-    parent: "",
-    child: "",
     valueOfItem: [],
+    localizeObj: {}
   }),
   created() {
     this.fetchAllScreen();
+    this.fetchLanguages();
   },
   methods: {
     ...mapActions([
-      "fetchRoleSearch",
+      "fetchLanguages",
       "fetchAllScreen",
-      "fetchAutherizeearch",
-      "addAutherize",
+      "addLocalization",
+      "fetchLocalization",
       "updateAutherize",
     ]),
-    showPermission(item) {
+    showLocalization(item) {
       this.selected = true;
-      this.parent = item.parent;
-      this.child = item.name;
-      this.permissionHeader = item.parent + "-" + item.name;
-      this.valueOfItem = [];
-      this.$store.commit("updateMessage", "");
-      if (this.allAutherizes.length > 0) {
-        let index = this.allAutherizes.findIndex(
-          (x) => x.parent == item.parent && x.name == item.name
-        );
-        if (index != -1) this.valueOfItem = this.allAutherizes[index].values;
-      }
-
-      if (item.name == "props") {
-        this.isprops = true;
-        this.screens = item.props;
-      } else if (item.name == "routers") {
-        this.isprops = false;
-        this.routers = item.routers;
-      } else {
-        this.selected = false;
-      }
+      this.screens = item.props;
+      this.localizeObj.parent = item.parent;
     },
-    remove() {
-      this.valueOfroles = null;
+    onChangeLocal(){
+      console.log('you changed');
+      this.fetchLocalization(this.localizeObj);
     },
-    changeRole() {
-      if(this.valueOfroles != null)
-        this.fetchAutherizeearch(this.valueOfroles._id);
-    },
-    saveAuth() {
-      if (this.valueOfroles != null && this.valueOfItem.length > 0) {
-        let index = this.allAutherizes.findIndex(x=> x.parent == this.parent && x.name == this.child);
-        if (index == -1) {
-          let authdata = {
-            role: this.valueOfroles._id,
-            parent: this.parent,
-            name: this.child,
-            values: this.valueOfItem,
-          };
-          console.log('insert');
-          this.addAutherize(authdata);
-        } else {
-          let authdata = {
-            _id: this.allAutherizes[index]._id,
-            role: this.valueOfroles._id,
-            parent: this.parent,
-            name: this.child,
-            values: this.valueOfItem,
-          };
-          console.log('update');
-          this.updateAutherize(authdata);
-        }
-      }
-      else{
-        this.$store.commit("updateMessage", "Please correct your input data.");
-      }
+    saveLocal() {
+      console.log(this.localizeObj);
+      this.addLocalization(this.localizeObj);
     },
   },
   computed: {
     ...mapGetters([
-      "allRoles",
+      "allLanguages",
       "allScreen",
-      "allAutherizes",
       "getAutherizeMessage",
     ]),
   },
   watch: {
-    searchroles(val) {
-      if (val) {
-        if (this.isLoading) return;
-        this.isLoading = true;
-        this.fetchRoleSearch(val);
-        this.isLoading = false;
-      }
-    },
+
   },
 };
 </script>

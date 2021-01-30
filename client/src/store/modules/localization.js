@@ -20,17 +20,25 @@ const actions = {
  async fetchAllScreen({commit}){
         try {
             const response = await axios.get(`${apihelper.api_url}/router`,apihelper.setToken());
-            let child = response.data.map(x=>x.children);
-            let propData = [];
-            child.forEach(element => {
-                console.log(element);
-                propData.push(element.filter(x=>x.name == 'props'));
-            });
-            console.log(propData);
-            commit('setScreens',response.data);
+            let screnData = response.data.map(x=>({
+               id: x.id,
+               children: x.children.filter(y=>y.name == 'props'),
+               name: x.name
+            }));
+            commit('setScreens',screnData);
         } catch (err) {
             commit('updateMessage',err.response.data);
         }
+    },
+
+  async fetchLocalization({ commit},_searchObj){
+      try {
+        const response = await axios.post(`${apihelper.api_url}/localization/getByLocal`,_searchObj,apihelper.setToken());
+        console.log(response.data);
+        commit('setRoleSearch',response.data);
+      } catch (err) {
+        commit('updateMessage',err.response.data);
+      }
     },
 
   async addLocalization({ commit }, localObj) {

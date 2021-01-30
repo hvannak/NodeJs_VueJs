@@ -21,9 +21,17 @@ router.post('/post',verify,async (req,res)=> {
     }
 });
 
-router.get('/getByParent/:parent',verify, async (req,res) => {
+router.post('/getByLocal',verify, async (req,res) => {
     try{
-        const result = await Localization.findById(req.params.parent);
+        var filter = {
+            $and:[{
+                parent: req.body.parent
+            },
+            {
+                props: req.body.props
+            }]
+        };
+        const result = await Localization.find(filter);
         res.json(result);
     }catch(err){
         logger.error('localization getByParent:' + err);

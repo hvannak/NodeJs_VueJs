@@ -67,3 +67,11 @@
 {"message":"language page:TypeError: Cannot read property 'length' of undefined","level":"error","service":"user-interact"}
 {"message":"role page:TypeError: Cannot read property 'length' of undefined","level":"error","service":"user-interact"}
 {"message":"role page:TypeError: Cannot read property 'length' of undefined","level":"error","service":"user-interact"}
+{"message":"language page:TypeError: Cannot read property 'length' of undefined","level":"error","service":"user-interact"}
+{"message":"language page:TypeError: Cannot read property 'itemsPerPage' of undefined","level":"error","service":"user-interact"}
+{"message":"language page:TypeError: Cannot read property 'itemsPerPage' of undefined","level":"error","service":"user-interact"}
+{"message":"language page:TypeError: Cannot read property 'itemsPerPage' of undefined","level":"error","service":"user-interact"}
+{"message":"localization getByParent:ReferenceError: searchObj is not defined","level":"error","service":"user-interact"}
+{"message":"localization getByParent:ReferenceError: searchObj is not defined","level":"error","service":"user-interact"}
+{"message":"role page:TypeError: Cannot read property 'length' of undefined","level":"error","service":"user-interact"}
+{"message":"role page:TypeError: Cannot read property 'length' of undefined","level":"error","service":"user-interact"}
