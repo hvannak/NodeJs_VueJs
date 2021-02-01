@@ -4,6 +4,7 @@ import * as apihelper from './api-helper';
 const state = {
   screens: [],
   localizations: [],
+  constants: [],
   totalItems:0,
   message:''
 };
@@ -11,6 +12,7 @@ const state = {
 const getters = {
   allScreen: state => state.screens,
   allLocalizations: state => state.localizations,
+  allContants: state => state.constants,
   getLocalizationMessage: state => state.message,
   getLocalizationtotalItems: state => state.totalItems
 };
@@ -34,8 +36,16 @@ const actions = {
   async fetchLocalization({ commit},_searchObj){
       try {
         const response = await axios.post(`${apihelper.api_url}/localization/getByLocal`,_searchObj,apihelper.setToken());
-        console.log(response.data);
-        commit('setRoleSearch',response.data);
+        commit('setLocalization',response.data);
+      } catch (err) {
+        commit('updateMessage',err.response.data);
+      }
+    },
+
+  async fetchConstant({ commit}){
+      try {
+        const response = await axios.get(`${apihelper.api_url}/localization/getByConstant`,apihelper.setToken());
+        commit('setConstant',response.data);
       } catch (err) {
         commit('updateMessage',err.response.data);
       }
@@ -69,6 +79,8 @@ const mutations = {
     updateMessage:(state,message) => (state.message = message),
     setTotalItems:(state,total) => (state.totalItems = total),
     setLanguages:(state,lang) => (state.languages = lang),
+    setLocalization:(state,local) => (state.localizations = local),
+    setConstant:(state,cst) => (state.constants = cst),
     newLocalizations: (state, local) => state.localizations.unshift(local),
     updateLocalization: (state, localObj) => {
         const index = state.localizations.findIndex(local => local._id === localObj._id);
