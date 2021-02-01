@@ -5,6 +5,7 @@ const state = {
   screens: [],
   localizations: [],
   constants: [],
+  localLang: [],
   totalItems:0,
   message:''
 };
@@ -14,7 +15,8 @@ const getters = {
   allLocalizations: state => state.localizations,
   allContants: state => state.constants,
   getLocalizationMessage: state => state.message,
-  getLocalizationtotalItems: state => state.totalItems
+  getLocalizationtotalItems: state => state.totalItems,
+  getLocalLang: state => state.localLang
 };
 
 const actions = {
@@ -51,6 +53,16 @@ const actions = {
       }
     },
 
+  async fetchLocalLanguage({ commit},langId){
+      try {
+        const response = await axios.get(`${apihelper.api_url}/localization/getByLang/${langId}`);
+        console.log(response.data);
+        commit('setLangId',response.data);
+      } catch (err) {
+        commit('updateMessage',err.response.data);
+      }
+    },
+
   async addLocalization({ commit }, localObj) {
     try {
       const response = await axios.post(
@@ -81,6 +93,7 @@ const mutations = {
     setLanguages:(state,lang) => (state.languages = lang),
     setLocalization:(state,local) => (state.localizations = local),
     setConstant:(state,cst) => (state.constants = cst),
+    setLangId:(state,lang) => (state.localLang = lang),
     newLocalizations: (state, local) => state.localizations.unshift(local),
     updateLocalization: (state, localObj) => {
         const index = state.localizations.findIndex(local => local._id === localObj._id);

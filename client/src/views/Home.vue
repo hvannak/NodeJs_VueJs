@@ -28,11 +28,9 @@
                 <v-icon v-else> mdi-web </v-icon>
               </v-btn>
             </template>
-            <v-btn fab dark small color="green">
-              EN
-            </v-btn>
-            <v-btn fab dark small color="indigo">
-              KH
+            <v-btn v-for="item in allLanguages"
+              :key="item.title" fab dark small color="green" @click="changeLanguage(item._id)">
+              {{item.shortcode}}
             </v-btn>
           </v-speed-dial>
         </div>
@@ -354,13 +352,18 @@ export default {
       "getAllCategorys",
       "allPosts",
       "getWaiting",
+      "getLocalLang",
+      "allLanguages"
     ]),
   },
   methods: {
-    ...mapActions(["fetchUserClient", "fetchCategories", "fetchPostByCat"]),
+    ...mapActions(["fetchUserClient", "fetchCategories", "fetchPostByCat","fetchLocalLanguage","fetchLanguages"]),
     manageProfile() {
       this.$store.commit("updateMessage", "");
       this.user = Object.assign({}, this.getUser);
+    },
+    changeLanguage(langId){
+      this.fetchLocalLanguage(langId);
     },
     logout() {
       localStorage.removeItem("clienttoken");
@@ -413,6 +416,8 @@ export default {
       this.$store.commit("setUser", "{}");
     }
     this.fetchCategories();
+    this.fetchLanguages();
+
   },
   mounted() {
     this.$router.options.routes

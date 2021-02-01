@@ -74,6 +74,18 @@ router.get('/getByConstant',verify, async (req,res) => {
     }
 });
 
+router.get('/getByLang/:langId', async (req,res) => {
+    try{
+        var filter = {
+            lang: req.params.langId
+        };
+        const result = await Localization.find(filter);
+        res.json(result);
+    }catch(err){
+        logger.error('localization getByParent:' + err);
+        res.json(err);
+    }
+});
 
 router.put('/put/:langId',verify, async (req,res) => {
     try{

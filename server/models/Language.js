@@ -9,6 +9,10 @@ const languageSchema = mongoose.Schema({
         type:String,
         require:true
     },
+    default: {
+        type:Boolean,
+        require:true
+    },
     date:{
         type:Date,
         default:Date.now
