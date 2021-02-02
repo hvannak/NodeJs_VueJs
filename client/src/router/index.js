@@ -32,7 +32,7 @@ Vue.use(VueRouter)
       },
       {
         path: '/searchdata',
-        name: 'Search Data',
+        name: 'Searchdata',
         meta: { back: true,icon: 'mdi-cloud-search',group:'Front',gicon:'mdi-folder' },
         component: SearchData
       }, 

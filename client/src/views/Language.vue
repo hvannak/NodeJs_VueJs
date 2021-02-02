@@ -92,6 +92,19 @@
                           >
                           </v-text-field>
                         </ValidationProvider>
+                      </v-col>
+                      <v-col cols="12" sm="6" md="6">
+                        <ValidationProvider
+                          name="Default"
+                          rules="required"
+                          v-slot="{ errors }"
+                        >
+                        <v-checkbox
+                          v-model="language.default"
+                          :error-messages="errors"
+                          label="Default"
+                        ></v-checkbox>
+                        </ValidationProvider>
                       </v-col>                                   
                     </v-row>
                   </v-form>
@@ -167,6 +180,7 @@ export default {
     headers: [
       { text: "Title", value: "title", class: "text-success indigo darken-5" },
       { text: "Shortcode", value: "shortcode", class: "text-success indigo darken-5" },
+      { text: "Default", value: "default", class: "text-success indigo darken-5" },
       { text: "Date", value: "date", class: "text-success indigo darken-5" },
       {
         text: "Actions",

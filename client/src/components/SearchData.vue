@@ -93,7 +93,7 @@
           <v-toolbar
             color="primary"
             dark
-          >Opening details</v-toolbar>
+          >{{showLanguage('Message_title_detail')}}</v-toolbar>
           <v-carousel>
             <v-carousel-item
               v-for="(itm,i) in images"
@@ -206,7 +206,7 @@
             <v-btn
               text
               @click="dialog = false"
-            >Close</v-btn>
+            >{{showLanguage('Close')}}</v-btn>
           </v-card-actions>
         </v-card>
         </v-dialog>
@@ -237,6 +237,7 @@ export default {
       "getPosttotalItems",
       "getSearchObj",
       "getCurrentPage",
+      "getLocalLang"
     ]),
     numberOfPages() {
       return this.getPosttotalItems <= 9
@@ -249,6 +250,10 @@ export default {
   },
   methods: {
     ...mapActions(["fetchPostByCat"]),
+    showLanguage(prop){
+      if(this.getLocalLang.length > 0)
+        return this.getLocalLang.filter(x=>x.props == prop)[0].text
+    },
     readBufferImg(image) {
       var bytes = new Uint8Array(image.data);
       var binary = bytes.reduce(

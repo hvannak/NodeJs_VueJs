@@ -31,7 +31,7 @@ const actions = {
       commit('setWaiting',false);
       commit('setPostPages',response.data.objList);
       commit('setTotalItems',response.data.totalDoc);
-      router.push({ name: 'Search Data'}).catch(() => {
+      router.push({ name: 'Searchdata'}).catch(() => {
         console.log('the same router');
       });
     } catch (err) {

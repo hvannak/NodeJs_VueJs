@@ -61,7 +61,7 @@
                       : 'mdi-arrow-right-bold-box-outline'
                   "
                   clearable
-                  label="What are you looking for ?"
+                  :label="`${showLanguage('Looking')}`"
                   required
                   outlined
                   dense
@@ -77,14 +77,14 @@
           >
             <template v-slot:default="dialog">
               <v-card>
-                <v-toolbar color="primary" dark>Opening Notification</v-toolbar>
+                <v-toolbar color="primary" dark>{{showLanguage('Message_title')}}</v-toolbar>
                 <v-card-text>
                   <div class="text-h5 pa-12">
-                    Please define what are you looking for.
+                    {{showLanguage('Message_looking')}}                
                   </div>
                 </v-card-text>
                 <v-card-actions class="justify-end">
-                  <v-btn text @click="dialog.value = false">Close</v-btn>
+                  <v-btn text @click="dialog.value = false">{{showLanguage('Close')}}</v-btn>
                 </v-card-actions>
               </v-card>
             </template>
@@ -93,17 +93,17 @@
 
         <v-spacer></v-spacer>
         <v-btn elevation="2" text @click="navtoPost()">
-          <span class="mr-2">POST FREE ADVERTISEMENT</span>
+          <span class="mr-2">{{showLanguage('Post_free')}}</span>
           <v-icon>mdi-open-in-new</v-icon>
         </v-btn>
         <v-spacer></v-spacer>
         <div v-if="getUser === '{}'" class="d-flex align-center">
           <v-btn href="/loginclient" elevation="2" text>
-            <span class="mr-2">LOG IN</span>
+            <span class="mr-2">{{showLanguage('Login')}}</span>
             <v-icon>mdi-account-check</v-icon>
           </v-btn>
           <v-btn href="/registerclient" elevation="2" text>
-            <span class="mr-2">REGISTER</span>
+            <span class="mr-2">{{showLanguage('Register')}}</span>
             <v-icon>mdi-account-key</v-icon>
           </v-btn>
         </div>
@@ -275,7 +275,7 @@
                   </v-list-item-icon>
 
                   <v-list-item-content>
-                    <v-list-item-title>{{ item.name }}</v-list-item-title>
+                    <v-list-item-title>{{showLanguage(item.name)}}</v-list-item-title>
                   </v-list-item-content>
                 </v-list-item>
               </v-list>
@@ -294,15 +294,15 @@
       <v-toolbar
         color="primary"
         dark
-      >Information Status</v-toolbar>
+      >{{showLanguage('Message_title')}}</v-toolbar>
       <v-card-text>
-        <div class="text-h4 pa-12">You cannot post without account.</div>
+        <div class="text-h5 pa-12">{{showLanguage('Message_post')}}</div>
       </v-card-text>
       <v-card-actions class="justify-end">
         <v-btn
           text
           @click="closedialog()"
-        >Close</v-btn>
+        >{{showLanguage('Close')}}</v-btn>
       </v-card-actions>
     </v-card>
     </v-dialog>
@@ -364,6 +364,11 @@ export default {
     },
     changeLanguage(langId){
       this.fetchLocalLanguage(langId);
+      localStorage.setItem('langId',langId);
+    },
+    showLanguage(prop){
+      if(this.getLocalLang.length > 0)
+        return this.getLocalLang.filter(x=>x.props == prop)[0].text
     },
     logout() {
       localStorage.removeItem("clienttoken");
@@ -409,15 +414,22 @@ export default {
     },
   },
   watch: {},
-  created() {
+  async created() {
     if (localStorage.getItem("clienttoken") != null) {
       this.fetchUserClient();
     } else {
       this.$store.commit("setUser", "{}");
     }
-    this.fetchCategories();
-    this.fetchLanguages();
-
+    await this.fetchCategories();
+    await this.fetchLanguages();
+    let langId = localStorage.getItem('langId');
+    if(langId == null){
+      let dlang = this.allLanguages.filter(x=>x.default == true)[0]._id;
+      await this.fetchLocalLanguage(dlang);
+      localStorage.setItem('langId',dlang);
+    } else {
+      await this.fetchLocalLanguage(langId);
+    }
   },
   mounted() {
     this.$router.options.routes

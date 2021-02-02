@@ -65,7 +65,8 @@ router.get('/search/:value',verify,async (req,res) => {
 router.post('/post',verify,async (req,res)=> {
     const docObj = new Language({
         title: req.body.title,
-        shortcode: req.body.shortcode
+        shortcode: req.body.shortcode,
+        default: req.body.default
     });
     try{
         await docObj.save();
@@ -102,7 +103,8 @@ router.put('/put/:langId',verify, async (req,res) => {
         const update = new Language({
             _id: req.body._id,
             title: req.body.title,
-            shortcode: req.body.shortcode     
+            shortcode: req.body.shortcode,
+            default: req.body.default     
         });
         await Language.update(filter,update);
         res.json({obj:update,message:updatemessage});

@@ -51,19 +51,20 @@ router.get('/getByConstant',verify, async (req,res) => {
                     id: 1,
                     parent:'home',
                     name:'props',
-                    props: ['All','Looking','Post_free','Login','Register']
+                    props: ['All','Looking','Post_free','Login','Register','Welcome','Searchdata','Message_title',
+                    'Message_post','Message_looking','Close']
                 }
             ]
         };
         let searchCost = {
             id: 2,
-            name:'Search',
+            name:'search',
             children:[
                 {
                     id: 1,
-                    parent:'home',
+                    parent:'search',
                     name:'props',
-                    props: ['Welcome','Searchdata']
+                    props: ['Message_title_detail','Close']
                 }
             ]
         };
