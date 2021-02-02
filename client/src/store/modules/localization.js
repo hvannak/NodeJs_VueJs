@@ -56,7 +56,6 @@ const actions = {
   async fetchLocalLanguage({ commit},langId){
       try {
         const response = await axios.get(`${apihelper.api_url}/localization/getByLang/${langId}`);
-        console.log(response.data);
         commit('setLangId',response.data);
       } catch (err) {
         commit('updateMessage',err.response.data);

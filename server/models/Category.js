@@ -5,6 +5,9 @@ const categorySchema = mongoose.Schema({
         type:String,
         require:true
     },
+    lang:{ 
+        type: mongoose.Schema.Types.ObjectId, ref: 'Language' 
+    },
     icon:{
         type:String,
         require:true

@@ -73,11 +73,31 @@
                             v-model="category.title"
                             label="Title"
                             :error-messages="errors"
+                            outlined
                             required
                           >
                           </v-text-field>
                         </ValidationProvider>
                       </v-col>
+                      <v-col cols="12" sm="6" md="6">
+                          <ValidationProvider
+                            name="Lang"
+                            rules="required"
+                            v-slot="{ errors }"
+                          >
+                            <v-autocomplete
+                              v-model="category.lang"
+                              :items="allLanguages"
+                              :error-messages="errors"
+                              outlined
+                              chips
+                              small-chips
+                              label="Language"
+                              item-text="title"
+                              item-value="_id"
+                            ></v-autocomplete>
+                          </ValidationProvider>
+                        </v-col>
                       <v-col cols="12" sm="6" md="6">
                         <ValidationProvider
                           name="Icon"
@@ -88,6 +108,7 @@
                             v-model="category.icon"
                             label="Icon"
                             :error-messages="errors"
+                            outlined
                             required
                           >
                           </v-text-field>
@@ -166,6 +187,7 @@ export default {
     searchBy: "",
     headers: [
       { text: "Title", value: "title", class: "text-success indigo darken-5" },
+      { text: "Language", value: "lang.title", class: "text-success indigo darken-5" },
       { text: "Icon", value: "icon", class: "text-success indigo darken-5" },
       { text: "Date", value: "date", class: "text-success indigo darken-5" },
       {
@@ -184,7 +206,8 @@ export default {
     editedIndex: -1,
   }),
   computed: {
-    ...mapGetters(["allCategorys", "getCategoryMessage", "getCategorytotalItems"]),
+    ...mapGetters(["allCategorys", "getCategoryMessage", 
+    "getCategorytotalItems","allLanguages"]),
     formTitle() {
       return this.editedIndex === -1 ? "New Item" : "Edit Item";
     },
@@ -213,6 +236,7 @@ export default {
     this.setpageObj();
     this.fetchCategoryPages(this.pageObj);
     this.loading = false;
+    this.fetchLanguages();
   },
 
   methods: {
@@ -222,6 +246,7 @@ export default {
       "deleteCategory",
       "addCategory",
       "updateCategory",
+      "fetchLanguages",
     ]),
 
     updateOpt() {

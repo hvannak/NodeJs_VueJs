@@ -28,19 +28,18 @@ router.post('/page',verify,async (req,res) => {
                 console.log('asc');
                 docObj = await Category.find(filter).limit(pageSize).skip(pageSize*(currentPage-1)).sort({
                     [opt.sortBy[0]]: 'asc'
-                });
+                }).populate('lang');
             } else {
                 console.log('desc');
                 docObj = await Category.find(filter).limit(pageSize).skip(pageSize*(currentPage-1)).sort({
                     [opt.sortBy[0]]: 'desc'
-                });
+                }).populate('lang');
             }
         } else{
             docObj = await Category.find(filter).limit(pageSize).skip(pageSize*(currentPage-1)).sort({
                 _id: 'asc'
-            });
+            }).populate('lang');
         }
-        console.log(docObj);
         var totalItems = await Category.count(filter);
         res.json({objList:docObj,totalDoc:totalItems});
 
@@ -66,11 +65,13 @@ router.get('/search/:value',verify,async (req,res) => {
 router.post('/post',verify,async (req,res)=> {
     const docObj = new Category({
         title: req.body.title,
-        icon: req.body.icon
+        icon: req.body.icon,
+        lang: req.body.lang
     });
     try{
-        const savestate = await docObj.save();
-        res.json({obj:docObj,message:savemessage});
+        await docObj.save();
+        let resObj = await Category.find({ _id: docObj._id }).populate('lang');
+        res.json({obj:resObj[0],message:savemessage});
     } catch(err) {
         logger.error('category post:' + err);
         res.json(err);
@@ -103,10 +104,12 @@ router.put('/put/:catId',verify, async (req,res) => {
         const update = new Category({
             _id: req.body._id,
             title: req.body.title,
-            icon: req.body.icon     
+            icon: req.body.icon,
+            lang: req.body.lang     
         });
         await Category.update(filter,update);
-        res.json({obj:update,message:updatemessage});
+        let resObj = await Category.find(filter).populate('lang');
+        res.json({obj:resObj,message:updatemessage});
     }catch(err){
         logger.error('category put:' + err);
         res.json(err)
