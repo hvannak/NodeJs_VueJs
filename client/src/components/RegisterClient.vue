@@ -105,6 +105,12 @@
       validate () {
         return this.$refs.form.validate()
       },
+      showLanguage(prop){
+        if(this.getLocalLang.length > 0){
+          let propval = this.getLocalLang.filter(x=>x.props == prop);
+          return (propval.length > 0) ? propval[0].text : 'Not Set';
+        }
+      },
       reset () {
         this.$refs.form.reset()
       },

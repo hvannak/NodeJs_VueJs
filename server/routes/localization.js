@@ -82,7 +82,31 @@ router.get('/getByConstant',verify, async (req,res) => {
                 }
             ]
         };
-        res.json([homeCost,searchCost,postCost]);
+        let clientLoginCost = {
+            id: 3,
+            name:'clientlogin',
+            children:[
+                {
+                    id: 1,
+                    parent:'clientlogin',
+                    name:'props',
+                    props: ['CEmail','CPassword','BtnLogin']
+                }
+            ]
+        };
+        let clientRegisterCost = {
+            id: 3,
+            name:'clientregister',
+            children:[
+                {
+                    id: 1,
+                    parent:'clientregister',
+                    name:'props',
+                    props: ['RUsername','REmail','RPassword','RConfirmPassword','BtnRegister']
+                }
+            ]
+        };
+        res.json([homeCost,searchCost,postCost,clientLoginCost,clientRegisterCost]);
     }catch(err){
         logger.error('localization getByParent:' + err);
         res.json(err);

@@ -22,8 +22,7 @@
                     <v-text-field
                         v-model="user.email"
                         :rules="emailRules"
-                        hint="You must input the valid email"
-                        label="Your email"
+                        :label="`${showLanguage('CEmail')}`"
                         persistent-hint
                         outlined
                         required>
@@ -36,8 +35,7 @@
                         v-model="user.password"
                         :rules="passwordRules"
                         :type="'password'"
-                        hint="Your must input 6 characters password"
-                        label="Your password"
+                        :label="`${showLanguage('CPassword')}`"
                         persistent-hint
                         outlined
                         required
@@ -53,7 +51,7 @@
                         class="mr-4" large
                         @click="login()"
                         >
-                        LOGIN
+                        {{showLanguage('BtnLogin')}}
                         </v-btn>
                     </div>
 
@@ -84,13 +82,19 @@
     }),
 
     computed: {
-      ...mapGetters(["getMessage"])
+      ...mapGetters(["getMessage","getLocalLang"])
     },
 
     methods: {
       ...mapActions([
         "loginUserClient",
       ]),
+      showLanguage(prop){
+        if(this.getLocalLang.length > 0){
+          let propval = this.getLocalLang.filter(x=>x.props == prop);
+          return (propval.length > 0) ? propval[0].text : 'Not Set';
+        }
+      },
       validate () {
         return this.$refs.form.validate()
       },
