@@ -128,13 +128,13 @@
                         v-bind="attrs"
                         v-on="on"
                         @click="manageProfile()"
-                        >Manage Profile</v-list-item-title
+                        >{{showLanguage('ManageProfile')}}</v-list-item-title
                       >
                     </template>
 
                     <v-card>
                       <v-card-title class="headline grey lighten-2">
-                        Manage Profile
+                        {{showLanguage('ManageProfile')}}
                       </v-card-title>
 
                       <ValidationObserver v-slot="{ invalid }">
@@ -154,7 +154,7 @@
                                   >
                                     <v-text-field
                                       v-model="user.name"
-                                      label="Name"
+                                      :label="`${showLanguage('Username')}`"
                                       :error-messages="errors"
                                       required
                                     >
@@ -169,7 +169,7 @@
                                   >
                                     <v-text-field
                                       v-model="user.email"
-                                      label="Email"
+                                      :label="`${showLanguage('Useremail')}`"
                                       :error-messages="errors"
                                       required
                                     >
@@ -184,7 +184,7 @@
                                   >
                                     <v-text-field
                                       :type="'password'"
-                                      label="Password"
+                                      :label="`${showLanguage('Password')}`"
                                       :error-messages="errors"
                                       v-model="user.password"
                                       required
@@ -200,7 +200,7 @@
                                   >
                                     <v-text-field
                                       :type="'password'"
-                                      label="Confirm Password"
+                                      :label="`${showLanguage('ConfirmPassword')}`"
                                       :error-messages="errors"
                                       v-model="confirmPassword"
                                       required
@@ -221,7 +221,7 @@
                             text
                             @click="save"
                           >
-                            Save
+                            {{showLanguage('Save')}}
                           </v-btn>
                         </v-card-actions>
                       </ValidationObserver>
@@ -234,7 +234,7 @@
                 </v-list-item>
                 <v-list-item link>
                   <v-list-item-title @click="logout()"
-                    >Log out</v-list-item-title
+                    >{{showLanguage('Logout')}}</v-list-item-title
                   >
                   <v-list-item-icon
                     ><v-icon>mdi-account-arrow-right</v-icon></v-list-item-icon
