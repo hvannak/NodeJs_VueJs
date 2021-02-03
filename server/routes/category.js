@@ -119,7 +119,7 @@ router.put('/put/:catId',verify, async (req,res) => {
         });
         await Category.update(filter,update);
         let resObj = await Category.find(filter).populate('lang');
-        res.json({obj:resObj,message:updatemessage});
+        res.json({obj:resObj[0],message:updatemessage});
     }catch(err){
         logger.error('category put:' + err);
         res.json(err)

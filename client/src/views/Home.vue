@@ -371,8 +371,10 @@ export default {
       localStorage.setItem('langId',langId);
     },
     showLanguage(prop){
-      if(this.getLocalLang.length > 0)
-        return this.getLocalLang.filter(x=>x.props == prop)[0].text
+      if(this.getLocalLang.length > 0){
+        let propval = this.getLocalLang.filter(x=>x.props == prop);
+        return (propval.length > 0) ? propval[0].text : 'Not Set';
+      }
     },
     logout() {
       localStorage.removeItem("clienttoken");

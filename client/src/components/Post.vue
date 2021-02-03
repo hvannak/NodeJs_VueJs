@@ -3,13 +3,13 @@
     <v-stepper v-model="e1" non-linear>
       <v-stepper-header>
         <v-stepper-step :complete="e1 > 1" editable step="1">
-          Select Category
+          {{showLanguage('SelectCategory')}}
         </v-stepper-step>
 
         <v-divider></v-divider>
 
         <v-stepper-step :complete="e1 > 2" editable step="2">
-          Input Information
+           {{showLanguage('InputInformation')}}
         </v-stepper-step>
       </v-stepper-header>
       <v-stepper-items>
@@ -47,8 +47,7 @@
                               >
                   <v-text-field
                     v-model="post.category"
-                    hint="You must input the category"
-                    label="Your category"
+                    :label="`${showLanguage('Category')}`"
                     :error-messages="errors"
                     persistent-hint
                     outlined
@@ -67,8 +66,7 @@
                   <v-text-field
                     v-model="post.title"
                     :error-messages="errors"
-                    hint="You must input the title"
-                    label="Your title"
+                    :label="`${showLanguage('Title')}`"
                     persistent-hint
                     outlined
                     required
@@ -86,7 +84,7 @@
                     v-model="post.description"
                     :error-messages="errors"
                     outlined
-                    label="Your description"
+                    :label="`${showLanguage('Description')}`"
                   ></v-textarea>
                   </ValidationProvider>
                 </v-col>
@@ -99,8 +97,7 @@
                   <v-text-field
                     v-model="post.phone"
                     :error-messages="errors"
-                    hint="You must input the phone"
-                    label="Your phone"
+                    :label="`${showLanguage('Phone')}`"
                     persistent-hint
                     outlined
                     required
@@ -117,8 +114,7 @@
                   <v-text-field
                     v-model="post.email"
                     :error-messages="errors"
-                    hint="You must input the email"
-                    label="Your email"
+                    :label="`${showLanguage('Email')}`"
                     persistent-hint
                     outlined
                     required
@@ -135,8 +131,7 @@
                   <v-text-field
                     v-model="post.location"
                     :error-messages="errors"
-                    hint="You must input the location"
-                    label="Your location"
+                    :label="`${showLanguage('Location')}`"
                     persistent-hint
                     outlined
                     required
@@ -150,7 +145,7 @@
                     v-model="file"
                     chips
                     :error-messages="errors"
-                    label="File input w/ chips"
+                    :label="`${showLanguage('Fileinput')}`"
                     outlined
                     multiple
                     accept="image/*"
@@ -206,22 +201,22 @@
                         v-on="on"
                         @click="save">
                         <v-icon left> mdi-pencil </v-icon>
-                        POST
+                        {{showLanguage('Post')}}
                       </v-btn>
                     </template>
                       <v-card>
                         <v-toolbar
                           color="primary"
                           dark
-                        >Status when save</v-toolbar>
+                        >{{showLanguage('Message_title')}}</v-toolbar>
                         <v-card-text>
-                          <div class="text-h4 pa-12">Your post is successful.</div>
+                          <div class="text-h៥ pa-12">{{showLanguage('Message_post_success')}}</div>
                         </v-card-text>
                         <v-card-actions class="justify-end">
                           <v-btn
                             text
                             @click="closedialog()"
-                          >Close</v-btn>
+                          >{{showLanguage('Close')}}</v-btn>
                         </v-card-actions>
                       </v-card>
                   </v-dialog>
@@ -271,7 +266,7 @@ export default {
     file:null
   }),
   computed: {
-    ...mapGetters(["allCategorys", "getCategoryMessage"]),
+    ...mapGetters(["allCategorys", "getCategoryMessage","getLocalLang"]),
   },
   methods: {
     ...mapActions(["fetchCategories","addPost"]),
@@ -307,6 +302,12 @@ export default {
       this.post = {
         categoryId: item._id,
         category: item.title
+      }
+    },
+    showLanguage(prop){
+      if(this.getLocalLang.length > 0){
+        let propval = this.getLocalLang.filter(x=>x.props == prop);
+        return (propval.length > 0) ? propval[0].text : 'Not Set';
       }
     },
     removeImage(index){

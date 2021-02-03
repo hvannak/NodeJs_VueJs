@@ -52,7 +52,8 @@ router.get('/getByConstant',verify, async (req,res) => {
                     parent:'home',
                     name:'props',
                     props: ['All','Looking','Post_free','Login','Register','Welcome','Searchdata','Message_title',
-                    'Message_post','Message_looking','Close']
+                    'Message_post','Message_looking','Close','ManageProfile','Logout','Username','Useremail','Password','ConfirmPassword',
+                    'Save']
                 }
             ]
         };
@@ -68,7 +69,20 @@ router.get('/getByConstant',verify, async (req,res) => {
                 }
             ]
         };
-        res.json([homeCost,searchCost]);
+        let postCost = {
+            id: 3,
+            name:'post',
+            children:[
+                {
+                    id: 1,
+                    parent:'post',
+                    name:'props',
+                    props: ['SelectCategory','InputInformation','Category','Title','Description','Phone','Email','Location','Fileinput','Post',
+                    'Message_post_success']
+                }
+            ]
+        };
+        res.json([homeCost,searchCost,postCost]);
     }catch(err){
         logger.error('localization getByParent:' + err);
         res.json(err);
