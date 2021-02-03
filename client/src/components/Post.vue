@@ -328,7 +328,8 @@ export default {
     }
   },
   created() {
-    this.fetchCategories();
+    let lang = localStorage.getItem('langId');
+    this.fetchCategories(lang);
   },
 };
 </script>

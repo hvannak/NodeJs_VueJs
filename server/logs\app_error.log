@@ -129,3 +129,10 @@
 {"message":"category page:TypeError: Cannot read property 'length' of undefined","level":"error","service":"user-interact"}
 {"message":"category page:TypeError: Cannot read property 'length' of undefined","level":"error","service":"user-interact"}
 {"message":"category page:TypeError: Cannot read property 'length' of undefined","level":"error","service":"user-interact"}
+{"message":"category page:TypeError: Cannot read property 'length' of undefined","level":"error","service":"user-interact"}
+{"message":"category getByLangId:CastError: Cast to ObjectId failed for value \"undefined\" at path \"lang\" for model \"Category\"","level":"error","service":"user-interact"}
+{"message":"category getByLangId:CastError: Cast to ObjectId failed for value \"undefined\" at path \"lang\" for model \"Category\"","level":"error","service":"user-interact"}
+{"message":"category getByLangId:CastError: Cast to ObjectId failed for value \"undefined\" at path \"lang\" for model \"Category\"","level":"error","service":"user-interact"}
+{"message":"category getByLangId:CastError: Cast to ObjectId failed for value \"undefined\" at path \"lang\" for model \"Category\"","level":"error","service":"user-interact"}
+{"message":"category getByLangId:CastError: Cast to ObjectId failed for value \"undefined\" at path \"lang\" for model \"Category\"","level":"error","service":"user-interact"}
+{"message":"category getByLangId:CastError: Cast to ObjectId failed for value \"undefined\" at path \"lang\" for model \"Category\"","level":"error","service":"user-interact"}

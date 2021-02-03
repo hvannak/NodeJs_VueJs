@@ -326,7 +326,6 @@ export default {
     items: [],
     value: { _id: "-1", title: "All" },
     user: {},
-    selects: [{ _id: "-1", title: "All" }],
     dialog: false,
     info_dialog:false,
     confirmPassword: "",
@@ -357,13 +356,18 @@ export default {
     ]),
   },
   methods: {
-    ...mapActions(["fetchUserClient", "fetchCategories", "fetchPostByCat","fetchLocalLanguage","fetchLanguages"]),
+    ...mapActions(["fetchUserClient", "fetchCategoriesLang", "fetchPostByCat","fetchLocalLanguage","fetchLanguages"]),
     manageProfile() {
       this.$store.commit("updateMessage", "");
       this.user = Object.assign({}, this.getUser);
     },
-    changeLanguage(langId){
-      this.fetchLocalLanguage(langId);
+    async changeLanguage(langId){
+      await this.fetchLocalLanguage(langId);
+      let filter = {
+        lang: langId,
+        all: this.showLanguage('All')
+      }
+      this.fetchCategoriesLang(filter);
       localStorage.setItem('langId',langId);
     },
     showLanguage(prop){
@@ -420,15 +424,24 @@ export default {
     } else {
       this.$store.commit("setUser", "{}");
     }
-    await this.fetchCategories();
     await this.fetchLanguages();
-    let langId = localStorage.getItem('langId');
+    let langId = localStorage.getItem('langId');       
     if(langId == null){
       let dlang = this.allLanguages.filter(x=>x.default == true)[0]._id;
       await this.fetchLocalLanguage(dlang);
+      let filter = {
+        lang: dlang,
+        all: this.showLanguage('All')
+      }
+      await this.fetchCategoriesLang(filter);
       localStorage.setItem('langId',dlang);
     } else {
       await this.fetchLocalLanguage(langId);
+      let filter = {
+        lang: langId,
+        all: this.showLanguage('All')
+      }
+      await this.fetchCategoriesLang(filter);
     }
   },
   mounted() {

@@ -15,6 +15,16 @@ router.get('/all', async (req,res) => {
     }
 });
 
+router.get('/getByLangId/:langId', async (req,res) => {
+    try{
+        const result = await Category.find({ lang: req.params.langId });
+        res.json(result);
+    }catch(err){
+        logger.error('category getByLangId:' + err);
+        res.json(err);
+    }
+});
+
 router.post('/page',verify,async (req,res) => {
     try{
         let opt = req.body.pageOpt;

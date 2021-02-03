@@ -17,14 +17,23 @@ const getters = {
 
 const actions = {
 
-async fetchCategories({ commit }) {
+async fetchCategories({ commit },langId) {
     try {
-        const response = await axios.get(`${apihelper.api_url}/category/all`,apihelper.setToken());
+        const response = await axios.get(`${apihelper.api_url}/category/getByLangId/${langId}`,apihelper.setToken());
         commit('setCategories',response.data);
-        commit('setAllCategories',response.data);
     } catch (err) {
         commit('updateMessage',err.response.data);
     }
+},
+
+async fetchCategoriesLang({ commit },filter) {
+  try {
+      const response = await axios.get(`${apihelper.api_url}/category/getByLangId/${filter.lang}`,apihelper.setToken());
+      commit('setCategories',response.data);
+      commit('setAllCategories',{data: response.data,all: filter.all});
+  } catch (err) {
+      commit('updateMessage',err.response.data);
+  }
 },
 
   async fetchCategoryPages({ commit },pageObj) {
@@ -84,12 +93,13 @@ const mutations = {
     setTotalItems:(state,total) => (state.totalItems = total),
     setCategories:(state,category) => (state.categorys = category),
     setAllCategories:(state,category) => {
-      category.forEach(element => {
+      state.categorySearch = [];
+      category.data.forEach(element => {
         state.categorySearch.push(element);
       });
       state.categorySearch.unshift({
         _id: '-1',
-        title: 'All'
+        title: category.all      
       })
     },
     setCategoryPages:(state,category) => (state.categorys = category),
