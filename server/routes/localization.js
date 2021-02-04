@@ -106,7 +106,19 @@ router.get('/getByConstant',verify, async (req,res) => {
                 }
             ]
         };
-        res.json([homeCost,searchCost,postCost,clientLoginCost,clientRegisterCost]);
+        let validationCost = {
+            id: 6,
+            name:'validation',
+            children:[
+                {
+                    id: 1,
+                    parent:'validation',
+                    name:'props',
+                    props: ['Require','Email','Min','Max','Numeric','Double']
+                }
+            ]
+        };
+        res.json([homeCost,searchCost,postCost,clientLoginCost,clientRegisterCost,validationCost]);
     }catch(err){
         logger.error('localization getByParent:' + err);
         res.json(err);

@@ -369,6 +369,7 @@ export default {
       }
       this.fetchCategoriesLang(filter);
       localStorage.setItem('langId',langId);
+      localStorage.setItem('validation',JSON.stringify(this.getLocalLang));
     },
     showLanguage(prop){
       if(this.getLocalLang.length > 0){
@@ -427,24 +428,15 @@ export default {
       this.$store.commit("setUser", "{}");
     }
     await this.fetchLanguages();
-    let langId = localStorage.getItem('langId');       
-    if(langId == null){
-      let dlang = this.allLanguages.filter(x=>x.default == true)[0]._id;
-      await this.fetchLocalLanguage(dlang);
-      let filter = {
-        lang: dlang,
-        all: this.showLanguage('All')
-      }
-      await this.fetchCategoriesLang(filter);
-      localStorage.setItem('langId',dlang);
-    } else {
-      await this.fetchLocalLanguage(langId);
-      let filter = {
-        lang: langId,
-        all: this.showLanguage('All')
-      }
-      await this.fetchCategoriesLang(filter);
+    let defaultlang = this.allLanguages.filter(x=>x.default == true)[0]._id;
+    localStorage.setItem('langId',defaultlang);
+    await this.fetchLocalLanguage(defaultlang);
+    let filter = {
+      lang: defaultlang,
+      all: this.showLanguage('All')
     }
+    await this.fetchCategoriesLang(filter);    
+    localStorage.setItem('validation',JSON.stringify(this.getLocalLang));
   },
   mounted() {
     this.$router.options.routes

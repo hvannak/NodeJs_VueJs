@@ -38,7 +38,7 @@
                     cols="6"
                     sm="6">
                     <ValidationProvider
-                                name="Email"
+                                name="Password"
                                 rules="required|min:6"
                                 v-slot="{ errors }"
                               >
@@ -79,22 +79,6 @@
 
 <script>
   import { mapGetters, mapActions } from "vuex";
-  import { extend } from "vee-validate";
-  import { required, email, min } from "vee-validate/dist/rules";
-
-  extend("required", {
-    ...required,
-    message: "{_field_} can not be empty",
-  });
-
-  extend("min", {
-    ...min,
-    message: "{_field_} may not be lesser than {length} characters",
-  });
-
-  extend("email", {
-    ...email,
-  });
 
   export default {
     data: () => ({
