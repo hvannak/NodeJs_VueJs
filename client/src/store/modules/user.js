@@ -47,6 +47,17 @@ const actions = {
     }
   },
 
+  async registerUser({ commit }, userObj) {
+    try {
+      const response = await axios.post(
+        `${apihelper.api_url}/user/register`,userObj);
+      commit('newUsers', response.data.obj);
+      commit('updateMessage',response.data.message);
+    } catch (err) {
+      commit('updateMessage',err.response.data);
+    }
+  },
+
   async loginUser({ commit }, userObj) {
     try {
       const response = await axios.post(

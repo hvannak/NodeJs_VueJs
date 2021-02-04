@@ -1,110 +1,123 @@
 <template>
     <v-app>
+      <v-alert
+        v-if="getMessage != ''"
+        outlined
+        type="success"
+        text
+      >
+        {{ getMessage }}
+      </v-alert>
       <v-card width="90%" class="mx-auto my-auto">
+        <ValidationObserver v-slot="{ invalid }">
             <v-form
                 ref="form"
-                v-model="valid"
+                @submit.prevent="submit"
                 lazy-validation>
                 <v-row>
                     <v-col
                     cols="6" offset-md="3">
-                    <v-text-field
-                        v-model="user.name"
-                        :rules="nameRules"
-                        hint="You must input the name"
-                        label="Your name"
-                        persistent-hint
-                        outlined
-                        required>
-                    </v-text-field>
+                    <ValidationProvider
+                                name="Name"
+                                rules="required"
+                                v-slot="{ errors }"
+                              >
+                      <v-text-field
+                          v-model="user.name"
+                          :label="`${showLanguage('RUsername')}`"
+                          :error-messages="errors"
+                          persistent-hint
+                          outlined
+                          required>
+                      </v-text-field>
+                    </ValidationProvider>
                     </v-col>
                     <v-col
                     cols="6" offset-md="3">
+                     <ValidationProvider
+                                name="Email"
+                                rules="required|email"
+                                v-slot="{ errors }"
+                              >
                     <v-text-field
                         v-model="user.email"
-                        :rules="emailRules"
-                        hint="You must input the valid email"
-                        label="Your email"
+                        :label="`${showLanguage('REmail')}`"
+                        :error-messages="errors"
                         persistent-hint
                         outlined
                         required>
                     </v-text-field>
+                     </ValidationProvider>
                     </v-col>
                     <v-col
                     cols="6" offset-md="3">
+                    <ValidationProvider
+                                name="Password"
+                                rules="required|min:6"
+                                v-slot="{ errors }"
+                              >
                     <v-text-field
                         v-model="user.password"
-                        :rules="passwordRules"
                         :type="'password'"
-                        hint="Your must input 6 characters password"
-                        label="Your password"
+                        :label="`${showLanguage('RPassword')}`"
+                        :error-messages="errors"
                         persistent-hint
                         outlined
                         required
                     ></v-text-field>
+                    </ValidationProvider>
                     </v-col>
                     <v-col
                     cols="6" offset-md="3">
                     <div class="d-flex justify-center">
                         <v-btn
-                        :disabled="!valid"
+                        :disabled="invalid"
                         color="success"
                         class="mr-4" large
                         @click="register()"
                         >
-                        Register
+                        {{showLanguage('BtnRegister')}}
                         </v-btn>
                     </div>
 
                     </v-col>
                 </v-row>
             </v-form>
+        </ValidationObserver>
       </v-card>
-        <div class="text-center ma-2">
-        <v-snackbar
-          v-model="snackbar">
-          {{ snakbartext }}
-          <template v-slot:action="{ attrs }">
-            <v-btn
-              color="pink"
-              text
-              v-bind="attrs"
-              @click="snackbar = false">
-              Close
-            </v-btn>
-          </template>
-        </v-snackbar>
-      </div>
-
     </v-app>
 </template>
 
 <script>
-  import axios from 'axios';
+  import { mapGetters, mapActions } from "vuex";
+  import { extend } from "vee-validate";
+  import { required, email, min } from "vee-validate/dist/rules";
+
+  extend("required", {
+    ...required,
+    message: "{_field_} can not be empty",
+  });
+
+  extend("min", {
+    ...min,
+    message: "{_field_} may not be lesser than {length} characters",
+  });
+
+  extend("email", {
+    ...email,
+  });
 
   export default {
     data: () => ({
-      valid: true,
       user:{},
-      snackbar: false,
-      snakbartext: '',
-      emailRules: [
-        v => !!v || 'E-mail is required',
-        v => /.+@.+\..+/.test(v) || 'E-mail must be valid',
-      ],
-      passwordRules:[
-        v => !!v || 'Password is required',
-        v => (v && v.length >= 6) || 'Password must have 6+ characters'
-      ],
-      nameRules:[
-        v => !!v || 'Name is required'
-      ]
     }),
-
+    computed: {
+      ...mapGetters(["getMessage","getLocalLang"])
+    },
     methods: {
-      validate () {
-        return this.$refs.form.validate()
-      },
+      ...mapActions([
+        "registerUser",
+      ]),
       showLanguage(prop){
         if(this.getLocalLang.length > 0){
           let propval = this.getLocalLang.filter(x=>x.props == prop);
@@ -114,24 +127,8 @@
       reset () {
         this.$refs.form.reset()
       },
-      resetValidation () {
-        this.$refs.form.resetValidation()
-      },
       register(){
-        if(this.validate()){
-          axios.post('http://localhost:3000/api/user/register',this.user).then(res => {
-            if(res.status == 200){
-              console.log(res.data);
-              this.snackbar = true;
-              this.snakbartext = res.data.message;
-              this.reset();
-            }
-        }).catch(err => {
-          console.log(err.response.data);
-          this.snackbar = true;
-          this.snakbartext = err.response.data;
-        })
-        }
+        this.registerUser(this.user);
       }
     },
   }

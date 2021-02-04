@@ -10,43 +10,55 @@
           {{ getMessage }}
         </v-alert>
         <v-main>
+          <ValidationObserver v-slot="{ invalid }">
             <v-form
                 ref="form"
-                v-model="valid"
                 lazy-validation>
                 <v-row>
                 <v-col cols="8" sm="12" offset="4" offset-sm="3">
                     <v-col
                     cols="6"
                     sm="6">
+                    <ValidationProvider
+                                name="Email"
+                                rules="required|email"
+                                v-slot="{ errors }"
+                              >
                     <v-text-field
                         v-model="user.email"
-                        :rules="emailRules"
                         :label="`${showLanguage('CEmail')}`"
+                        :error-messages="errors"
                         persistent-hint
                         outlined
                         required>
                     </v-text-field>
+                    </ValidationProvider>
                     </v-col>
                     <v-col
                     cols="6"
                     sm="6">
+                    <ValidationProvider
+                                name="Email"
+                                rules="required|min:6"
+                                v-slot="{ errors }"
+                              >
                     <v-text-field
                         v-model="user.password"
-                        :rules="passwordRules"
                         :type="'password'"
                         :label="`${showLanguage('CPassword')}`"
+                        :error-messages="errors"
                         persistent-hint
                         outlined
                         required
                     ></v-text-field>
+                    </ValidationProvider>
                     </v-col>
                     <v-col
                     cols="6"
                     sm="6">
                     <div class="d-flex justify-center">
                         <v-btn
-                        :disabled="!valid"
+                        :disabled="invalid"
                         color="success"
                         class="mr-4" large
                         @click="login()"
@@ -59,6 +71,7 @@
                 </v-col>
                 </v-row>
             </v-form>
+          </ValidationObserver>
         </v-main>
       </v-card>        
     </v-app>
@@ -66,19 +79,26 @@
 
 <script>
   import { mapGetters, mapActions } from "vuex";
+  import { extend } from "vee-validate";
+  import { required, email, min } from "vee-validate/dist/rules";
+
+  extend("required", {
+    ...required,
+    message: "{_field_} can not be empty",
+  });
+
+  extend("min", {
+    ...min,
+    message: "{_field_} may not be lesser than {length} characters",
+  });
+
+  extend("email", {
+    ...email,
+  });
 
   export default {
     data: () => ({
-      valid: true,
       user:{},
-      emailRules: [
-        v => !!v || 'E-mail is required',
-        v => /.+@.+\..+/.test(v) || 'E-mail must be valid',
-      ],
-      passwordRules:[
-        v => !!v || 'Password is required',
-        v => (v && v.length >= 6) || 'Password must have 6+ characters'
-      ]
     }),
 
     computed: {
@@ -95,19 +115,8 @@
           return (propval.length > 0) ? propval[0].text : 'Not Set';
         }
       },
-      validate () {
-        return this.$refs.form.validate()
-      },
-      reset () {
-        this.$refs.form.reset()
-      },
-      resetValidation () {
-        this.$refs.form.resetValidation()
-      },
       login(){
-        if(this.validate()){
-          this.loginUserClient(this.user);
-        }
+        this.loginUserClient(this.user);
       }
     },
   }
