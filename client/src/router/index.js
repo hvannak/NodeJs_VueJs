@@ -127,7 +127,7 @@ router.beforeEach((to, from, next) => {
   if((to.name == 'Login' && localStorage.getItem('token') != null)){
     next({name:'ControlPanel'});
   }
-  if(to.name == 'ControlPanel' && localStorage.getItem('token') == null ){
+  if(to.fullPath.startsWith('/controlpanel') && localStorage.getItem('token') == null ){
     next({name:'Welcome'});
   }
   else next()
