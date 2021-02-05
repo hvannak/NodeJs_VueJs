@@ -72,6 +72,7 @@
                           <v-text-field
                             v-model="language.title"
                             label="Title"
+                            outlined
                             :error-messages="errors"
                             required
                           >
@@ -87,6 +88,7 @@
                           <v-text-field
                             v-model="language.shortcode"
                             label="Shortcode"
+                            outlined
                             :error-messages="errors"
                             required
                           >
@@ -103,6 +105,7 @@
                           v-model="language.default"
                           :error-messages="errors"
                           label="Default"
+                          outlined
                         ></v-checkbox>
                         </ValidationProvider>
                       </v-col>                                   

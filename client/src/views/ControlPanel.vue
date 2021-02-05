@@ -94,6 +94,7 @@
                                 <v-text-field
                                   v-model="user.name"
                                   label="Name"
+                                  outlined
                                   :error-messages="errors"
                                   required
                                 >
@@ -109,6 +110,7 @@
                                 <v-text-field
                                   v-model="user.email"
                                   label="Email"
+                                  outlined
                                   :error-messages="errors"
                                   required
                                 >
@@ -124,6 +126,7 @@
                                 <v-text-field
                                   :type="'password'"
                                   label="Password"
+                                  outlined
                                   :error-messages="errors"
                                   v-model="user.password"
                                   required
@@ -140,6 +143,7 @@
                                 <v-text-field
                                   :type="'password'"
                                   label="Confirm Password"
+                                  outlined
                                   :error-messages="errors"
                                   v-model="confirmPassword"
                                   required
@@ -209,30 +213,6 @@
 
 <script>
 import { mapGetters, mapActions } from "vuex";
-import { extend } from "vee-validate";
-import { required, email, min } from "vee-validate/dist/rules";
-
-extend("required", {
-  ...required,
-  message: "{_field_} can not be empty",
-});
-
-extend("password", {
-  params: ["target"],
-  validate(value, { target }) {
-    return value === target;
-  },
-  message: "Password confirmation does not match",
-});
-
-extend("min", {
-  ...min,
-  message: "{_field_} may not be lesser than {length} characters",
-});
-
-extend("email", {
-  ...email,
-});
 
 export default {
   data: () => ({
