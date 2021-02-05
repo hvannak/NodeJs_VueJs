@@ -114,7 +114,7 @@ router.get('/getByConstant',verify, async (req,res) => {
                     id: 1,
                     parent:'validation',
                     name:'props',
-                    props: ['Require','Email','Min','Max','Numeric','Double']
+                    props: ['VRequire','VEmail','VMin','VMax','VNumeric','VDouble']
                 }
             ]
         };

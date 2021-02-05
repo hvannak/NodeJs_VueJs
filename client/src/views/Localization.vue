@@ -266,14 +266,6 @@
 </template>
 <script>
 import { mapGetters, mapActions } from "vuex";
-import { extend } from "vee-validate";
-import { required } from "vee-validate/dist/rules";
-// import * as constHelper from '../store/modules/const-helper';
-
-extend("required", {
-  ...required,
-  message: "{_field_} can not be empty",
-});
 
 export default {
   data: () => ({

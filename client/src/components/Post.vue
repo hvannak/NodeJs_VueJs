@@ -232,27 +232,6 @@
 </template>
 <script>
 import { mapGetters, mapActions } from "vuex";
-import { extend } from "vee-validate";
-import { required, email, min,size } from "vee-validate/dist/rules";
-
-extend("required", {
-  ...required,
-  message: "{_field_} can not be empty",
-});
-
-extend("min", {
-  ...min,
-  message: "{_field_} may not be lesser than {length} characters",
-});
-
-extend("email", {
-  ...email,
-});
-
-extend("size", {
-  ...size,
-  message: "File size may not be geater than 2MB",
-});
 
 export default {
   data: () => ({

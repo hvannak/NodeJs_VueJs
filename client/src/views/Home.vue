@@ -137,12 +137,11 @@
                         {{showLanguage('ManageProfile')}}
                       </v-card-title>
 
-                      <ValidationObserver v-slot="{ invalid }">
+                      <ValidationObserver ref="observer" v-slot="{ invalid }">
                         <v-card-text>
                           <v-container>
                             <v-form
                               @submit.prevent="submit"
-                              ref="form"
                               lazy-validation
                             >
                               <v-row>
@@ -312,12 +311,7 @@
 <script>
 import { mapGetters, mapActions } from "vuex";
 import { extend } from "vee-validate";
-import { required } from "vee-validate/dist/rules";
-
-extend("required", {
-  ...required,
-  message: "{_field_} can not be empty",
-});
+import { required,email,min,max,numeric,double } from "vee-validate/dist/rules";
 
 export default {
   name: "Home",
@@ -369,13 +363,45 @@ export default {
       }
       this.fetchCategoriesLang(filter);
       localStorage.setItem('langId',langId);
-      localStorage.setItem('validation',JSON.stringify(this.getLocalLang));
+      // await this.$refs.observer.reset();
+      this.overideValidation();
     },
     showLanguage(prop){
       if(this.getLocalLang.length > 0){
         let propval = this.getLocalLang.filter(x=>x.props == prop);
         return (propval.length > 0) ? propval[0].text : 'Not Set';
       }
+    },
+    overideValidation(){
+      extend("required", {
+        ...required,
+        message: this.showLanguage('VRequire')
+      });
+
+      extend("email", {
+        ...email,
+        message: this.showLanguage('VEmail')
+      });
+
+      extend("min", {
+        ...min,
+        message: this.showLanguage('VMin'),
+      });
+
+      extend("max", {
+        ...max,
+        message: this.showLanguage('VMax'),
+      });
+
+      extend("numeric", {
+        ...numeric,
+        message: this.showLanguage('VNumeric'),
+      });
+
+      extend("double", {
+        ...double,
+        message: this.showLanguage('VDouble'),
+      });
     },
     logout() {
       localStorage.removeItem("clienttoken");
@@ -436,7 +462,7 @@ export default {
       all: this.showLanguage('All')
     }
     await this.fetchCategoriesLang(filter);    
-    localStorage.setItem('validation',JSON.stringify(this.getLocalLang));
+    this.overideValidation();
   },
   mounted() {
     this.$router.options.routes
