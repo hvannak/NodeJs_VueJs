@@ -3,7 +3,6 @@ import VueRouter from 'vue-router'
 import Home from '../views/Home.vue'
 import Login from '../views/Login.vue'
 import ControlPanel from '../views/ControlPanel.vue'
-import Register from '../views/Register.vue'
 import Account from '../views/Account.vue'
 import Role from '../views/Role.vue'
 import Autherize from '../views/Autherize.vue'
@@ -68,12 +67,6 @@ Vue.use(VueRouter)
       meta: { back: true,icon: 'mdi-folder' },
       component: ControlPanel,
       children:[
-        {
-          path: 'register',
-          name: 'Register',
-          meta: { back: true,icon: 'mdi-account-plus',group:'Authentication',gicon:'mdi-folder' },
-          component: Register
-        },
         {
           path: 'accounts',
           name: 'Accounts',

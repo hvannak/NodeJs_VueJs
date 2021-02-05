@@ -65,13 +65,6 @@
                         >
                         {{showLanguage('BtnLogin')}}
                         </v-btn>
-                        <v-btn
-                        color="success"
-                        class="mr-4" large
-                        @click="reset()"
-                        >
-                        RESET
-                        </v-btn>
                     </div>
 
                     </v-col>
@@ -105,9 +98,6 @@
           let propval = this.getLocalLang.filter(x=>x.props == prop);
           return (propval.length > 0) ? propval[0].text : 'Not Set';
         }
-      },
-      async reset(){
-        await this.$refs.observer.reset();
       },
       login(){
         this.loginUserClient(this.user);

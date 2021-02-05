@@ -191,7 +191,8 @@ export default {
       },
     ],
     searchKey: [
-      {text: "Title", value: "title"}
+      {text: "Title", value: "title"},
+      {text: "Language", value: "lang"}
     ],
     category: {},
     categorys: [],

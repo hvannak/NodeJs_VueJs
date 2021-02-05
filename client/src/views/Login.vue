@@ -1,111 +1,110 @@
 <template>
-    <v-app>
-      <v-card width="60%" class="mx-auto my-auto">
-        <v-system-bar>Application Autherization</v-system-bar>
-        <v-alert
-          v-if="getMessage != ''"
-          outlined
-          type="warning"
-          text
-        >
-          {{ getMessage }}
-        </v-alert>
-        <v-main>
-            <v-form
-                ref="form"
-                v-model="valid"
-                lazy-validation>
-                <v-row>
-                <v-col cols="8" sm="12" offset="4" offset-sm="3">
-                    <v-col
-                    cols="6"
-                    sm="6">
+  <v-app>
+    <v-card width="60%" class="mx-auto my-auto">
+      <v-system-bar>Application Autherization</v-system-bar>
+      <v-alert v-if="getMessage != ''" outlined type="warning" text>
+        {{ getMessage }}
+      </v-alert>
+      <v-main>
+        <ValidationObserver ref="observer" v-slot="{ invalid }">
+          <v-form lazy-validation>
+            <v-row>
+              <v-col cols="8" sm="12" offset="4" offset-sm="3">
+                <v-col cols="6" sm="6">
+                  <ValidationProvider
+                    name="Email"
+                    rules="required|email"
+                    v-slot="{ errors }"
+                  >
                     <v-text-field
-                        v-model="user.email"
-                        :rules="emailRules"
-                        hint="You must input the valid email"
-                        label="Your email"
-                        persistent-hint
-                        outlined
-                        required>
+                      v-model="user.email"
+                      hint="You must input the valid email"
+                      label="Your email"
+                      :error-messages="errors"
+                      persistent-hint
+                      outlined
+                      required
+                    >
                     </v-text-field>
-                    </v-col>
-                    <v-col
-                    cols="6"
-                    sm="6">
-                    <v-text-field
-                        v-model="user.password"
-                        :rules="passwordRules"
-                        :type="'password'"
-                        hint="Your must input 6 characters password"
-                        label="Your password"
-                        persistent-hint
-                        outlined
-                        required
-                    ></v-text-field>
-                    </v-col>
-                    <v-col
-                    cols="6"
-                    sm="6">
-                    <div class="d-flex justify-center">
-                        <v-btn
-                        :disabled="!valid"
-                        color="success"
-                        class="mr-4" large
-                        @click="login()"
-                        >
-                        LOGIN
-                        </v-btn>
-                    </div>
-
-                    </v-col>
+                  </ValidationProvider>
                 </v-col>
-                </v-row>
-            </v-form>
-        </v-main>
-      </v-card>        
-    </v-app>
+                <v-col cols="6" sm="6">
+                  <ValidationProvider
+                    name="Password"
+                    rules="required|min:6"
+                    v-slot="{ errors }"
+                  >
+                    <v-text-field
+                      v-model="user.password"
+                      :type="'password'"
+                      hint="Your must input 6 characters password"
+                      label="Your password"
+                      :error-messages="errors"
+                      persistent-hint
+                      outlined
+                      required
+                    ></v-text-field>
+                  </ValidationProvider>
+                </v-col>
+                <v-col cols="6" sm="6">
+                  <div class="d-flex justify-center">
+                    <v-btn
+                      :disabled="invalid"
+                      color="success"
+                      class="mr-4"
+                      large
+                      @click="login()"
+                    >
+                      LOGIN
+                    </v-btn>
+                    <v-btn color="success" class="mr-4" large @click="reset()">
+                      RESET
+                    </v-btn>
+                  </div>
+                </v-col>
+              </v-col>
+            </v-row>
+          </v-form>
+        </ValidationObserver>
+      </v-main>
+    </v-card>
+  </v-app>
 </template>
 
 <script>
-  import { mapGetters, mapActions } from "vuex";
+import { mapGetters, mapActions } from "vuex";
+import { extend } from "vee-validate";
+import { required,email,min } from "vee-validate/dist/rules";
 
-  export default {
-    data: () => ({
-      valid: true,
-      user:{},
-      emailRules: [
-        v => !!v || 'E-mail is required',
-        v => /.+@.+\..+/.test(v) || 'E-mail must be valid',
-      ],
-      passwordRules:[
-        v => !!v || 'Password is required',
-        v => (v && v.length >= 6) || 'Password must have 6+ characters'
-      ]
-    }),
+extend("required", {
+  ...required
+});
 
-    computed: {
-      ...mapGetters(["getMessage"])
+extend("email", {
+  ...email
+});
+
+extend("min", {
+  ...min
+});
+
+export default {
+  data: () => ({
+    user: {},
+  }),
+
+  computed: {
+    ...mapGetters(["getMessage"]),
+  },
+
+  methods: {
+    ...mapActions(["loginUser"]),
+    async reset() {
+      await this.$refs.observer.reset();
     },
-
-    methods: {
-      ...mapActions([
-        "loginUser"
-      ]),
-      validate () {
-        return this.$refs.form.validate()
-      },
-      reset () {
-        this.$refs.form.reset()
-      },
-      resetValidation () {
-        this.$refs.form.resetValidation()
-      },
-      login(){
-        if(this.validate()){
-          this.loginUser(this.user);
-        }
-      }
+    login() {
+      this.loginUser(this.user);
     },
-  }
+  },
+};
 </script>
