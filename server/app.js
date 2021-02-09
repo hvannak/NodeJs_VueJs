@@ -209,7 +209,8 @@ mongoose.connect(process.env.DB_CONNECTION,{useNewUrlParser:true,useUnifiedTopol
         const user = new User({
             name: 'admin',
             email: 'vannak2010@gmail.com',
-            password: hashPassword,      
+            password: hashPassword,
+            backctl: true      
         });
         await user.save();
         const roleDoc = await Role.countDocuments();

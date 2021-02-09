@@ -129,6 +129,19 @@
                           </v-text-field>
                         </ValidationProvider>
                       </v-col>
+                      <v-col>
+                        <ValidationProvider
+                          name="Back"
+                          rules="required"
+                          v-slot="{ errors }"
+                        >
+                        <v-checkbox
+                          v-model="user.backctl"
+                          :error-messages="errors"
+                          label="Backed Controll"
+                        ></v-checkbox>
+                        </ValidationProvider>
+                      </v-col>
                     </v-row>
                   </v-form>
                 </v-container>
@@ -330,7 +343,6 @@ export default {
       if (this.editedIndex > -1) {
         this.updateUser(this.user);
       } else {
-        this.user.backctl = true;
         this.addUser(this.user);
       }
     },

@@ -41,6 +41,30 @@ router.post('/login', async (req,res) => {
         if(error) return res.status(400).send(error.details[0].message);
         const user = await User.findOne({email: req.body.email});
         if(!user) return res.status(400).send('Email or password is wrong');
+        if(user){
+            if(user.backctl == false){
+                return res.status(400).send('Invalid authenticate');
+            }
+        }
+        const validPass = await bcrypt.compare(req.body.password,user.password);
+        if(!validPass) return res.status(400).send('Invalid password');
+        //Create and assign a token
+        const token = jwt.sign({_id: user._id},process.env.TOKEN_SECRET);
+        res.header('auth-token',token).send(token);
+        // res.headers("authorization", `Bearer ${token}`).send();
+    } catch (err) {
+        logger.error('auth login:' + err);
+        res.status(400).send(err);
+    }
+});
+
+router.post('/loginclient', async (req,res) => {
+    try {
+        console.log(req.body);
+        const { error } = loginValidation(req.body);
+        if(error) return res.status(400).send(error.details[0].message);
+        const user = await User.findOne({email: req.body.email});
+        if(!user) return res.status(400).send('Email or password is wrong');
         const validPass = await bcrypt.compare(req.body.password,user.password);
         if(!validPass) return res.status(400).send('Invalid password');
         //Create and assign a token
@@ -164,7 +188,8 @@ router.put('/put/:userId',verify, async (req,res) => {
         const update = { 
             name: req.body.name,
             email:req.body.email,
-            password: hashPassword         
+            password: hashPassword,
+            backctl: req.body.backctl         
         };
         let docObj = await User.findOneAndUpdate(filter, update, {
             new: true
