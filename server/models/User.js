@@ -19,6 +19,10 @@ const usersSchema = mongoose.Schema({
         max: 1024,
         min: 6
     },
+    backctl: {
+        type:Boolean,
+        require:true
+    },
     date:{
         type:Date,
         default:Date.now

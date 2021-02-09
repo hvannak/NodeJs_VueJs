@@ -112,6 +112,7 @@
         this.$refs.form.reset()
       },
       register(){
+        this.user.backctl = false;
         this.registerUser(this.user);
       }
     },

@@ -22,7 +22,8 @@ router.post('/register', async (req,res) => {
     const user = new User({
         name: req.body.name,
         email: req.body.email,
-        password: hashPassword,      
+        password: hashPassword,
+        backctl: req.body.backctl      
     });
     try{
         const saveUser = await user.save();
@@ -121,6 +122,33 @@ router.get('/search/:value',verify,async (req,res) => {
     }catch(err){
         logger.error('auth search:' + err);
         res.json(err)
+    }
+});
+
+router.post('/post', async (req,res) => {
+    //LETS VALIDATE THE DATA BEFORE WE A USER
+    const { error } = registerValidation(req.body);
+    if(error) return res.status(400).send(error.details[0].message);
+    //Checking if the user is already exist
+    const emailExist = await User.findOne({email: req.body.email});
+    if(emailExist) return res.status(400).send('Email already exist');
+    //Hash password
+    const salt = await bcrypt.genSalt(10);
+    const hashPassword = await bcrypt.hash(req.body.password,salt);
+
+
+    const user = new User({
+        name: req.body.name,
+        email: req.body.email,
+        password: hashPassword,
+        backctl: req.body.backctl      
+    });
+    try{
+        const saveUser = await user.save();
+        res.send({_id:user._id,message:'You register successfully'});
+    }catch(err){
+        logger.error('auth register:' + err);
+        res.status(400).send(err);
     }
 });
 

@@ -292,7 +292,7 @@ export default {
       this.editedIndex = this.allUsers.indexOf(item);
       this.user = Object.assign(
         {},
-        { _id: item._id, name: item.name, email: item.email }
+        { _id: item._id, name: item.name, email: item.email}
       );
       this.dialog = true;
     },
@@ -330,6 +330,7 @@ export default {
       if (this.editedIndex > -1) {
         this.updateUser(this.user);
       } else {
+        this.user.backctl = true;
         this.addUser(this.user);
       }
     },
