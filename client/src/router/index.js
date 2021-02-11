@@ -8,6 +8,7 @@ import Role from '../views/Role.vue'
 import Autherize from '../views/Autherize.vue'
 import Category from '../views/Category.vue'
 import Language from '../views/Language.vue'
+import ManagePost from '../views/ManagePost.vue'
 import Localization from '../views/Localization.vue'
 import HelloWorld from "@/components/HelloWorld.vue";
 import SearchData from "@/components/SearchData.vue";
@@ -67,6 +68,12 @@ Vue.use(VueRouter)
       meta: { back: true,icon: 'mdi-folder' },
       component: ControlPanel,
       children:[
+        {
+          path: 'managepost',
+          name: 'Manage Post',
+          meta: { back: true,icon: 'mdi-account-cog',group:'Work Area',gicon:'mdi-folder' },
+          component: ManagePost
+        },
         {
           path: 'accounts',
           name: 'Accounts',

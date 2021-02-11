@@ -10,7 +10,6 @@ module.exports = async function auth (req,res,next) {
     try{
         const verified = jwt.verify(token,process.env.TOKEN_SECRET);
         req.user = verified;
-
         let parent = req.originalUrl.split('/')[2];
         let authObj = await Autherize.find({
             $and:[{

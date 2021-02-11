@@ -1,9 +1,9 @@
 <template>
   <v-data-table
     :headers="headers"
-    :items="allUsers"
+    :items="allManagePosts"
     :options.sync="options"
-    :server-items-length="gettotalItems"
+    :server-items-length="getManagePosttotalItems"
     :loading="loading"
     :footer-props="{
       'items-per-page-options': items_per_page,
@@ -56,22 +56,33 @@
             <v-card-title class="headline grey lighten-2">
               <span class="headline">{{ formTitle }}</span>
               <v-spacer></v-spacer>
-              <span class="headline font-weight-thin">{{ getMessage }}</span>
+              <span class="headline font-weight-thin">{{ getManagePostMessage }}</span>
             </v-card-title>
             <ValidationObserver v-slot="{ invalid }">
               <v-card-text>
                 <v-container>
                   <v-form @submit.prevent="submit" ref="form" lazy-validation>
                     <v-row>
+                      <v-col cols="12" sm="12" md="12">
+                        <v-select
+                        v-model="selected"
+                        :items="allCategorys"
+                        item-text="title"
+                        item-value="_id"
+                        outlined
+                        return-object
+                        @change="changeCat()"
+                        ></v-select>
+                      </v-col>
                       <v-col cols="12" sm="6" md="6">
                         <ValidationProvider
-                          name="Name"
+                          name="Title"
                           rules="required"
                           v-slot="{ errors }"
                         >
                           <v-text-field
-                            v-model="user.name"
-                            label="Name"
+                            v-model="post.title"
+                            label="Title"
                             outlined
                             :error-messages="errors"
                             required
@@ -86,7 +97,7 @@
                           v-slot="{ errors }"
                         >
                           <v-text-field
-                            v-model="user.email"
+                            v-model="post.email"
                             label="Email"
                             outlined
                             :error-messages="errors"
@@ -97,16 +108,15 @@
                       </v-col>
                       <v-col cols="12" sm="6" md="6">
                         <ValidationProvider
-                          name="Password"
-                          rules="required|min:6"
+                          name="Phone"
+                          rules="required|min:9"
                           v-slot="{ errors }"
                         >
                           <v-text-field
-                            :type="'password'"
-                            label="Password"
+                            v-model="post.phone"
+                            label="Phone"
                             outlined
                             :error-messages="errors"
-                            v-model="user.password"
                             required
                           >
                           </v-text-field>
@@ -114,34 +124,38 @@
                       </v-col>
                       <v-col cols="12" sm="6" md="6">
                         <ValidationProvider
-                          name="Confirm"
-                          rules="required|password:@Password"
+                          name="Location"
+                          rules="required"
                           v-slot="{ errors }"
                         >
                           <v-text-field
-                            :type="'password'"
-                            label="Confirm Password"
+                            v-model="post.location"
+                            label="Location"
                             outlined
                             :error-messages="errors"
-                            v-model="confirmPassword"
                             required
                           >
                           </v-text-field>
                         </ValidationProvider>
                       </v-col>
-                      <v-col>
+                      <v-col cols="12" sm="12" md="12">
                         <ValidationProvider
-                          name="Back"
+                          name="Description"
                           rules="required"
                           v-slot="{ errors }"
                         >
-                        <v-checkbox
-                          v-model="user.backctl"
-                          :error-messages="errors"
-                          label="Backed Controll"
-                        ></v-checkbox>
+                          <v-textarea
+                            v-model="post.description"
+                            label="Description"
+                            outlined
+                            :error-messages="errors"
+                            required
+                          >
+                          </v-textarea>
                         </ValidationProvider>
                       </v-col>
+
+
                     </v-row>
                   </v-form>
                 </v-container>
@@ -188,7 +202,7 @@
       <v-icon small @click="deleteItem(item)"> mdi-delete </v-icon>
     </template>
     <template v-slot:no-data>
-      <v-btn color="primary" @click="fetchUserPages"> Reset </v-btn>
+      <v-btn color="primary" @click="fetchManagePostPages"> Reset </v-btn>
     </template>
   </v-data-table>
 </template>
@@ -207,10 +221,11 @@ export default {
     search: "",
     searchBy: "",
     confirmPassword: "",
+    selected: null,
     headers: [
-      { text: "Name", value: "name", class: "text-success indigo darken-5" },
+      { text: "Title", value: "title", class: "text-success indigo darken-5" },
+      { text: "Phone", value: "phone", class: "text-success indigo darken-5" },
       { text: "Email", value: "email", class: "text-success indigo darken-5" },
-      { text: "Date", value: "date", class: "text-success indigo darken-5" },
       {
         text: "Actions",
         value: "actions",
@@ -219,16 +234,16 @@ export default {
       },
     ],
     searchKey: [
-      {text: "Name", value: "name"},
-      {text: "Email", value: "email"}
+      {text: "Title", value: "title"},
+      {text: "Phone", value: "phone"}
     ],
-    user: {},
-    users: [],
+    post: {},
+    posts: [],
     pagination: {},
     editedIndex: -1,
   }),
   computed: {
-    ...mapGetters(["allUsers", "getMessage", "gettotalItems"]),
+    ...mapGetters(["allManagePosts","allCategorys", "getManagePostMessage", "getManagePosttotalItems"]),
     formTitle() {
       return this.editedIndex === -1 ? "New Item" : "Edit Item";
     },
@@ -247,7 +262,7 @@ export default {
         searchObjby: this.searchBy,
         pageOpt: this.options
       };
-        this.fetchUserPages(pageObj);
+        this.fetchManagePostPages(pageObj);
       },
       deep: true,
     },
@@ -255,18 +270,24 @@ export default {
   created() {
     this.loading = true;
     this.setpageObj();
-    this.fetchUserPages(this.pageObj);
+    this.fetchManagePostPages(this.pageObj);
     this.loading = false;
+    this.fetchCategoriesWithoutLang();
   },
 
   methods: {
     ...mapActions([
-      "fetchUsers",
-      "fetchUserPages",
-      "deleteUser",
-      "addUser",
-      "updateUser",
+      "fetchManagePostPages",
+      "deleteManagePost",
+      "addManagePost",
+      "updateManagePost",
+      "fetchCategoriesWithoutLang"
     ]),
+
+    changeCat(){
+        this.post.categoryId = this.selected._id,
+        this.post.category = this.selected.title
+    },
 
     updateOpt() {
       console.log(this.options);
@@ -281,7 +302,7 @@ export default {
           sortDesc: this.options.sortDesc
         };
         this.setpageObj();
-        this.fetchUserPages(this.pageObj);
+        this.fetchManagePostPages(this.pageObj);
         this.loading = false;
     },
 
@@ -289,7 +310,7 @@ export default {
         this.loading = true;
         this.search = '';
         this.setpageObj();
-        this.fetchUserPages(this.pageObj);
+        this.fetchManagePostPages(this.pageObj);
         this.loading = false;
     },
 
@@ -302,29 +323,26 @@ export default {
     },
 
     editItem(item) {
-      this.editedIndex = this.allUsers.indexOf(item);
-      this.user = Object.assign(
-        {},
-        { _id: item._id, name: item.name, email: item.email,backctl:item.backctl}
-      );
+      this.editedIndex = this.allManagePosts.indexOf(item);
+      this.post = Object.assign({},item);
       this.dialog = true;
     },
 
     deleteItem(item) {
-      this.editedIndex = this.allUsers.indexOf(item);
-      this.user = Object.assign({}, item);
+      this.editedIndex = this.allManagePosts.indexOf(item);
+      this.post = Object.assign({}, item);
       this.dialogDelete = true;
     },
 
     deleteItemConfirm() {
-      this.deleteUser(this.user._id);
+      this.deleteManagePost(this.post._id);
       this.closeDelete();
     },
 
     close() {
       this.dialog = false;
       this.$nextTick(() => {
-        this.user = Object.assign({}, {});
+        this.post = Object.assign({}, {});
         this.confirmPassword = "";
         this.editedIndex = -1;
       });
@@ -334,16 +352,17 @@ export default {
     closeDelete() {
       this.dialogDelete = false;
       this.$nextTick(() => {
-        this.user = Object.assign({}, {});
+        this.post = Object.assign({}, {});
         this.editedIndex = -1;
       });
     },
 
     save() {
+    console.log(this.post);
       if (this.editedIndex > -1) {
-        this.updateUser(this.user);
+        this.updateManagePost(this.post);
       } else {
-        this.addUser(this.user);
+        this.addManagePost(this.post);
       }
     },
   },

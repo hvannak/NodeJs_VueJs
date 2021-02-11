@@ -155,6 +155,7 @@
                                       v-model="user.name"
                                       :label="`${showLanguage('Username')}`"
                                       :error-messages="errors"
+                                      outlined
                                       required
                                     >
                                     </v-text-field>
@@ -170,6 +171,7 @@
                                       v-model="user.email"
                                       :label="`${showLanguage('Useremail')}`"
                                       :error-messages="errors"
+                                      outlined
                                       required
                                     >
                                     </v-text-field>
@@ -186,6 +188,7 @@
                                       :label="`${showLanguage('Password')}`"
                                       :error-messages="errors"
                                       v-model="user.password"
+                                      outlined
                                       required
                                     >
                                     </v-text-field>
@@ -201,6 +204,7 @@
                                       :type="'password'"
                                       :label="`${showLanguage('ConfirmPassword')}`"
                                       :error-messages="errors"
+                                      outlined
                                       v-model="confirmPassword"
                                       required
                                     >
@@ -406,7 +410,7 @@ export default {
     logout() {
       localStorage.removeItem("clienttoken");
       this.$store.commit("setUser", "{}");
-      console.log(this.getUser);
+      this.$router.push('/welcome');
     },
     navtoPost(){
       if(localStorage.getItem('clienttoken') != null){

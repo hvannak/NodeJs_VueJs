@@ -5,6 +5,7 @@ import Role from './modules/role'
 import Autherize from './modules/autherize'
 import Category from './modules/category'
 import ClientPost from './modules/clientpost'
+import ManagePost from './modules/managepost'
 import Language from './modules/language'
 import Localization from './modules/localization'
 
@@ -17,6 +18,7 @@ export default new Vuex.Store({
     Autherize,
     Category,
     ClientPost,
+    ManagePost,
     Language,
     Localization
   }
