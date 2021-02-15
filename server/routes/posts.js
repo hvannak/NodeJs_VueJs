@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const Post = require('../models/Post');
+const PostImage = require('../models/PostImage');
 const verify = require('../routes/verifyToken');
 const {updatemessage, savemessage} = require('../helper');
 const {logger} = require('../logger');
@@ -104,16 +105,6 @@ router.put('/put/:roleId',verify, async (req,res) => {
 });
 
 router.post('/post',verify,async (req,res)=> {
-    let imageStore = [];
-    // use forof with async cannot use foreach
-    for (const element of req.body.image) {
-        let bufferimg = new Buffer(element.split(',')[1],'base64');
-        let quality = await (await Jimp.read(bufferimg))
-                                       .quality(60)
-                                       .scale(16/9);
-        let imgbase = await quality.getBase64Async(Jimp.MIME_PNG);
-        imageStore.push(imgbase);
-    }
 
     const postsave = new Post({
         categoryId: req.body.categoryId,
@@ -122,12 +113,26 @@ router.post('/post',verify,async (req,res)=> {
         description: req.body.description,
         phone: req.body.phone,
         email: req.body.email,
-        location: req.body.location,
-        image: imageStore
+        location: req.body.location
     });
 
     try{
         const result = await postsave.save();
+
+        // use forof with async cannot use foreach
+        for (const element of req.body.image) {
+            let bufferimg = new Buffer(element.split(',')[1],'base64');
+            let quality = await (await Jimp.read(bufferimg))
+                                            .quality(60)
+                                            .scale(16/9);
+            let imgbase = await quality.getBase64Async(Jimp.MIME_PNG);
+            let imagePost = new PostImage({
+                image: imgbase,
+                post: postsave._id
+            });
+            await imagePost.save()
+        }
+
         res.send({obj:result,message:savemessage});
     } catch(err) {
         logger.error('post post:' + err);

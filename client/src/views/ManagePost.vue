@@ -154,6 +154,55 @@
                           </v-textarea>
                         </ValidationProvider>
                       </v-col>
+                      <v-col cols="12" sm="12" md="12">
+                        <ValidationProvider rules="size:2000000" v-slot="{ errors }">
+                        <v-file-input
+                          v-model="file"
+                          chips
+                          :error-messages="errors"
+                          label="File"
+                          outlined
+                          multiple
+                          accept="image/*"
+                          prepend-icon="mdi-camera"
+                          @change="Preview_image($event)"
+                        ></v-file-input>
+                        </ValidationProvider>
+                      </v-col>
+                      <v-col cols="10" offset-md="1" class="text-center">
+                      <div
+                        class="d-flex justify-space-around flex-row flex-wrap ma-2"
+                      >
+                        <v-card
+                          class="mx-auto"
+                          color="grey lighten-4"
+                          max-width="150"
+                          v-for="(item, i) in urls"
+                          :key="i"
+                          :src="item"
+                        >
+                          <v-img
+                            max-height="50"
+                            max-width="150"
+                            :src="item"
+                          ></v-img>
+                          <v-card-text class="pt-6" style="position: relative">
+                            <v-btn
+                              absolute
+                              color="orange"
+                              class="white--text"
+                              fab
+                              small
+                              right
+                              top
+                              @click="removeImage(i)"
+                            >
+                              <v-icon small>mdi-delete</v-icon>
+                            </v-btn>
+                          </v-card-text>
+                        </v-card>
+                      </div>
+                    </v-col>
 
 
                     </v-row>
@@ -222,6 +271,9 @@ export default {
     searchBy: "",
     confirmPassword: "",
     selected: null,
+    urls: [],
+    image:[],
+    file:null,
     headers: [
       { text: "Title", value: "title", class: "text-success indigo darken-5" },
       { text: "Phone", value: "phone", class: "text-success indigo darken-5" },
@@ -283,6 +335,31 @@ export default {
       "updateManagePost",
       "fetchCategoriesWithoutLang"
     ]),
+
+    Preview_image(e) {
+      if (e.length > 0 && e.length <=8) {
+        e.forEach((element) => {
+          if(element.size <= 2000000){
+            this.url = URL.createObjectURL(element);
+            this.urls.push(this.url);
+            var reader = new FileReader();
+            reader.onload = function(e) {
+              this.image.push(e.target.result);
+            }.bind(this);
+            reader.readAsDataURL(element);        
+          }
+        });
+      }
+      else{
+        this.file = [];
+        alert('You allow only 8 attach files');
+      }
+    },
+
+    removeImage(index){
+      this.urls.splice(index,1);
+      this.image.splice(index,1);
+    },
 
     changeCat(){
         this.post.categoryId = this.selected._id,
@@ -358,10 +435,10 @@ export default {
     },
 
     save() {
-    console.log(this.post);
       if (this.editedIndex > -1) {
         this.updateManagePost(this.post);
       } else {
+        this.post.image = this.image;
         this.addManagePost(this.post);
       }
     },

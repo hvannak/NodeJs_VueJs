@@ -74,7 +74,7 @@
 <script>
 import { mapGetters, mapActions } from "vuex";
 import { extend } from "vee-validate";
-import { required,email,min } from "vee-validate/dist/rules";
+import { required,email,min,size } from "vee-validate/dist/rules";
 
 extend("required", {
   ...required
@@ -86,6 +86,10 @@ extend("email", {
 
 extend("min", {
   ...min
+});
+
+extend("size", {
+  ...size
 });
 
 extend('password', {

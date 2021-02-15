@@ -266,3 +266,18 @@
 {"message":"post page:TypeError: Cannot read property 'length' of undefined","level":"error","service":"user-interact"}
 {"message":"post put:ReferenceError: update is not defined","level":"error","service":"user-interact"}
 {"message":"post put:ReferenceError: update is not defined","level":"error","service":"user-interact"}
+{"message":"post delete:ReferenceError: post is not defined","level":"error","service":"user-interact"}
+{"message":"post page:TypeError: Cannot read property 'length' of undefined","level":"error","service":"user-interact"}
+{"message":"post page:TypeError: Cannot read property 'length' of undefined","level":"error","service":"user-interact"}
+{"message":"post page:TypeError: Cannot read property 'length' of undefined","level":"error","service":"user-interact"}
+{"message":"post page:TypeError: Cannot read property 'length' of undefined","level":"error","service":"user-interact"}
+{"message":"post page:TypeError: Cannot read property 'length' of undefined","level":"error","service":"user-interact"}
+{"message":"post page:TypeError: Cannot read property 'length' of undefined","level":"error","service":"user-interact"}
+{"message":"post page:TypeError: Cannot read property 'length' of undefined","level":"error","service":"user-interact"}
+{"message":"post page:TypeError: Cannot read property 'length' of undefined","level":"error","service":"user-interact"}
+{"message":"post post:TypeError: postsave.save(...).session is not a function","level":"error","service":"user-interact"}
+{"message":"post page:TypeError: Cannot read property 'length' of undefined","level":"error","service":"user-interact"}
+{"message":"post post:TypeError: postsave.save(...).session is not a function","level":"error","service":"user-interact"}
+{"message":"post post:TypeError: req.body.image is not iterable","level":"error","service":"user-interact"}
+{"message":"post post:TypeError: req.body.image is not iterable","level":"error","service":"user-interact"}
+{"message":"post page:TypeError: Cannot read property 'length' of undefined","level":"error","service":"user-interact"}
