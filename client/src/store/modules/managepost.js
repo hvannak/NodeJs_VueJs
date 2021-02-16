@@ -12,6 +12,7 @@ const getters = {
   allManagePosts: state => state.posts,
   getManagePostMessage: state => state.message,
   getManagePosttotalItems: state => state.totalItems,
+  getManagePost: state => state.post
 };
 
 const actions = {
@@ -21,6 +22,15 @@ const actions = {
       const response = await axios.post(`${apihelper.api_url}/posts/page`,pageObj,apihelper.setToken());
       commit('setPostPages',response.data.objList);
       commit('setTotalItems',response.data.totalDoc);
+    } catch (err) {
+      commit('updateMessage',err.response.data);
+    }
+  },
+
+  async fetchPostImages({ commit },_id) {
+    try {
+      const response = await axios.get(`${apihelper.api_url}/posts/getImageByPostId/${_id}`,apihelper.setToken());
+      commit('setPost',response.data);
     } catch (err) {
       commit('updateMessage',err.response.data);
     }
@@ -62,7 +72,7 @@ const mutations = {
     updateMessage:(state,message) => (state.message = message),
     setTotalItems:(state,total) => (state.totalItems = total),
     setPostPages:(state,post) => (state.posts = post),
-    setPostObj: (state, role) => (state.role = role),
+    setPost: (state, post) => (state.post = post),
     newPost: (state, post) => {
       console.log(state.posts);
       state.posts.unshift(post)

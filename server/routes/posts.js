@@ -150,6 +150,17 @@ router.get('/getById/:postId',verify, async (req,res) => {
     }
 });
 
+router.get('/getImageByPostId/:postId',verify, async (req,res) => {
+    try{
+        const result = await PostImage.find({post: req.params.postId}).populate("post");
+        res.json(result);
+    }catch(err){
+        logger.error('post getImageByPostId:' + err);
+        res.json(err);
+    }
+});
+
+
 router.delete('/delete/:postId',verify, async (req,res) => {
     try{
         const result = await Post.remove({_id: req.params.postId});

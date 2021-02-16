@@ -292,7 +292,8 @@ export default {
     editedIndex: -1,
   }),
   computed: {
-    ...mapGetters(["allManagePosts","allCategorys", "getManagePostMessage", "getManagePosttotalItems"]),
+    ...mapGetters(["allManagePosts","allCategorys", "getManagePostMessage",
+     "getManagePosttotalItems","getManagePost"]),
     formTitle() {
       return this.editedIndex === -1 ? "New Item" : "Edit Item";
     },
@@ -324,7 +325,8 @@ export default {
       "deleteManagePost",
       "addManagePost",
       "updateManagePost",
-      "fetchCategoriesWithoutLang"
+      "fetchCategoriesWithoutLang",
+      "fetchPostImages"
     ]),
 
     Preview_image(e) {
@@ -385,9 +387,11 @@ export default {
       };
     },
 
-    editItem(item) {
+    async editItem(item) {
+      await this.fetchPostImages(item._id);
       this.editedIndex = this.allManagePosts.indexOf(item);
-      this.post = Object.assign({},item);
+      console.log(this.getManagePost);
+      this.post = Object.assign({},this.getManagePost);
       this.dialog = true;
     },
 
