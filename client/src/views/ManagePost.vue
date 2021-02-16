@@ -65,13 +65,11 @@
                     <v-row>
                       <v-col cols="12" sm="12" md="12">
                         <v-select
-                        v-model="selected"
+                        v-model="post.category"
                         :items="allCategorys"
                         item-text="title"
                         item-value="_id"
                         outlined
-                        return-object
-                        @change="changeCat()"
                         ></v-select>
                       </v-col>
                       <v-col cols="12" sm="6" md="6">
@@ -270,7 +268,6 @@ export default {
     search: "",
     searchBy: "",
     confirmPassword: "",
-    selected: null,
     urls: [],
     image:[],
     file:null,
@@ -301,12 +298,6 @@ export default {
     },
   },
   watch: {
-    dialog(val) {
-      val || this.close();
-    },
-    dialogDelete(val) {
-      val || this.closeDelete();
-    },
     options: {
       handler() {
       let pageObj = {
@@ -359,11 +350,6 @@ export default {
     removeImage(index){
       this.urls.splice(index,1);
       this.image.splice(index,1);
-    },
-
-    changeCat(){
-        this.post.categoryId = this.selected._id,
-        this.post.category = this.selected.title
     },
 
     updateOpt() {

@@ -152,7 +152,8 @@ router.get('/getById/:postId',verify, async (req,res) => {
 
 router.delete('/delete/:postId',verify, async (req,res) => {
     try{
-        const result = await post.remove({_id: req.params.postId});
+        const result = await Post.remove({_id: req.params.postId});
+        await PostImage.remove({post: req.params.postId});
         res.json(result);
     }catch(err){
         logger.error('post delete:' + err);

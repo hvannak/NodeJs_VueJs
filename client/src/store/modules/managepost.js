@@ -28,7 +28,6 @@ const actions = {
 
   async addManagePost({ commit }, postObj) {
     try {
-      console.log(postObj);
       const response = await axios.post(
         `${apihelper.api_url}/posts/post`,postObj,apihelper.setToken());
       commit('newPost', response.data.obj);
@@ -64,7 +63,10 @@ const mutations = {
     setTotalItems:(state,total) => (state.totalItems = total),
     setPostPages:(state,post) => (state.posts = post),
     setPostObj: (state, role) => (state.role = role),
-    newPost: (state, post) => state.posts.unshift(post),
+    newPost: (state, post) => {
+      console.log(state.posts);
+      state.posts.unshift(post)
+    },
     removePost: (state, _id) =>
         (state.posts = state.posts.filter(post => post._id !== _id)),
     updatePostObj: (state, postObj) => {
