@@ -237,7 +237,8 @@ export default {
       "getPosttotalItems",
       "getSearchObj",
       "getCurrentPage",
-      "getLocalLang"
+      "getLocalLang",
+      "getFirstPostImage"
     ]),
     numberOfPages() {
       return this.getPosttotalItems <= 9
@@ -249,7 +250,7 @@ export default {
     this.page = this.getCurrentPage;
   },
   methods: {
-    ...mapActions(["fetchPostByCat"]),
+    ...mapActions(["fetchPostByCat","fetchFirstPostImage"]),
     showLanguage(prop){
       if(this.getLocalLang.length > 0)
         return this.getLocalLang.filter(x=>x.props == prop)[0].text

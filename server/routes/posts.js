@@ -20,7 +20,6 @@ router.get('/all',verify, async (req,res) => {
 
 router.post('/searchByCat',async (req,res) => {
     try{
-        console.log(req.body);
         let opt = req.body.pageOpt;
         var pageSize = opt.itemsPerPage;
         var currentPage = opt.page;
@@ -171,6 +170,16 @@ router.get('/getById/:postId',verify, async (req,res) => {
 router.get('/getImageByPostId/:postId',verify, async (req,res) => {
     try{
         const result = await PostImage.find({post: req.params.postId});
+        res.json(result);
+    }catch(err){
+        logger.error('post getImageByPostId:' + err);
+        res.json(err);
+    }
+});
+
+router.get('/getFirstImage/:postId',verify, async (req,res) => {
+    try{
+        const result = await PostImage.find({post: req.params.postId}).limit(1);
         res.json(result);
     }catch(err){
         logger.error('post getImageByPostId:' + err);

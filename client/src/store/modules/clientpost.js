@@ -9,7 +9,8 @@ const state = {
   message:'',
   waiting: false,
   searchObj: {},
-  currentPage: 1
+  currentPage: 1,
+  firstPostImage: {}
 };
 
 const getters = {
@@ -18,7 +19,8 @@ const getters = {
   getPosttotalItems: state => state.totalItems,
   getWaiting: state => state.waiting,
   getSearchObj: state => state.searchObj,
-  getCurrentPage: state => state.currentPage
+  getCurrentPage: state => state.currentPage,
+  getFirstPostImage: state => state.firstPostImage
 };
 
 const actions = {
@@ -53,6 +55,15 @@ const actions = {
     try {
       const response = await axios.get(`${apihelper.api_url}/posts/getById/${_postId}`,apihelper.setclientToken());
       commit('setPostObj',response.data);
+    } catch (err) {
+      commit('updateMessage',err.response.data);
+    }
+  },
+
+  async fetchFirstPostImage({ commit},_postId){
+    try {
+      const response = await axios.get(`${apihelper.api_url}/posts/getFirstImage/${_postId}`,apihelper.setclientToken());
+      commit('setPostImageObj',response.data);
     } catch (err) {
       commit('updateMessage',err.response.data);
     }
@@ -96,6 +107,7 @@ const mutations = {
     setTotalItems:(state,total) => (state.totalItems = total),
     setPostPages:(state,post) => (state.posts = post),
     setPostObj: (state, role) => (state.role = role),
+    setPostImageObj: (state,imgpost) => (state.firstPostImage = imgpost),
     setWaiting: (state,wait) => (state.waiting = wait),
     newPost: (state, post) => state.posts.unshift(post),
     removePost: (state, _id) =>
