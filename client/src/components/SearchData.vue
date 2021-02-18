@@ -25,12 +25,12 @@
                 :class="{ 'on-hover': hover }"
               >
                 <v-container>
-                    <v-img
+                    <!-- <v-img
                       :aspect-ratio="16 / 9"
                       contain
                       :src="readBufferImg(item.image[0])"
                     >
-                    </v-img>
+                    </v-img> -->
                 </v-container>
                 <v-card-text class="pt-6 blue lighten-5" style="position: relative">
                   <v-btn
@@ -269,7 +269,7 @@ export default {
       this.fetchPostByCat(pageObj);
     },
     showDetails(item){
-      this.images = item.image;
+      // this.images = item.image;
       this.details = item;
       this.dialog = true;
     }
