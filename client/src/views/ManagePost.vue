@@ -169,20 +169,19 @@
                       </v-col>
                       <v-col cols="10" offset-md="1" class="text-center">
                       <div
-                        class="d-flex justify-space-around flex-row flex-wrap ma-2"
+                        class="d-flex justify-space-around flex-row flex-wrap pa-10"
                       >
                         <v-card
-                          class="mx-auto"
+                          class="mx-auto my-2"
                           color="grey lighten-4"
                           max-width="150"
                           v-for="(item, i) in urls"
-                          :key="i"
-                          :src="item"
+                          :key="i"                       
                         >
                           <v-img
                             max-height="50"
                             max-width="150"
-                            :src="item"
+                            :src="item.img"
                           ></v-img>
                           <v-card-text class="pt-6" style="position: relative">
                             <v-btn
@@ -271,6 +270,7 @@ export default {
     urls: [],
     image:[],
     file:null,
+    storeremoveImage:[],
     headers: [
       { text: "Title", value: "title", class: "text-success indigo darken-5" },
       { text: "Phone", value: "phone", class: "text-success indigo darken-5" },
@@ -293,7 +293,7 @@ export default {
   }),
   computed: {
     ...mapGetters(["allManagePosts","allCategorys", "getManagePostMessage",
-     "getManagePosttotalItems","getManagePost"]),
+     "getManagePosttotalItems","getPostImage"]),
     formTitle() {
       return this.editedIndex === -1 ? "New Item" : "Edit Item";
     },
@@ -334,7 +334,7 @@ export default {
         e.forEach((element) => {
           if(element.size <= 2000000){
             this.url = URL.createObjectURL(element);
-            this.urls.push(this.url);
+            this.urls.push({_id:null,img:this.url});
             var reader = new FileReader();
             reader.onload = function(e) {
               this.image.push(e.target.result);
@@ -350,8 +350,11 @@ export default {
     },
 
     removeImage(index){
+      if(this.urls[index]._id != null)
+        this.storeremoveImage.push(this.urls[index]._id);
       this.urls.splice(index,1);
       this.image.splice(index,1);
+      console.log(this.storeremoveImage);
     },
 
     updateOpt() {
@@ -390,9 +393,22 @@ export default {
     async editItem(item) {
       await this.fetchPostImages(item._id);
       this.editedIndex = this.allManagePosts.indexOf(item);
-      console.log(this.getManagePost);
-      this.post = Object.assign({},this.getManagePost);
+      this.urls = [];
+      for (const data of this.getPostImage) {
+        let dataBuffer = this.readBufferImg(data.image);
+        this.urls.push({_id:data._id,img:dataBuffer});
+      }
+      this.post = Object.assign({},item);
       this.dialog = true;
+    },
+
+    readBufferImg(image) {
+      var bytes = new Uint8Array(image.data);
+      var binary = bytes.reduce(
+        (data, b) => (data += String.fromCharCode(b)),
+        ""
+      );
+      return binary;
     },
 
     deleteItem(item) {
@@ -408,6 +424,7 @@ export default {
 
     close() {
       this.dialog = false;
+      this.storeremoveImage = [];
       this.$nextTick(() => {
         this.post = Object.assign({}, {});
         this.confirmPassword = "";
@@ -425,12 +442,14 @@ export default {
     },
 
     save() {
+      this.post.image = this.image;
       if (this.editedIndex > -1) {
+        this.post.removeimage = this.storeremoveImage;
         this.updateManagePost(this.post);
       } else {
-        this.post.image = this.image;
         this.addManagePost(this.post);
       }
+      this.storeremoveImage = [];
     },
   },
 };

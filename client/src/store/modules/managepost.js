@@ -12,7 +12,7 @@ const getters = {
   allManagePosts: state => state.posts,
   getManagePostMessage: state => state.message,
   getManagePosttotalItems: state => state.totalItems,
-  getManagePost: state => state.post
+  getPostImage: state => state.post
 };
 
 const actions = {
@@ -60,16 +60,18 @@ const actions = {
     try {
         const response = await axios.put(
         `${apihelper.api_url}/posts/put/${postObj._id}`,postObj,apihelper.setToken());
-        commit('updatePostObj', response.data.obj);
-        commit('updateMessage',response.data.message);
+        console.log(response.data);
+        commit('updateManagePostObj', response.data.obj);
+        commit('updateManageMessage',response.data.message);
     } catch (err) {
-        commit('updateMessage',err.response.data);
+      console.log(err);
+        commit('updateManageMessage',err.response.data);
     }
   }
 };
 
 const mutations = {
-    updateMessage:(state,message) => (state.message = message),
+    updateManageMessage:(state,message) => (state.message = message),
     setTotalItems:(state,total) => (state.totalItems = total),
     setPostPages:(state,post) => (state.posts = post),
     setPost: (state, post) => (state.post = post),
@@ -79,11 +81,10 @@ const mutations = {
     },
     removePost: (state, _id) =>
         (state.posts = state.posts.filter(post => post._id !== _id)),
-    updatePostObj: (state, postObj) => {
+    updateManagePostObj: (state, postObj) => {
         const index = state.posts.findIndex(post => post._id === postObj._id);
-        console.log(index);
         if (index !== -1) {
-        state.roles.splice(index, 1, postObj);
+        state.posts.splice(index, 1, postObj);
         }
     }
 };

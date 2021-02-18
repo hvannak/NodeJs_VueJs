@@ -82,23 +82,41 @@ router.post('/page',verify,async (req,res) => {
     }
 });
 
-router.put('/put/:roleId',verify, async (req,res) => {
+router.put('/put/:postId',verify, async (req,res) => {
     try{
-        const filter = { _id: req.params.roleId };
+        const filter = { _id: req.params.postId };
         const docObj = new Post({
             _id: req.body._id,
-            categoryId: req.body.categoryId,
             category: req.body.category,
             title: req.body.title,
             description: req.body.description,
             phone: req.body.phone,
             email: req.body.email,
-            location: req.body.location,
-            image: req.body.image      
+            location: req.body.location     
         });
-        await Post.update(filter,update);
+        await Post.update(filter,docObj);
+
+        // use forof with async cannot use foreach
+        for (const element of req.body.image) {
+            let bufferimg = new Buffer(element.split(',')[1],'base64');
+            let quality = await (await Jimp.read(bufferimg))
+                                            .quality(60)
+                                            .scale(16/9);
+            let imgbase = await quality.getBase64Async(Jimp.MIME_PNG);
+            let imagePost = new PostImage({
+                image: imgbase,
+                post: docObj._id
+            });
+            await imagePost.save()
+        }
+
+        for (const rId of req.body.removeimage) {
+            await PostImage.remove({_id: rId});
+        }
+
         res.json({obj:docObj,message:updatemessage});
     } catch(err) {
+        console.log(err);
         logger.error('post put:' + err);
         res.json(err)
     }
@@ -152,7 +170,7 @@ router.get('/getById/:postId',verify, async (req,res) => {
 
 router.get('/getImageByPostId/:postId',verify, async (req,res) => {
     try{
-        const result = await PostImage.find({post: req.params.postId}).populate("post");
+        const result = await PostImage.find({post: req.params.postId});
         res.json(result);
     }catch(err){
         logger.error('post getImageByPostId:' + err);
