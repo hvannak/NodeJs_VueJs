@@ -430,7 +430,7 @@ export default {
         this.confirmPassword = "";
         this.editedIndex = -1;
       });
-      this.$store.commit("updateMessage", "");
+      this.$store.commit("updateManageMessage", "");
     },
 
     closeDelete() {
