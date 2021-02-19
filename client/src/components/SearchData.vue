@@ -17,6 +17,7 @@
             md="4"
             lg="4"
           >
+          <div v-if="fetchFirstPostImage(item._id)">
             <v-hover v-slot="{ hover }" open-delay="200">
               <v-card
                 class="mx-auto"
@@ -25,12 +26,12 @@
                 :class="{ 'on-hover': hover }"
               >
                 <v-container>
-                    <!-- <v-img
+                    <v-img
                       :aspect-ratio="16 / 9"
                       contain
-                      :src="readBufferImg(item.image[0])"
+                      :src="readBufferImg"
                     >
-                    </v-img> -->
+                    </v-img>
                 </v-container>
                 <v-card-text class="pt-6 blue lighten-5" style="position: relative">
                   <v-btn
@@ -58,6 +59,7 @@
                 </v-card-text>
               </v-card>
             </v-hover>
+          </div>
           </v-col>
         </v-row>
       </template>
@@ -228,7 +230,7 @@ export default {
       itemsPerPage: 9,
       dialog: false,
       images: [],
-      details: {}
+      details: {},
     };
   },
   computed: {
@@ -245,6 +247,15 @@ export default {
         ? 1
         : Math.ceil(this.getPosttotalItems / 9);
     },
+    readBufferImg() {
+      let obj = this.getFirstPostImage;
+      var bytes = new Uint8Array(obj.image.data);
+      var binary = bytes.reduce(
+        (data, b) => (data += String.fromCharCode(b)),
+        ""
+      );
+      return binary;
+    },
   },
   created() {
     this.page = this.getCurrentPage;
@@ -255,14 +266,7 @@ export default {
       if(this.getLocalLang.length > 0)
         return this.getLocalLang.filter(x=>x.props == prop)[0].text
     },
-    readBufferImg(image) {
-      var bytes = new Uint8Array(image.data);
-      var binary = bytes.reduce(
-        (data, b) => (data += String.fromCharCode(b)),
-        ""
-      );
-      return binary;
-    },
+
     navigationPage(value) {
       let pageObj = Object.assign({}, this.getSearchObj);
       pageObj.pageOpt.page = value;

@@ -180,7 +180,7 @@ router.get('/getImageByPostId/:postId',verify, async (req,res) => {
 router.get('/getFirstImage/:postId',verify, async (req,res) => {
     try{
         const result = await PostImage.find({post: req.params.postId}).limit(1);
-        res.json(result);
+        res.json(result[0]);
     }catch(err){
         logger.error('post getImageByPostId:' + err);
         res.json(err);

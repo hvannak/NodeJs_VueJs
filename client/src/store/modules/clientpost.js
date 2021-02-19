@@ -29,7 +29,6 @@ const actions = {
     try {
       commit('setWaiting',true);
       const response = await axios.post(`${apihelper.api_url}/posts/searchByCat`,pageObj);
-      console.log(response.data.objList);
       commit('setWaiting',false);
       commit('setPostPages',response.data.objList);
       commit('setTotalItems',response.data.totalDoc);
@@ -61,8 +60,10 @@ const actions = {
   },
 
   async fetchFirstPostImage({ commit},_postId){
+    console.log(_postId);
     try {
       const response = await axios.get(`${apihelper.api_url}/posts/getFirstImage/${_postId}`,apihelper.setclientToken());
+      console.log(response.data);
       commit('setPostImageObj',response.data);
     } catch (err) {
       commit('updateMessage',err.response.data);
