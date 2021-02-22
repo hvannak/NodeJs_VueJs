@@ -10,7 +10,8 @@ const state = {
   waiting: false,
   searchObj: {},
   currentPage: 1,
-  firstPostImage: {}
+  firstPostImage: {},
+  postImages: []
 };
 
 const getters = {
@@ -20,7 +21,8 @@ const getters = {
   getWaiting: state => state.waiting,
   getSearchObj: state => state.searchObj,
   getCurrentPage: state => state.currentPage,
-  getFirstPostImage: state => state.firstPostImage
+  getFirstPostImage: state => state.firstPostImage,
+  getPostImages: state => state.postImages
 };
 
 const actions = {
@@ -33,10 +35,10 @@ const actions = {
           axios.get(`${apihelper.api_url}/posts/getFirstImage/${itm._id}`,apihelper.setclientToken()).then(img => {
             let imagedata = img.data.image;
             response.data.objList[index].firstimage = apihelper.readBufferImg(imagedata);
+            commit('setPostPages',response.data.objList);
+            commit('setWaiting',false);
           });
         }
-        commit('setWaiting',false);
-        commit('setPostPages',response.data.objList);
         commit('setTotalItems',response.data.totalDoc);
       });
 
@@ -68,11 +70,22 @@ const actions = {
   },
 
   async fetchFirstPostImage({ commit},_postId){
-    console.log(_postId);
     try {
       const response = await axios.get(`${apihelper.api_url}/posts/getFirstImage/${_postId}`,apihelper.setclientToken());
-      console.log(response.data);
       commit('setPostImageObj',response.data);
+    } catch (err) {
+      commit('updateMessage',err.response.data);
+    }
+  },
+
+  async fetchPostImage({ commit},_postId){
+    try {
+      commit('setPostImages',[]);
+      const response = await axios.get(`${apihelper.api_url}/posts/getImageByPostId/${_postId}`,apihelper.setclientToken());
+      for (const [index,item] of response.data.entries()) {
+        response.data[index].image = apihelper.readBufferImg(item.image);
+      }
+      commit('setPostImages',response.data);
     } catch (err) {
       commit('updateMessage',err.response.data);
     }
@@ -117,6 +130,7 @@ const mutations = {
     setPostPages:(state,post) => (state.posts = post),
     setPostObj: (state, role) => (state.role = role),
     setPostImageObj: (state,imgpost) => (state.firstPostImage = imgpost),
+    setPostImages: (state,imgposts) => (state.postImages = imgposts),
     setWaiting: (state,wait) => (state.waiting = wait),
     newPost: (state, post) => state.posts.unshift(post),
     removePost: (state, _id) =>

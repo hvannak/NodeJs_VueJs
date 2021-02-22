@@ -96,9 +96,9 @@
           >{{showLanguage('Message_title_detail')}}</v-toolbar>
           <v-carousel>
             <v-carousel-item
-              v-for="(itm,i) in images"
+              v-for="(itm,i) in getPostImages"
               :key="i"
-              :src="readBufferImg(itm)"
+              :src="itm.image"
               reverse-transition="fade-transition"
               transition="fade-transition"
               contain
@@ -238,28 +238,19 @@ export default {
       "getSearchObj",
       "getCurrentPage",
       "getLocalLang",
-      "getFirstPostImage"
+      "getPostImages"
     ]),
     numberOfPages() {
       return this.getPosttotalItems <= 9
         ? 1
         : Math.ceil(this.getPosttotalItems / 9);
-    },
-    readBufferImg() {
-      let obj = this.getFirstPostImage;
-      var bytes = new Uint8Array(obj.image.data);
-      var binary = bytes.reduce(
-        (data, b) => (data += String.fromCharCode(b)),
-        ""
-      );
-      return binary;
-    },
+    }
   },
   created() {
     this.page = this.getCurrentPage;
   },
   methods: {
-    ...mapActions(["fetchPostByCat","fetchFirstPostImage"]),
+    ...mapActions(["fetchPostByCat","fetchPostImage"]),
     showLanguage(prop){
       if(this.getLocalLang.length > 0)
         return this.getLocalLang.filter(x=>x.props == prop)[0].text
@@ -272,7 +263,7 @@ export default {
       this.fetchPostByCat(pageObj);
     },
     showDetails(item){
-      // this.images = item.image;
+      this.fetchPostImage(item._id);
       this.details = item;
       this.dialog = true;
     }
