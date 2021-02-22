@@ -27,11 +27,19 @@ const actions = {
 
   async fetchPostByCat({ commit },pageObj) {
     try {
-      commit('setWaiting',true);
-      const response = await axios.post(`${apihelper.api_url}/posts/searchByCat`,pageObj);
-      commit('setWaiting',false);
-      commit('setPostPages',response.data.objList);
-      commit('setTotalItems',response.data.totalDoc);
+      await axios.post(`${apihelper.api_url}/posts/searchByCat`,pageObj).then(response => {
+        commit('setWaiting',true);
+        for (const [index,itm] of response.data.objList.entries()) {
+          axios.get(`${apihelper.api_url}/posts/getFirstImage/${itm._id}`,apihelper.setclientToken()).then(img => {
+            let imagedata = img.data.image;
+            response.data.objList[index].firstimage = apihelper.readBufferImg(imagedata);
+          });
+        }
+        commit('setWaiting',false);
+        commit('setPostPages',response.data.objList);
+        commit('setTotalItems',response.data.totalDoc);
+      });
+
       router.push({ name: 'Searchdata'}).catch(() => {
         console.log('the same router');
       });

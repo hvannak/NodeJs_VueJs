@@ -17,7 +17,6 @@
             md="4"
             lg="4"
           >
-          <div v-if="fetchFirstPostImage(item._id)">
             <v-hover v-slot="{ hover }" open-delay="200">
               <v-card
                 class="mx-auto"
@@ -29,7 +28,7 @@
                     <v-img
                       :aspect-ratio="16 / 9"
                       contain
-                      :src="readBufferImg"
+                      :src="item.firstimage"
                     >
                     </v-img>
                 </v-container>
@@ -59,7 +58,6 @@
                 </v-card-text>
               </v-card>
             </v-hover>
-          </div>
           </v-col>
         </v-row>
       </template>

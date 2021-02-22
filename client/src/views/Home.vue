@@ -435,7 +435,6 @@ export default {
           itemsPerPage: 9,
           page: 1,
         };
-        console.log(this.value);
         let pageObj = {
           searchObj: this.searchdata,
           categoryId: this.value._id,
