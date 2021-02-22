@@ -29,16 +29,15 @@ const actions = {
 
   async fetchPostByCat({ commit },pageObj) {
     try {
-      await axios.post(`${apihelper.api_url}/posts/searchByCat`,pageObj).then(response => {
-        commit('setWaiting',true);
+      commit('setWaiting',true);
+       axios.post(`${apihelper.api_url}/posts/searchByCat`,pageObj).then(async response => {
         for (const [index,itm] of response.data.objList.entries()) {
-          axios.get(`${apihelper.api_url}/posts/getFirstImage/${itm._id}`,apihelper.setclientToken()).then(img => {
-            let imagedata = img.data.image;
-            response.data.objList[index].firstimage = apihelper.readBufferImg(imagedata);
-            commit('setPostPages',response.data.objList);
-            commit('setWaiting',false);
-          });
+          const respone1 = await axios.get(`${apihelper.api_url}/posts/getFirstImage/${itm._id}`,apihelper.setclientToken());
+          let imagedata = respone1.data.image;
+          response.data.objList[index].firstimage = apihelper.readBufferImg(imagedata);
+          commit('setPostPages',response.data.objList);
         }
+        commit('setWaiting',false);
         commit('setTotalItems',response.data.totalDoc);
       });
 
