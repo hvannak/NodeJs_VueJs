@@ -122,9 +122,7 @@ router.put('/put/:postId',verify, async (req,res) => {
 });
 
 router.post('/post',verify,async (req,res)=> {
-
     const postsave = new Post({
-        categoryId: req.body.categoryId,
         category: req.body.category,
         title: req.body.title,
         description: req.body.description,
@@ -152,6 +150,7 @@ router.post('/post',verify,async (req,res)=> {
 
         res.send({obj:result,message:savemessage});
     } catch(err) {
+        console.log(err);
         logger.error('post post:' + err);
         res.json(err);
     }
@@ -167,7 +166,7 @@ router.get('/getById/:postId',verify, async (req,res) => {
     }
 });
 
-router.get('/getImageByPostId/:postId',verify, async (req,res) => {
+router.get('/getImageByPostId/:postId', async (req,res) => {
     try{
         const result = await PostImage.find({post: req.params.postId});
         res.json(result);
@@ -177,7 +176,7 @@ router.get('/getImageByPostId/:postId',verify, async (req,res) => {
     }
 });
 
-router.get('/getFirstImage/:postId',verify, async (req,res) => {
+router.get('/getFirstImage/:postId', async (req,res) => {
     try{
         const result = await PostImage.find({post: req.params.postId}).limit(1);
         res.json(result[0]);

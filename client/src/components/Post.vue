@@ -46,7 +46,7 @@
                                 v-slot="{ errors }"
                               >
                   <v-text-field
-                    v-model="post.category"
+                    v-model="categorytext"
                     :label="`${showLanguage('Category')}`"
                     :error-messages="errors"
                     persistent-hint
@@ -242,7 +242,8 @@ export default {
     urls: [],
     dialog: false,
     image:[],
-    file:null
+    file:null,
+    categorytext: null
   }),
   computed: {
     ...mapGetters(["allCategorys", "getCategoryMessage","getLocalLang"]),
@@ -278,9 +279,9 @@ export default {
     },
     selectCategory(item){
       this.e1 = 2;
+      this.categorytext = item.title;
       this.post = {
-        categoryId: item._id,
-        category: item.title
+        category: item._id,       
       }
     },
     showLanguage(prop){
