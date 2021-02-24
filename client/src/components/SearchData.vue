@@ -146,7 +146,7 @@
               <v-card>
                 <v-card-title class="amber lighten-1 justify-end">
                   <h2 class="display-1 mr-4 white--text font-weight-light">
-                    Contacts
+                    {{showLanguage('Contact')}}
                   </h2>
                   <v-icon
                     dark
@@ -185,7 +185,7 @@
                     mdi-home-outline
                   </v-icon>
                   <h2 class="display-1 white--text font-weight-light">
-                    Address
+                    {{showLanguage('Address')}}
                   </h2>
                 </v-card-title>
                 <v-container>
