@@ -36,7 +36,7 @@ router.post('/searchByCat',async (req,res) => {
 
         docObj = await Post.find(filter).limit(pageSize).skip(pageSize*(currentPage-1)).sort({
             date: 'desc'
-        });
+        }).populate('category');
 
         var totalItems = await Post.count(filter);
         res.json({objList:docObj,totalDoc:totalItems});

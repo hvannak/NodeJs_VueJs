@@ -32,10 +32,11 @@ const actions = {
       commit('setWaiting',true);
        axios.post(`${apihelper.api_url}/posts/searchByCat`,pageObj).then(async response => {
         for (const [index,itm] of response.data.objList.entries()) {
-          const respone1 = await axios.get(`${apihelper.api_url}/posts/getFirstImage/${itm._id}`,apihelper.setclientToken());
-          let imagedata = respone1.data.image;
-          response.data.objList[index].firstimage = apihelper.readBufferImg(imagedata);
-          commit('setPostPages',response.data.objList);
+          await axios.get(`${apihelper.api_url}/posts/getFirstImage/${itm._id}`,apihelper.setclientToken()).then(respone1 => {
+            let imagedata = respone1.data.image;
+            response.data.objList[index].firstimage = apihelper.readBufferImg(imagedata);
+            commit('setPostPages',response.data.objList);
+          });
         }
         commit('setWaiting',false);
         commit('setTotalItems',response.data.totalDoc);

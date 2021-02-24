@@ -47,7 +47,7 @@
                   </v-btn>
 
                   <div class="font-weight-light grey--text title mb-2">
-                    For the {{ item.category }}
+                    {{ item.category.title }}
                   </div>
                   <h3 class="display-1 font-weight-light orange--text mb-2">
                     {{ item.title }}
