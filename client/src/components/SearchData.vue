@@ -52,6 +52,9 @@
                   <h3 class="display-1 font-weight-light orange--text mb-2">
                     {{ item.title }}
                   </h3>
+                  <h5 class="display-1 font-weight-light green--text mb-2">
+                    {{ item.price }}
+                  </h5>
                   <div class="font-weight-light title mb-2">
                     {{ item.location }}
                   </div>

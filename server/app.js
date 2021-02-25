@@ -1,4 +1,7 @@
 const express = require('express');
+const helmet = require("helmet");
+const path = require('path');
+const compression = require('compression');
 const app = express();
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
@@ -18,6 +21,9 @@ const Localization = require('./models/Localization');
 require('dotenv/config');
 //Middleware
 app.use(cors());
+app.use(helmet());
+app.use(compression());
+app.use(express.static(path.join(__dirname, 'public')));
 // app.use(express.json());
 app.use(express.json({limit: '16mb'}));
 app.use(express.urlencoded({limit: '16mb'}));
@@ -330,6 +336,6 @@ mongoose.connect(process.env.DB_CONNECTION,{useNewUrlParser:true,useUnifiedTopol
     }
 });
 
-app.listen(3000,()=> {
+app.listen(process.env.PORT,process.env.HOST,()=> {
     console.log("Server up and running");
 });

@@ -4,6 +4,9 @@ const postSchema = mongoose.Schema({
     category:{
         type: mongoose.Schema.Types.ObjectId, ref: 'Category'
     },
+    user: {
+        type: mongoose.Schema.Types.ObjectId, ref: 'User'
+    },
     title:{
         type:String,
         require:true
@@ -21,6 +24,10 @@ const postSchema = mongoose.Schema({
         require:true
     },
     location:{
+        type:String,
+        require:true
+    },
+    price:{
         type:String,
         require:true
     },

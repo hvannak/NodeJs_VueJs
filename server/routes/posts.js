@@ -3,7 +3,7 @@ const router = express.Router();
 const Post = require('../models/Post');
 const PostImage = require('../models/PostImage');
 const verify = require('../routes/verifyToken');
-const {updatemessage, savemessage} = require('../helper');
+const {updatemessage, savemessage,getuserId} = require('../helper');
 const {logger} = require('../logger');
 var Jimp = require('jimp');
 
@@ -91,7 +91,8 @@ router.put('/put/:postId',verify, async (req,res) => {
             description: req.body.description,
             phone: req.body.phone,
             email: req.body.email,
-            location: req.body.location     
+            location: req.body.location,
+            price: req.body.price     
         });
         await Post.update(filter,docObj);
 
@@ -124,11 +125,13 @@ router.put('/put/:postId',verify, async (req,res) => {
 router.post('/post',verify,async (req,res)=> {
     const postsave = new Post({
         category: req.body.category,
+        user: getuserId(req)._id,
         title: req.body.title,
         description: req.body.description,
         phone: req.body.phone,
         email: req.body.email,
-        location: req.body.location
+        location: req.body.location,
+        price: req.body.price
     });
 
     try{

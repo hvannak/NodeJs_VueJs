@@ -90,6 +90,22 @@
                       </v-col>
                       <v-col cols="12" sm="6" md="6">
                         <ValidationProvider
+                          name="Price"
+                          rules="required"
+                          v-slot="{ errors }"
+                        >
+                          <v-text-field
+                            v-model="post.price"
+                            label="Price"
+                            outlined
+                            :error-messages="errors"
+                            required
+                          >
+                          </v-text-field>
+                        </ValidationProvider>
+                      </v-col>
+                      <v-col cols="12" sm="6" md="6">
+                        <ValidationProvider
                           name="Email"
                           rules="required|email"
                           v-slot="{ errors }"

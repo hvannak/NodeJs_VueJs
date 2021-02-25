@@ -90,6 +90,20 @@
                 </v-col>
                 <v-col cols="10" offset-md="1">
                   <ValidationProvider
+                                name="Price"
+                                rules="required"
+                                v-slot="{ errors }"
+                              >
+                  <v-text-field
+                    v-model="post.price"
+                    :error-messages="errors"
+                    outlined
+                    :label="`${showLanguage('Price')}`"
+                  ></v-text-field>
+                  </ValidationProvider>
+                </v-col>
+                <v-col cols="10" offset-md="1">
+                  <ValidationProvider
                                 name="Phone"
                                 rules="required"
                                 v-slot="{ errors }"
