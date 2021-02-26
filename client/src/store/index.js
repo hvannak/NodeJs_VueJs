@@ -6,6 +6,7 @@ import Autherize from './modules/autherize'
 import Category from './modules/category'
 import ClientPost from './modules/clientpost'
 import ManagePost from './modules/managepost'
+import ManageClientPost from './modules/manageclientpost'
 import Language from './modules/language'
 import Localization from './modules/localization'
 
@@ -20,6 +21,7 @@ export default new Vuex.Store({
     ClientPost,
     ManagePost,
     Language,
-    Localization
+    Localization,
+    ManageClientPost
   }
 })

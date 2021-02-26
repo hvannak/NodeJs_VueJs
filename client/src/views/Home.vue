@@ -236,6 +236,14 @@
                   >
                 </v-list-item>
                 <v-list-item link>
+                  <v-list-item-title @click="manageClientPost()"
+                    >{{showLanguage('ManageClientPost')}}</v-list-item-title
+                  >
+                  <v-list-item-icon
+                    ><v-icon>mdi-account-arrow-right</v-icon></v-list-item-icon
+                  >
+                </v-list-item>
+                <v-list-item link>
                   <v-list-item-title @click="logout()"
                     >{{showLanguage('Logout')}}</v-list-item-title
                   >
@@ -411,6 +419,14 @@ export default {
       localStorage.removeItem("clienttoken");
       this.$store.commit("setUser", "{}");
       this.$router.push('/welcome');
+    },
+    manageClientPost(){
+      if(localStorage.getItem('clienttoken') != null){
+        this.$router.push('/manageclientpost');
+      }
+      else {
+        this.info_dialog = true;
+      }
     },
     navtoPost(){
       if(localStorage.getItem('clienttoken') != null){

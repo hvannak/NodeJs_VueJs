@@ -81,6 +81,49 @@ router.post('/page',verify,async (req,res) => {
     }
 });
 
+router.post('/pageclient',verify,async (req,res) => {
+    try{
+        let opt = req.body.pageOpt;
+        var pageSize = opt.itemsPerPage;
+        var currentPage = opt.page;
+        var docObj;
+        var handlenull = (req.body.searchObj == null) ? '' : req.body.searchObj;
+        var trueCon = {
+            $and:[{
+                [req.body.searchObjby]: { "$regex": req.body.searchObj, "$options": "i" }
+            },
+            {
+                user: getuserId(req)._id
+            }]
+        };
+        // var filter = (handlenull != '') ? {[req.body.searchObjby]: { "$regex": req.body.searchObj, "$options": "i" } } : {};
+        var filter = (handlenull != '') ? trueCon : { user: getuserId(req)._id };
+        if(opt.sortBy.length == 1 && opt.sortDesc.length == 1){
+            if(opt.sortDesc[0] == false){
+                console.log('asc');
+                docObj = await Post.find(filter).limit(pageSize).skip(pageSize*(currentPage-1)).sort({
+                    [opt.sortBy[0]]: 'asc'
+                });
+            } else {
+                console.log('desc');
+                docObj = await Post.find(filter).limit(pageSize).skip(pageSize*(currentPage-1)).sort({
+                    [opt.sortBy[0]]: 'desc'
+                });
+            }
+        } else{
+            docObj = await Post.find(filter).limit(pageSize).skip(pageSize*(currentPage-1)).sort({
+                _id: 'asc'
+            });
+        }
+        var totalItems = await Post.count(filter);
+        res.json({objList:docObj,totalDoc:totalItems});
+
+    }catch(err){
+        logger.error('post page:' + err);
+        res.json(err);
+    }
+});
+
 router.put('/put/:postId',verify, async (req,res) => {
     try{
         const filter = { _id: req.params.postId };

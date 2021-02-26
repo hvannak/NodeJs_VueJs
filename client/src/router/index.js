@@ -15,6 +15,7 @@ import SearchData from "@/components/SearchData.vue";
 import LoginClient from "@/components/LoginClient.vue";
 import RegisterClient from "@/components/RegisterClient.vue";
 import Post from "@/components/Post.vue";
+import ManageClientPost from "@/components/ManageClientPost.vue";
 
 Vue.use(VueRouter)
 
@@ -53,6 +54,12 @@ Vue.use(VueRouter)
         name: 'Post',
         meta: { back: false,icon: 'mdi-cloud-search',group:'Front',gicon:'mdi-folder' },
         component: Post
+      },
+      {
+        path: '/manageclientpost',
+        name: 'Manage Client Post',
+        meta: { back: false,icon: 'mdi-cloud-search',group:'Front',gicon:'mdi-folder' },
+        component: ManageClientPost
       }]
     },
     {

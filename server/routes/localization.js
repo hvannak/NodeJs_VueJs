@@ -52,7 +52,7 @@ router.get('/getByConstant',verify, async (req,res) => {
                     parent:'home',
                     name:'props',
                     props: ['All','Looking','Post_free','Login','Register','Welcome','Searchdata','Message_title',
-                    'Message_post','Message_looking','Close','ManageProfile','Logout','Username','Useremail','Password','ConfirmPassword',
+                    'Message_post','Message_looking','Close','ManageProfile','Logout','ManageClientPost','Username','Useremail','Password','ConfirmPassword',
                     'Save']
                 }
             ]
