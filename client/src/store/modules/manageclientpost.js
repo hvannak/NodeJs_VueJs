@@ -27,19 +27,19 @@ const actions = {
     }
   },
 
-  async fetchPostImages({ commit },_id) {
+  async fetchClientPostImages({ commit },_id) {
     try {
-      const response = await axios.get(`${apihelper.api_url}/posts/getImageByPostId/${_id}`,apihelper.setToken());
+      const response = await axios.get(`${apihelper.api_url}/posts/getImageByPostId/${_id}`,apihelper.setclientToken());
       commit('setPost',response.data);
     } catch (err) {
       commit('updateMessage',err.response.data);
     }
   },
 
-  async addManagePost({ commit }, postObj) {
+  async addManageClientPost({ commit }, postObj) {
     try {
       const response = await axios.post(
-        `${apihelper.api_url}/posts/post`,postObj,apihelper.setToken());
+        `${apihelper.api_url}/posts/post`,postObj,apihelper.setclientToken());
       commit('newPost', response.data.obj);
       commit('updateMessage',response.data.message);
     } catch (err) {
@@ -47,22 +47,22 @@ const actions = {
     }
   },
 
-  async deleteManagePost({ commit }, _id) {
+  async deleteManageClientPost({ commit }, _id) {
     try {
-      await axios.delete(`${apihelper.api_url}/posts/delete/${_id}`,apihelper.setToken());
+      await axios.delete(`${apihelper.api_url}/posts/delete/${_id}`,apihelper.setclientToken());
       commit('removePost', _id);
     } catch (err) {
       commit('updateMessage',err.response.data);
     }
   },
 
-  async updateManagePost({ commit }, postObj) {
+  async updateManageClientPost({ commit }, postObj) {
     try {
         const response = await axios.put(
-        `${apihelper.api_url}/posts/put/${postObj._id}`,postObj,apihelper.setToken());
+        `${apihelper.api_url}/posts/put/${postObj._id}`,postObj,apihelper.setclientToken());
         console.log(response.data);
         commit('updateManagePostObj', response.data.obj);
-        commit('updateManageMessage',response.data.message);
+        commit('updateMessage',response.data.message);
     } catch (err) {
       console.log(err);
         commit('updateManageMessage',err.response.data);
@@ -71,7 +71,7 @@ const actions = {
 };
 
 const mutations = {
-    updateManageMessage:(state,message) => (state.message = message),
+    updateMessage:(state,message) => (state.message = message),
     setTotalItems:(state,total) => (state.totalItems = total),
     setPostPages:(state,post) => (state.posts = post),
     setPost: (state, post) => (state.post = post),

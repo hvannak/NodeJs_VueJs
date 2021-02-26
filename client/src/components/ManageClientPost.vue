@@ -338,11 +338,11 @@ export default {
   methods: {
     ...mapActions([
       "fetchManageClientPostPages",
-      "deleteManagePost",
-      "addManagePost",
-      "updateManagePost",
+      "deleteManageClientPost",
+      "addManageClientPost",
+      "updateManageClientPost",
       "fetchCategoriesWithoutLang",
-      "fetchPostImages"
+      "fetchClientPostImages"
     ]),
 
     Preview_image(e) {
@@ -407,7 +407,7 @@ export default {
     },
 
     async editItem(item) {
-      await this.fetchPostImages(item._id);
+      await this.fetchClientPostImages(item._id);
       this.editedIndex = this.allManageClientPosts.indexOf(item);
       this.urls = [];
       for (const data of this.getClientPostImage) {
@@ -434,7 +434,7 @@ export default {
     },
 
     deleteItemConfirm() {
-      this.deleteManagePost(this.post._id);
+      this.deleteManageClientPost(this.post._id);
       this.closeDelete();
     },
 
@@ -461,9 +461,9 @@ export default {
       this.post.image = this.image;
       if (this.editedIndex > -1) {
         this.post.removeimage = this.storeremoveImage;
-        this.updateManagePost(this.post);
+        this.updateManageClientPost(this.post);
       } else {
-        this.addManagePost(this.post);
+        this.addManageClientPost(this.post);
       }
       this.storeremoveImage = [];
     },
