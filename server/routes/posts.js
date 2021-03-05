@@ -135,7 +135,8 @@ router.put('/put/:postId',verify, async (req,res) => {
             phone: req.body.phone,
             email: req.body.email,
             location: req.body.location,
-            price: req.body.price     
+            price: req.body.price,
+            firstimage: null     
         });
         await Post.update(filter,docObj);
 
@@ -174,7 +175,8 @@ router.post('/post',verify,async (req,res)=> {
         phone: req.body.phone,
         email: req.body.email,
         location: req.body.location,
-        price: req.body.price
+        price: req.body.price,
+        firstimage: null
     });
 
     try{
