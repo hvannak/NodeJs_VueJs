@@ -46,7 +46,17 @@
         </template>
 
         <v-spacer></v-spacer>
-        <v-dialog v-model="dialog" max-width="70%">
+        <v-dialog v-if="waiting" v-model="waiting" max-width="5%" hide-overlay persistent>
+          <div class="waiting">
+            <v-progress-circular
+                :size="70"
+                :width="7"
+                color="purple"
+                indeterminate
+              ></v-progress-circular>
+          </div>
+        </v-dialog>
+        <v-dialog v-else v-model="dialog" max-width="70%">
           <template v-slot:activator="{ on, attrs }">
             <v-btn large color="red lighten-2" dark v-bind="attrs" v-on="on">
               New Item
@@ -287,6 +297,7 @@ export default {
     image:[],
     file:null,
     storeremoveImage:[],
+    waiting: false,
     headers: [
       { text: "Title", value: "title", class: "text-success indigo darken-5" },
       { text: "Phone", value: "phone", class: "text-success indigo darken-5" },
@@ -407,6 +418,8 @@ export default {
     },
 
     async editItem(item) {
+      this.dialog = true;
+      this.waiting = true;
       await this.fetchClientPostImages(item._id);
       this.editedIndex = this.allManageClientPosts.indexOf(item);
       this.urls = [];
@@ -415,7 +428,7 @@ export default {
         this.urls.push({_id:data._id,img:dataBuffer});
       }
       this.post = Object.assign({},item);
-      this.dialog = true;
+      this.waiting = false;
     },
 
     readBufferImg(image) {
@@ -471,4 +484,9 @@ export default {
 };
 </script>
 <style scoped>
+  .waiting {
+    text-align: center;
+    height: 90px;
+    background-color: transparent;
+  }
 </style>
