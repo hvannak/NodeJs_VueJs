@@ -65,7 +65,7 @@ const actions = {
         commit('updateMessage',response.data.message);
     } catch (err) {
       console.log(err);
-        commit('updateManageMessage',err.response.data);
+        commit('updateMessage',err.response.data);
     }
   }
 };

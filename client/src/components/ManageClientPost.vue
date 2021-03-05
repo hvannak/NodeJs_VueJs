@@ -46,7 +46,7 @@
         </template>
 
         <v-spacer></v-spacer>
-        <v-dialog v-if="waiting" v-model="waiting" max-width="5%" hide-overlay persistent>
+        <v-dialog v-if="waiting" v-model="waiting" max-width="10%" hide-overlay persistent>
           <div class="waiting">
             <v-progress-circular
                 :size="70"
@@ -459,7 +459,7 @@ export default {
         this.confirmPassword = "";
         this.editedIndex = -1;
       });
-      this.$store.commit("updateManageMessage", "");
+      this.$store.commit("updateMessage", "");
     },
 
     closeDelete() {
