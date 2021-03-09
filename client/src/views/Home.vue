@@ -3,6 +3,7 @@
     <v-main>
       <v-app-bar app color="primary" dark>
         <div class="d-flex align-center">
+          <router-link to="/">
           <v-img
             alt="Vuetify Logo"
             class="shrink mr-2"
@@ -11,6 +12,7 @@
             transition="scale-transition"
             width="40"
           />
+          </router-link>
 
           <v-speed-dial
             v-model="fab"
@@ -274,7 +276,7 @@
             <v-navigation-drawer class="mx-auto" permanent right>
               <v-divider></v-divider>
 
-              <v-list dense>
+              <!-- <v-list dense>
                 <v-list-item
                   link
                   v-for="item in items"
@@ -289,7 +291,108 @@
                     <v-list-item-title>{{showLanguage(item.name)}}</v-list-item-title>
                   </v-list-item-content>
                 </v-list-item>
-              </v-list>
+              </v-list> -->
+
+              <v-system-bar
+                height="50" dark color="red lighten-2"
+              >
+              <v-icon>mdi-home-search</v-icon>
+              <span>Details Search Data</span>
+              </v-system-bar>
+              <v-col cols="12">
+              <v-select
+                  v-model="value"
+                  :items="getAllCategorys"
+                  item-text="title"
+                  item-value="_id"
+                  flat
+                  solo-inverted
+                  hide-details
+                  return-object
+              ></v-select>
+              </v-col>
+              <v-col cols="12">
+              <v-text-field
+                    :label="`${showLanguage('Title')}`"
+                    flat
+                    solo-inverted
+                    hide-details
+                    required
+                  >
+              </v-text-field>
+              </v-col>
+              <v-col cols="12">
+              <v-text-field
+                    :label="`${showLanguage('Description')}`"
+                    flat
+                    solo-inverted
+                    hide-details
+                    required
+                  >
+              </v-text-field>
+              </v-col>
+              <v-col cols="12">
+              <v-text-field
+                    :label="`${showLanguage('Phone')}`"
+                    flat
+                    solo-inverted
+                    hide-details
+                    required
+                  >
+              </v-text-field>
+              </v-col>
+              <v-col cols="12">
+              <v-text-field
+                    :label="`${showLanguage('Email')}`"
+                    flat
+                    solo-inverted
+                    hide-details
+                    required
+                  >
+              </v-text-field>
+              </v-col>
+              <v-col cols="12">
+              <v-text-field
+                    :label="`${showLanguage('Location')}`"
+                    flat
+                    solo-inverted
+                    hide-details
+                    required
+                  >
+              </v-text-field>
+              </v-col>
+              <v-col cols="12">
+                <v-row>
+                  <v-col cols="5">
+                    <v-text-field
+                      :label="`${showLanguage('Price')}`"
+                      flat
+                      solo-inverted
+                      hide-details
+                      required
+                    >
+                    </v-text-field>
+                  </v-col>
+                  <v-col cols="1">
+                    <span>-</span>
+                  </v-col>
+                  <v-col cols="5">
+                    <v-text-field
+                      :label="`${showLanguage('Price')}`"
+                      flat
+                      solo-inverted
+                      hide-details
+                      required
+                    >
+                    </v-text-field>
+                  </v-col>
+                </v-row>
+              </v-col>
+              <v-col cols="12">
+                <v-btn large color="red lighten-2" block dark>
+                  Search
+                </v-btn>
+              </v-col>
             </v-navigation-drawer>
           </v-card>
         </v-col>
