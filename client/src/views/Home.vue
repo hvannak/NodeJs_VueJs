@@ -4,14 +4,14 @@
       <v-app-bar app color="primary" dark>
         <div class="d-flex align-center">
           <router-link to="/">
-          <v-img
-            alt="Vuetify Logo"
-            class="shrink mr-2"
-            contain
-            src="https://cdn.vuetifyjs.com/images/logos/vuetify-logo-dark.png"
-            transition="scale-transition"
-            width="40"
-          />
+            <v-img
+              alt="Vuetify Logo"
+              class="shrink mr-2"
+              contain
+              src="https://cdn.vuetifyjs.com/images/logos/vuetify-logo-dark.png"
+              transition="scale-transition"
+              width="40"
+            />
           </router-link>
 
           <v-speed-dial
@@ -30,9 +30,16 @@
                 <v-icon v-else> mdi-web </v-icon>
               </v-btn>
             </template>
-            <v-btn v-for="item in allLanguages"
-              :key="item.title" fab dark small color="green" @click="changeLanguage(item._id)">
-              {{item.shortcode}}
+            <v-btn
+              v-for="item in allLanguages"
+              :key="item.title"
+              fab
+              dark
+              small
+              color="green"
+              @click="changeLanguage(item._id)"
+            >
+              {{ item.shortcode }}
             </v-btn>
           </v-speed-dial>
         </div>
@@ -79,14 +86,18 @@
           >
             <template v-slot:default="dialog">
               <v-card>
-                <v-toolbar color="primary" dark>{{showLanguage('Message_title')}}</v-toolbar>
+                <v-toolbar color="primary" dark>{{
+                  showLanguage("Message_title")
+                }}</v-toolbar>
                 <v-card-text>
                   <div class="text-h5 pa-12">
-                    {{showLanguage('Message_looking')}}                
+                    {{ showLanguage("Message_looking") }}
                   </div>
                 </v-card-text>
                 <v-card-actions class="justify-end">
-                  <v-btn text @click="dialog.value = false">{{showLanguage('Close')}}</v-btn>
+                  <v-btn text @click="dialog.value = false">{{
+                    showLanguage("Close")
+                  }}</v-btn>
                 </v-card-actions>
               </v-card>
             </template>
@@ -95,17 +106,17 @@
 
         <v-spacer></v-spacer>
         <v-btn elevation="2" text @click="navtoPost()">
-          <span class="mr-2">{{showLanguage('Post_free')}}</span>
+          <span class="mr-2">{{ showLanguage("Post_free") }}</span>
           <v-icon>mdi-open-in-new</v-icon>
         </v-btn>
         <v-spacer></v-spacer>
         <div v-if="getUser === '{}'" class="d-flex align-center">
           <v-btn href="/loginclient" elevation="2" text>
-            <span class="mr-2">{{showLanguage('Login')}}</span>
+            <span class="mr-2">{{ showLanguage("Login") }}</span>
             <v-icon>mdi-account-check</v-icon>
           </v-btn>
           <v-btn href="/registerclient" elevation="2" text>
-            <span class="mr-2">{{showLanguage('Register')}}</span>
+            <span class="mr-2">{{ showLanguage("Register") }}</span>
             <v-icon>mdi-account-key</v-icon>
           </v-btn>
         </div>
@@ -130,22 +141,19 @@
                         v-bind="attrs"
                         v-on="on"
                         @click="manageProfile()"
-                        >{{showLanguage('ManageProfile')}}</v-list-item-title
+                        >{{ showLanguage("ManageProfile") }}</v-list-item-title
                       >
                     </template>
 
                     <v-card>
                       <v-card-title class="headline grey lighten-2">
-                        {{showLanguage('ManageProfile')}}
+                        {{ showLanguage("ManageProfile") }}
                       </v-card-title>
 
                       <ValidationObserver ref="observer" v-slot="{ invalid }">
                         <v-card-text>
                           <v-container>
-                            <v-form
-                              @submit.prevent="submit"
-                              lazy-validation
-                            >
+                            <v-form @submit.prevent="submit" lazy-validation>
                               <v-row>
                                 <v-col cols="12" sm="6" md="6">
                                   <ValidationProvider
@@ -204,7 +212,9 @@
                                   >
                                     <v-text-field
                                       :type="'password'"
-                                      :label="`${showLanguage('ConfirmPassword')}`"
+                                      :label="`${showLanguage(
+                                        'ConfirmPassword'
+                                      )}`"
                                       :error-messages="errors"
                                       outlined
                                       v-model="confirmPassword"
@@ -226,7 +236,7 @@
                             text
                             @click="save"
                           >
-                            {{showLanguage('Save')}}
+                            {{ showLanguage("Save") }}
                           </v-btn>
                         </v-card-actions>
                       </ValidationObserver>
@@ -238,17 +248,17 @@
                   >
                 </v-list-item>
                 <v-list-item link>
-                  <v-list-item-title @click="manageClientPost()"
-                    >{{showLanguage('ManageClientPost')}}</v-list-item-title
-                  >
+                  <v-list-item-title @click="manageClientPost()">{{
+                    showLanguage("ManageClientPost")
+                  }}</v-list-item-title>
                   <v-list-item-icon
                     ><v-icon>mdi-account-arrow-right</v-icon></v-list-item-icon
                   >
                 </v-list-item>
                 <v-list-item link>
-                  <v-list-item-title @click="logout()"
-                    >{{showLanguage('Logout')}}</v-list-item-title
-                  >
+                  <v-list-item-title @click="logout()">{{
+                    showLanguage("Logout")
+                  }}</v-list-item-title>
                   <v-list-item-icon
                     ><v-icon>mdi-account-arrow-right</v-icon></v-list-item-icon
                   >
@@ -293,14 +303,12 @@
                 </v-list-item>
               </v-list> -->
 
-              <v-system-bar
-                height="50" dark color="red lighten-2"
-              >
-              <v-icon>mdi-home-search</v-icon>
-              <span>Details Search Data</span>
+              <v-system-bar height="50" dark color="red lighten-2">
+                <v-icon>mdi-home-search</v-icon>
+                <span>Details Search Data</span>
               </v-system-bar>
               <v-col cols="12">
-              <v-select
+                <v-select
                   v-model="value"
                   :items="getAllCategorys"
                   item-text="title"
@@ -309,62 +317,68 @@
                   solo-inverted
                   hide-details
                   return-object
-              ></v-select>
+                ></v-select>
               </v-col>
               <v-col cols="12">
-              <v-text-field
-                    :label="`${showLanguage('Title')}`"
-                    flat
-                    solo-inverted
-                    hide-details
-                    required
-                  >
-              </v-text-field>
+                <v-text-field
+                  v-model="searchdetails.title"
+                  :label="`${showLanguage('Title')}`"
+                  flat
+                  solo-inverted
+                  hide-details
+                  required
+                >
+                </v-text-field>
               </v-col>
               <v-col cols="12">
-              <v-text-field
-                    :label="`${showLanguage('Description')}`"
-                    flat
-                    solo-inverted
-                    hide-details
-                    required
-                  >
-              </v-text-field>
+                <v-text-field
+                  v-model="searchdetails.description"
+                  :label="`${showLanguage('Description')}`"
+                  flat
+                  solo-inverted
+                  hide-details
+                  required
+                >
+                </v-text-field>
               </v-col>
               <v-col cols="12">
-              <v-text-field
-                    :label="`${showLanguage('Phone')}`"
-                    flat
-                    solo-inverted
-                    hide-details
-                    required
-                  >
-              </v-text-field>
+                <v-text-field
+                  v-model="searchdetails.phone"
+                  :label="`${showLanguage('Phone')}`"
+                  flat
+                  solo-inverted
+                  hide-details
+                  required
+                >
+                </v-text-field>
               </v-col>
               <v-col cols="12">
-              <v-text-field
-                    :label="`${showLanguage('Email')}`"
-                    flat
-                    solo-inverted
-                    hide-details
-                    required
-                  >
-              </v-text-field>
+                <v-text-field
+                  v-model="searchdetails.email"
+                  :label="`${showLanguage('Email')}`"
+                  flat
+                  solo-inverted
+                  hide-details
+                  required
+                >
+                </v-text-field>
               </v-col>
               <v-col cols="12">
-              <v-text-field
-                    :label="`${showLanguage('Location')}`"
-                    flat
-                    solo-inverted
-                    hide-details
-                    required
-                  >
-              </v-text-field>
+                <v-text-field
+                  v-model="searchdetails.location"
+                  :label="`${showLanguage('Location')}`"
+                  flat
+                  solo-inverted
+                  hide-details
+                  required
+                >
+                </v-text-field>
               </v-col>
               <v-col cols="12">
                 <v-row>
                   <v-col cols="5">
                     <v-text-field
+                      v-model="searchdetails.fromPrice"
                       :label="`${showLanguage('Price')}`"
                       flat
                       solo-inverted
@@ -378,6 +392,7 @@
                   </v-col>
                   <v-col cols="5">
                     <v-text-field
+                      v-model="searchdetails.toPrice"
                       :label="`${showLanguage('Price')}`"
                       flat
                       solo-inverted
@@ -389,7 +404,13 @@
                 </v-row>
               </v-col>
               <v-col cols="12">
-                <v-btn large color="red lighten-2" block dark>
+                <v-btn
+                  large
+                  color="red lighten-2"
+                  block
+                  dark
+                  @click="searchDetails()"
+                >
                   Search
                 </v-btn>
               </v-col>
@@ -404,21 +425,17 @@
       persistent
       v-model="info_dialog"
     >
-    <v-card>
-      <v-toolbar
-        color="primary"
-        dark
-      >{{showLanguage('Message_title')}}</v-toolbar>
-      <v-card-text>
-        <div class="text-h5 pa-12">{{showLanguage('Message_post')}}</div>
-      </v-card-text>
-      <v-card-actions class="justify-end">
-        <v-btn
-          text
-          @click="closedialog()"
-        >{{showLanguage('Close')}}</v-btn>
-      </v-card-actions>
-    </v-card>
+      <v-card>
+        <v-toolbar color="primary" dark>{{
+          showLanguage("Message_title")
+        }}</v-toolbar>
+        <v-card-text>
+          <div class="text-h5 pa-12">{{ showLanguage("Message_post") }}</div>
+        </v-card-text>
+        <v-card-actions class="justify-end">
+          <v-btn text @click="closedialog()">{{ showLanguage("Close") }}</v-btn>
+        </v-card-actions>
+      </v-card>
     </v-dialog>
   </v-app>
 </template>
@@ -426,7 +443,14 @@
 <script>
 import { mapGetters, mapActions } from "vuex";
 import { extend } from "vee-validate";
-import { required,email,min,max,numeric,double } from "vee-validate/dist/rules";
+import {
+  required,
+  email,
+  min,
+  max,
+  numeric,
+  double,
+} from "vee-validate/dist/rules";
 
 export default {
   name: "Home",
@@ -436,10 +460,19 @@ export default {
     value: { _id: "-1", title: "All" },
     user: {},
     dialog: false,
-    info_dialog:false,
+    info_dialog: false,
     confirmPassword: "",
     search: true,
     searchdata: null,
+    searchdetails: {
+      title: "",
+      description: "",
+      phone: "",
+      email: "",
+      location: "",
+      fromPrice: "",
+      toPrice: ""
+    },
     messagedialog: false,
 
     direction: "right",
@@ -461,85 +494,90 @@ export default {
       "allPosts",
       "getWaiting",
       "getLocalLang",
-      "allLanguages"
+      "allLanguages",
     ]),
   },
   methods: {
-    ...mapActions(["fetchUserClient", "fetchCategoriesLang", "fetchPostByCat","fetchLocalLanguage","fetchLanguages"]),
+    ...mapActions([
+      "fetchUserClient",
+      "fetchCategoriesLang",
+      "fetchPostByCat",
+      "fetchPostByDetails",
+      "fetchLocalLanguage",
+      "fetchLanguages",
+    ]),
     manageProfile() {
       this.$store.commit("updateMessage", "");
       this.user = Object.assign({}, this.getUser);
     },
-    async changeLanguage(langId){
+    async changeLanguage(langId) {
       await this.fetchLocalLanguage(langId);
       let filter = {
         lang: langId,
-        all: this.showLanguage('All')
-      }
+        all: this.showLanguage("All"),
+      };
       this.fetchCategoriesLang(filter);
-      localStorage.setItem('langId',langId);
+      localStorage.setItem("langId", langId);
       // await this.$refs.observer.reset();
       this.overideValidation();
     },
-    showLanguage(prop){
-      if(this.getLocalLang.length > 0){
-        let propval = this.getLocalLang.filter(x=>x.props == prop);
-        return (propval.length > 0) ? propval[0].text : 'Not Set';
+    showLanguage(prop) {
+      if (this.getLocalLang.length > 0) {
+        let propval = this.getLocalLang.filter((x) => x.props == prop);
+        return propval.length > 0 ? propval[0].text : "Not Set";
       }
     },
-    overideValidation(){
+    overideValidation() {
       extend("required", {
         ...required,
-        message: this.showLanguage('VRequire')
+        message: this.showLanguage("VRequire"),
       });
 
       extend("email", {
         ...email,
-        message: this.showLanguage('VEmail')
+        message: this.showLanguage("VEmail"),
       });
 
       extend("min", {
         ...min,
-        message: this.showLanguage('VMin'),
+        message: this.showLanguage("VMin"),
       });
 
       extend("max", {
         ...max,
-        message: this.showLanguage('VMax'),
+        message: this.showLanguage("VMax"),
       });
 
       extend("numeric", {
         ...numeric,
-        message: this.showLanguage('VNumeric'),
+        message: this.showLanguage("VNumeric"),
       });
 
       extend("double", {
         ...double,
-        message: this.showLanguage('VDouble'),
+        message: this.showLanguage("VDouble"),
       });
     },
     logout() {
       localStorage.removeItem("clienttoken");
       this.$store.commit("setUser", "{}");
-      this.$router.push('/welcome');
+      this.$router.push("/welcome");
     },
-    manageClientPost(){
-      if(localStorage.getItem('clienttoken') != null){
-        this.$router.push('/manageclientpost');
-      }
-      else {
+    manageClientPost() {
+      if (localStorage.getItem("clienttoken") != null) {
+        this.$router.push("/manageclientpost");
+      } else {
         this.info_dialog = true;
       }
     },
-    navtoPost(){
-      if(localStorage.getItem('clienttoken') != null){
-        this.$router.push('/post');
-      }
-      else {
+    navtoPost() {
+      if (localStorage.getItem("clienttoken") != null) {
+        this.$router.push("/post");
+      } else {
         this.info_dialog = true;
       }
     },
-    closedialog(){
+    closedialog() {
       this.info_dialog = false;
     },
     save() {
@@ -567,6 +605,18 @@ export default {
         this.messagedialog = true;
       }
     },
+    searchDetails() {
+      let options = {
+          itemsPerPage: 9,
+          page: 1,
+        };
+        let pageObj = {
+          searchObj: this.searchdetails,
+          categoryId: this.value._id,
+          pageOpt: options,
+        };
+      this.fetchPostByDetails(pageObj);
+    },
   },
   watch: {},
   async created() {
@@ -576,14 +626,14 @@ export default {
       this.$store.commit("setUser", "{}");
     }
     await this.fetchLanguages();
-    let defaultlang = this.allLanguages.filter(x=>x.default == true)[0]._id;
-    localStorage.setItem('langId',defaultlang);
+    let defaultlang = this.allLanguages.filter((x) => x.default == true)[0]._id;
+    localStorage.setItem("langId", defaultlang);
     await this.fetchLocalLanguage(defaultlang);
     let filter = {
       lang: defaultlang,
-      all: this.showLanguage('All')
-    }
-    await this.fetchCategoriesLang(filter);    
+      all: this.showLanguage("All"),
+    };
+    await this.fetchCategoriesLang(filter);
     this.overideValidation();
   },
   mounted() {

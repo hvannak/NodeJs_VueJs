@@ -51,6 +51,30 @@ const actions = {
     }
   },
 
+  async fetchPostByDetails({ commit },pageObj) {
+    try {
+      commit('setWaiting',true);
+      commit('setPostPages',[]);
+       axios.post(`${apihelper.api_url}/posts/searchdetails`,pageObj).then(response => {
+        for (const [index,itm] of response.data.objList.entries()) {
+          axios.get(`${apihelper.api_url}/posts/getFirstImage/${itm._id}`,apihelper.setclientToken()).then(respone1 => {
+              let imagedata = respone1.data.image;
+              response.data.objList[index].firstimage = apihelper.readBufferImg(imagedata);
+          });
+        }
+        commit('setPostPages',response.data.objList);
+        commit('setWaiting',false);
+        commit('setTotalItems',response.data.totalDoc);
+      });
+
+      router.push({ name: 'Searchdata'}).catch(() => {
+        console.log('the same router');
+      });
+    } catch (err) {
+      commit('updateMessage',err.response.data);
+    }
+  },
+
   async fetchPostPages({ commit },pageObj) {
     try {
       const response = await axios.post(`${apihelper.api_url}/posts/page`,pageObj,apihelper.setclientToken());

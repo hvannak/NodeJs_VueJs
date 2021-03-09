@@ -47,6 +47,55 @@ router.post('/searchByCat',async (req,res) => {
     }
 });
 
+router.post('/searchdetails',async (req,res) => {
+    try{
+        let opt = req.body.pageOpt;
+        var pageSize = opt.itemsPerPage;
+        var currentPage = opt.page;
+        var docObj;
+        var filterObj = req.body.searchObj;
+        let dynamicQuery = {};
+        console.log(req.body);
+
+        if(req.body.categoryId != '-1'){
+            dynamicQuery["categoryId"] = {categoryId: req.body.categoryId}
+        }
+        if(filterObj.title != ""){
+            dynamicQuery["title"] = { "$regex": filterObj.title, "$options": "i" }
+        }
+        if(filterObj.description != ""){
+            dynamicQuery["description"] = { "$regex": filterObj.description, "$options": "i" }
+        }
+        if(filterObj.phone != ""){
+            dynamicQuery["phone"] = { "$regex": filterObj.phone, "$options": "i" }
+        }
+        if(filterObj.email != ""){
+            dynamicQuery["email"] = { "$regex": filterObj.email, "$options": "i" }
+        }
+        if(filterObj.location != ""){
+            dynamicQuery["location"] = { "$regex": filterObj.location, "$options": "i" }
+        }
+        if(filterObj.fromPrice != "" && filterObj.toPrice != ""){
+            dynamicQuery["price"] = {price: { $lte: filterObj.fromPrice}, price: { $gte: filterObj.toPrice} }
+        }
+        console.log(dynamicQuery);
+        console.log({$and:[dynamicQuery]});
+
+
+        docObj = await Post.find({$and:[dynamicQuery]}).limit(pageSize).skip(pageSize*(currentPage-1)).sort({
+            date: 'desc'
+        }).populate('category');
+
+        var totalItems = await Post.count({$and:[dynamicQuery]});
+        res.json({objList:docObj,totalDoc:totalItems});
+
+    }catch(err){
+        console.log(err);
+        logger.error('post page:' + err);
+        res.json(err);
+    }
+});
+
 router.post('/page',verify,async (req,res) => {
     try{
         let opt = req.body.pageOpt;
