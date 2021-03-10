@@ -305,7 +305,7 @@
 
               <v-system-bar height="50" dark color="red lighten-2">
                 <v-icon>mdi-home-search</v-icon>
-                <span>Details Search Data</span>
+                <span>{{showLanguage("Detail_search_data")}}</span>
               </v-system-bar>
               <v-col cols="12">
                 <v-select
@@ -421,7 +421,7 @@
                   dark
                   @click="searchDetails()"
                 >
-                  Search
+                  {{showLanguage("Search_btn")}}
                 </v-btn>
               </v-col>
             </v-navigation-drawer>

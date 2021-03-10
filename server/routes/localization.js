@@ -53,7 +53,7 @@ router.get('/getByConstant',verify, async (req,res) => {
                     name:'props',
                     props: ['All','Looking','Post_free','Login','Register','Welcome','Searchdata','Message_title',
                     'Message_post','Message_looking','Close','ManageProfile','Logout','ManageClientPost','Username','Useremail','Password','ConfirmPassword',
-                    'Save']
+                    'Save','Detail_search_data','Search_btn']
                 }
             ]
         };
