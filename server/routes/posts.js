@@ -55,7 +55,6 @@ router.post('/searchdetails',async (req,res) => {
         var docObj;
         var filterObj = req.body.searchObj;
         let dynamicQuery = {};
-        console.log(req.body);
 
         if(req.body.categoryId != '-1'){
             dynamicQuery["categoryId"] = {categoryId: req.body.categoryId}
@@ -75,12 +74,12 @@ router.post('/searchdetails',async (req,res) => {
         if(filterObj.location != ""){
             dynamicQuery["location"] = { "$regex": filterObj.location, "$options": "i" }
         }
-        if(filterObj.fromPrice != "" && filterObj.toPrice != ""){
-            dynamicQuery["price"] = {price: { $lte: filterObj.fromPrice}, price: { $gte: filterObj.toPrice} }
+        if(filterObj.currency != ""){
+            dynamicQuery["currency"] = filterObj.currency
         }
-        console.log(dynamicQuery);
-        console.log({$and:[dynamicQuery]});
-
+        if(filterObj.fromPrice != "" && filterObj.toPrice != ""){
+            dynamicQuery["price"] = { $lte: filterObj.toPrice, $gte: filterObj.fromPrice }
+        }
 
         docObj = await Post.find({$and:[dynamicQuery]}).limit(pageSize).skip(pageSize*(currentPage-1)).sort({
             date: 'desc'
@@ -185,6 +184,7 @@ router.put('/put/:postId',verify, async (req,res) => {
             email: req.body.email,
             location: req.body.location,
             price: req.body.price,
+            currency: req.body.currency,
             firstimage: null     
         });
         await Post.update(filter,docObj);
@@ -225,6 +225,7 @@ router.post('/post',verify,async (req,res)=> {
         email: req.body.email,
         location: req.body.location,
         price: req.body.price,
+        currency: req.body.currency,
         firstimage: null
     });
 

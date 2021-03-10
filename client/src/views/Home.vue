@@ -387,8 +387,18 @@
                     >
                     </v-text-field>
                   </v-col>
-                  <v-col cols="1">
-                    <span>-</span>
+                  <v-col cols="2">
+                    <v-row align="center">
+                    <v-btn
+                      outlined
+                      small
+                      fab
+                      color="indigo"
+                      @click="searchCurrency()"
+                    >
+                      <v-icon>{{searchCury}}</v-icon>
+                    </v-btn>
+                    </v-row>
                   </v-col>
                   <v-col cols="5">
                     <v-text-field
@@ -464,6 +474,7 @@ export default {
     confirmPassword: "",
     search: true,
     searchdata: null,
+    searchCury: '៛',
     searchdetails: {
       title: "",
       description: "",
@@ -471,7 +482,8 @@ export default {
       email: "",
       location: "",
       fromPrice: "",
-      toPrice: ""
+      toPrice: "",
+      currency: "៛"
     },
     messagedialog: false,
 
@@ -484,7 +496,7 @@ export default {
     right: true,
     bottom: true,
     left: false,
-    transition: "slide-y-reverse-transition",
+    transition: "slide-y-reverse-transition"
   }),
   computed: {
     ...mapGetters([
@@ -520,6 +532,9 @@ export default {
       localStorage.setItem("langId", langId);
       // await this.$refs.observer.reset();
       this.overideValidation();
+    },
+    searchCurrency(){
+      this.searchCury = (this.searchCury == '៛') ? '$' : '៛';
     },
     showLanguage(prop) {
       if (this.getLocalLang.length > 0) {
@@ -606,6 +621,7 @@ export default {
       }
     },
     searchDetails() {
+      this.searchdetails.currency = this.searchCury;
       let options = {
           itemsPerPage: 9,
           page: 1,

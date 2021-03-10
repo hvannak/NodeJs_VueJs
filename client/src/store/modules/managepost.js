@@ -61,11 +61,11 @@ const actions = {
         const response = await axios.put(
         `${apihelper.api_url}/posts/put/${postObj._id}`,postObj,apihelper.setToken());
         console.log(response.data);
-        commit('updateMessage', response.data.obj);
-        commit('updateManageMessage',response.data.message);
+        commit('updatePost', response.data.obj);
+        commit('updateMessage', response.data.message);
     } catch (err) {
       console.log(err);
-        commit('updateManageMessage',err.response.data);
+        commit('updateMessage',err.response.data);
     }
   }
 };
@@ -81,7 +81,7 @@ const mutations = {
     },
     removePost: (state, _id) =>
         (state.posts = state.posts.filter(post => post._id !== _id)),
-    updateManagePostObj: (state, postObj) => {
+    updatePost: (state, postObj) => {
         const index = state.posts.findIndex(post => post._id === postObj._id);
         if (index !== -1) {
         state.posts.splice(index, 1, postObj);

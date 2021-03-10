@@ -91,14 +91,17 @@
                 <v-col cols="10" offset-md="1">
                   <ValidationProvider
                                 name="Price"
-                                rules="required"
+                                rules="required|numeric"
                                 v-slot="{ errors }"
                               >
                   <v-text-field
                     v-model="post.price"
+                    :append-icon="show1 ? 'mdi-alpha-c-box' : 'mdi-alpha-c-box-outline'"
+                    :prefix="show1 ? '$' : '៛'"
                     :error-messages="errors"
                     outlined
                     :label="`${showLanguage('Price')}`"
+                    @click:append="show1 = !show1"
                   ></v-text-field>
                   </ValidationProvider>
                 </v-col>
@@ -257,7 +260,8 @@ export default {
     dialog: false,
     image:[],
     file:null,
-    categorytext: null
+    categorytext: null,
+    show1: false
   }),
   computed: {
     ...mapGetters(["allCategorys", "getCategoryMessage","getLocalLang"]),
@@ -311,6 +315,7 @@ export default {
     async save(){
       // let blob = await fetch(this.urls[0]).then(r => r.blob());
       this.post.image = this.image;
+      this.post.currency = (this.show1 == true) ? '$' : '៛';
       this.addPost(this.post);
       this.urls = [];
       this.file = null;

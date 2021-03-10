@@ -91,15 +91,18 @@
                       <v-col cols="12" sm="6" md="6">
                         <ValidationProvider
                           name="Price"
-                          rules="required"
+                          rules="required|numeric"
                           v-slot="{ errors }"
                         >
                           <v-text-field
                             v-model="post.price"
+                            :append-icon="show1 ? 'mdi-alpha-c-box' : 'mdi-alpha-c-box-outline'"
+                            :prefix="show1 ? '$' : '៛'"
                             label="Price"
                             outlined
                             :error-messages="errors"
                             required
+                            @click:append="show1 = !show1"
                           >
                           </v-text-field>
                         </ValidationProvider>
@@ -408,6 +411,7 @@ export default {
 
     async editItem(item) {
       await this.fetchPostImages(item._id);
+      this.show1 = (item.currency == '$') ? true : false;
       this.editedIndex = this.allManagePosts.indexOf(item);
       this.urls = [];
       for (const data of this.getPostImage) {
@@ -459,6 +463,7 @@ export default {
 
     save() {
       this.post.image = this.image;
+      this.post.currency = (this.show1 == true) ? '$' : '៛';
       if (this.editedIndex > -1) {
         this.post.removeimage = this.storeremoveImage;
         this.updateManagePost(this.post);

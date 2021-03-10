@@ -101,15 +101,18 @@
                       <v-col cols="12" sm="6" md="6">
                         <ValidationProvider
                           name="Price"
-                          rules="required"
+                          rules="required|numeric"
                           v-slot="{ errors }"
                         >
                           <v-text-field
                             v-model="post.price"
+                            :prefix="show1 ? '$' : '៛'"
+                            :append-icon="show1 ? 'mdi-alpha-c-box' : 'mdi-alpha-c-box-outline'"
                             label="Price"
                             outlined
                             :error-messages="errors"
                             required
+                            @click:append="show1 = !show1"
                           >
                           </v-text-field>
                         </ValidationProvider>
@@ -317,6 +320,7 @@ export default {
     posts: [],
     pagination: {},
     editedIndex: -1,
+    show1: false
   }),
   computed: {
     ...mapGetters(["allManageClientPosts","allCategorys", "getManageClientPostMessage",
@@ -421,6 +425,7 @@ export default {
       this.dialog = true;
       this.waiting = true;
       await this.fetchClientPostImages(item._id);
+      this.show1 = (item.currency == '$') ? true : false;
       this.editedIndex = this.allManageClientPosts.indexOf(item);
       this.urls = [];
       for (const data of this.getClientPostImage) {
@@ -472,6 +477,7 @@ export default {
 
     save() {
       this.post.image = this.image;
+      this.post.currency = (this.show1 == true) ? '$' : '៛';
       if (this.editedIndex > -1) {
         this.post.removeimage = this.storeremoveImage;
         this.updateManageClientPost(this.post);

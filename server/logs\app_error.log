@@ -579,3 +579,49 @@
 {"message":"post page:CastError: Cast to string failed for value \"{}\" at path \"title\" for model \"Post\"","level":"error","service":"user-interact"}
 {"message":"post page:ReferenceError: filter is not defined","level":"error","service":"user-interact"}
 {"message":"post page:CastError: Cast to Array failed for value \"{ dynamicQuery:\n   { title: { '$regex': 't', '$options': 'i' },\n     description: { '$regex': 't', '$options': 'i' } } }\" at path \"$and\" for model \"Post\"","level":"error","service":"user-interact"}
+{"message":"post page:CastError: Cast to string failed for value \"{ price: { '$gte': '15' } }\" at path \"price\" for model \"Post\"","level":"error","service":"user-interact"}
+{"message":"post page:TypeError: Cannot read property 'length' of undefined","level":"error","service":"user-interact"}
+{"message":"post page:TypeError: Cannot read property 'length' of undefined","level":"error","service":"user-interact"}
+{"message":"post page:TypeError: Cannot read property 'length' of undefined","level":"error","service":"user-interact"}
+{"message":"post page:TypeError: Cannot read property 'length' of undefined","level":"error","service":"user-interact"}
+{"message":"post page:CastError: Cast to string failed for value \"{ price: { '$gte': '200' } }\" at path \"price\" for model \"Post\"","level":"error","service":"user-interact"}
+{"message":"post page:CastError: Cast to string failed for value \"{ price: { '$gte': 200 } }\" at path \"price\" for model \"Post\"","level":"error","service":"user-interact"}
+{"message":"post page:CastError: Cast to Number failed for value \"{ price: { '$gte': 200 } }\" at path \"price\" for model \"Post\"","level":"error","service":"user-interact"}
+{"message":"post page:TypeError: Cannot read property 'length' of undefined","level":"error","service":"user-interact"}
+{"message":"post page:TypeError: Cannot read property 'length' of undefined","level":"error","service":"user-interact"}
+{"message":"post page:CastError: Cast to Number failed for value \"{ price: { '$gte': 200 } }\" at path \"price\" for model \"Post\"","level":"error","service":"user-interact"}
+{"message":"post page:CastError: Cast to Number failed for value \"{ price: { '$gte': '200' } }\" at path \"price\" for model \"Post\"","level":"error","service":"user-interact"}
+{"message":"post page:TypeError: dynamicQuery.append is not a function","level":"error","service":"user-interact"}
+{"message":"post page:TypeError: {(intermediate value)}.push is not a function","level":"error","service":"user-interact"}
+{"message":"post page:CastError: Cast to Array failed for value \"2\" at path \"$and\" for model \"Post\"","level":"error","service":"user-interact"}
+{"message":"post page:CastError: Cast to Array failed for value \"2\" at path \"$and\" for model \"Post\"","level":"error","service":"user-interact"}
+{"message":"post page:CastError: Cast to Array failed for value \"2\" at path \"$and\" for model \"Post\"","level":"error","service":"user-interact"}
+{"message":"post page:TypeError: Cannot read property 'length' of undefined","level":"error","service":"user-interact"}
+{"message":"post page:TypeError: Cannot read property 'length' of undefined","level":"error","service":"user-interact"}
+{"message":"post page:TypeError: Cannot read property 'length' of undefined","level":"error","service":"user-interact"}
+{"message":"post page:TypeError: Cannot read property 'length' of undefined","level":"error","service":"user-interact"}
+{"message":"post page:TypeError: Cannot read property 'length' of undefined","level":"error","service":"user-interact"}
+{"message":"post page:TypeError: Cannot read property 'length' of undefined","level":"error","service":"user-interact"}
+{"message":"post page:TypeError: Cannot read property 'length' of undefined","level":"error","service":"user-interact"}
+{"message":"post page:TypeError: Cannot read property 'length' of undefined","level":"error","service":"user-interact"}
+{"message":"post page:TypeError: Cannot read property 'length' of undefined","level":"error","service":"user-interact"}
+{"message":"post page:TypeError: Cannot read property 'length' of undefined","level":"error","service":"user-interact"}
+{"message":"post page:TypeError: Cannot read property 'length' of undefined","level":"error","service":"user-interact"}
+{"message":"post page:TypeError: Cannot read property 'length' of undefined","level":"error","service":"user-interact"}
+{"message":"post page:TypeError: Cannot read property 'length' of undefined","level":"error","service":"user-interact"}
+{"message":"post page:TypeError: Cannot read property 'length' of undefined","level":"error","service":"user-interact"}
+{"message":"post page:TypeError: Cannot read property 'length' of undefined","level":"error","service":"user-interact"}
+{"message":"post page:TypeError: Cannot read property 'length' of undefined","level":"error","service":"user-interact"}
+{"message":"post page:TypeError: Cannot read property 'length' of undefined","level":"error","service":"user-interact"}
+{"message":"post page:TypeError: Cannot read property 'length' of undefined","level":"error","service":"user-interact"}
+{"message":"post page:TypeError: Cannot read property 'length' of undefined","level":"error","service":"user-interact"}
+{"message":"post page:TypeError: Cannot read property 'length' of undefined","level":"error","service":"user-interact"}
+{"message":"post page:TypeError: Cannot read property 'length' of undefined","level":"error","service":"user-interact"}
+{"message":"post page:TypeError: Cannot read property 'length' of undefined","level":"error","service":"user-interact"}
+{"message":"post page:TypeError: Cannot read property 'length' of undefined","level":"error","service":"user-interact"}
+{"message":"post page:TypeError: Cannot read property 'length' of undefined","level":"error","service":"user-interact"}
+{"message":"post page:TypeError: Cannot read property 'length' of undefined","level":"error","service":"user-interact"}
+{"message":"post page:TypeError: Cannot read property 'length' of undefined","level":"error","service":"user-interact"}
+{"message":"post page:TypeError: Cannot read property 'length' of undefined","level":"error","service":"user-interact"}
+{"message":"post page:TypeError: Cannot read property 'length' of undefined","level":"error","service":"user-interact"}
+{"message":"post page:TypeError: Cannot read property 'length' of undefined","level":"error","service":"user-interact"}

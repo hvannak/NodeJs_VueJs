@@ -53,7 +53,7 @@
                     {{ item.title }}
                   </h3>
                   <h5 class="display-1 font-weight-light green--text mb-2">
-                    {{ item.price }}
+                    {{ item.price }} {{item.currency}}
                   </h5>
                   <div class="font-weight-light title mb-2">
                     {{ item.location }}

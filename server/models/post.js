@@ -28,6 +28,10 @@ const postSchema = mongoose.Schema({
         require:true
     },
     price:{
+        type:Number,
+        require:true
+    },
+    currency:{
         type:String,
         require:true
     },
