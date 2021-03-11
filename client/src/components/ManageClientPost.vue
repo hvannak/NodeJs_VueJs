@@ -39,7 +39,17 @@
             item-value="value"
             prepend-inner-icon="mdi-magnify"
             :label="`${showLanguage('SearchBy')}`"
-          ></v-select>
+          >
+          <template v-slot:item="{ item }">
+            <v-list-item
+              ripple
+            >
+              {{showLanguage(item.value)}}
+            </v-list-item>
+            <v-divider class="mt-2"></v-divider>
+          </template>
+          
+          </v-select>
           <v-spacer></v-spacer>
           <v-btn-toggle mandatory>
             <v-btn large depressed color="blue" :value="true" @click="searchData()">
