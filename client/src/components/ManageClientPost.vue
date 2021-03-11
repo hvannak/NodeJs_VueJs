@@ -12,6 +12,9 @@
     @update:options="updateOpt()"
     class="elevation-1"
   >
+    <template v-for="h in headers" v-slot:[`header.${h.value}`]="{ header }">
+      {{showLanguage(header.value)}}
+    </template>
     <template v-slot:top>
       <v-toolbar flat>
         <v-text-field
@@ -21,7 +24,7 @@
           solo-inverted
           hide-details
           prepend-inner-icon="mdi-magnify"
-          label="Search"
+          :label="`${showLanguage('SearchHint')}`"
           @click:clear="clearSearch()"
         ></v-text-field>
         <template v-if="$vuetify.breakpoint.mdAndUp">
@@ -35,7 +38,7 @@
             item-text="text"
             item-value="value"
             prepend-inner-icon="mdi-magnify"
-            label="Search by"
+            :label="`${showLanguage('SearchBy')}`"
           ></v-select>
           <v-spacer></v-spacer>
           <v-btn-toggle mandatory>
@@ -59,7 +62,7 @@
         <v-dialog v-else v-model="dialog" max-width="70%">
           <template v-slot:activator="{ on, attrs }">
             <v-btn large color="red lighten-2" dark v-bind="attrs" v-on="on">
-              New Item
+              {{showLanguage('NewItem')}}
             </v-btn>
           </template>
           <v-card>
@@ -239,7 +242,7 @@
               <v-card-actions>
                 <v-spacer></v-spacer>
                 <v-btn color="blue darken-1" text @click="close">
-                  Cancel
+                  {{showLanguage('Cancel')}}
                 </v-btn>
                 <v-btn
                   color="blue darken-1"
@@ -247,7 +250,7 @@
                   text
                   @click="save"
                 >
-                  Save
+                  {{showLanguage('Save')}}
                 </v-btn>
               </v-card-actions>
             </ValidationObserver>
@@ -256,15 +259,15 @@
         <v-dialog v-model="dialogDelete" max-width="50%">
           <v-card>
             <v-card-title class="headline"
-              >Are you sure you want to delete this item?</v-card-title
+              >{{showLanguage('Delete_message')}}</v-card-title
             >
             <v-card-actions>
               <v-spacer></v-spacer>
               <v-btn color="blue darken-1" text @click="closeDelete"
-                >Cancel</v-btn
+                >{{showLanguage('Cancel')}}</v-btn
               >
               <v-btn color="blue darken-1" text @click="deleteItemConfirm"
-                >OK</v-btn
+                >{{showLanguage('Ok')}}</v-btn
               >
               <v-spacer></v-spacer>
             </v-card-actions>
@@ -324,9 +327,9 @@ export default {
   }),
   computed: {
     ...mapGetters(["allManageClientPosts","allCategorys", "getManageClientPostMessage",
-     "getManageClientPosttotalItems","getClientPostImage"]),
+     "getManageClientPosttotalItems","getClientPostImage","getLocalLang"]),
     formTitle() {
-      return this.editedIndex === -1 ? "New Item" : "Edit Item";
+      return this.editedIndex === -1 ? this.showLanguage('NewItem') : this.showLanguage('EditItem');
     },
   },
   watch: {
@@ -377,6 +380,13 @@ export default {
       else{
         this.file = [];
         alert('You allow only 8 attach files');
+      }
+    },
+
+    showLanguage(prop) {
+      if (this.getLocalLang.length > 0) {
+        let propval = this.getLocalLang.filter((x) => x.props == prop);
+        return propval.length > 0 ? propval[0].text : "Not Set";
       }
     },
 

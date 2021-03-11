@@ -78,7 +78,7 @@ router.get('/getByConstant',verify, async (req,res) => {
                     parent:'post',
                     name:'props',
                     props: ['SelectCategory','InputInformation','Category','Title','Description','Phone','Email','Location','Fileinput','Post',
-                    'Message_post_success','Contact','Address','Price']
+                    'Message_post_success','Contact','Address','Price','SearchHint','SearchBy','NewItem','EditItem','Save','Cancel','Ok','Delete_message']
                 }
             ]
         };
