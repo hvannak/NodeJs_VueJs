@@ -220,6 +220,7 @@
 </template>
 <script>
 import { mapGetters, mapActions } from "vuex";
+import * as apiHelper from '../store/modules/api-helper';
 
 export default {
   data() {
@@ -255,8 +256,7 @@ export default {
   methods: {
     ...mapActions(["fetchPostByCat","fetchPostImage"]),
     showLanguage(prop){
-      if(this.getLocalLang.length > 0)
-        return this.getLocalLang.filter(x=>x.props == prop)[0].text
+      return apiHelper.getShowLang(prop);
     },
 
     navigationPage(value) {

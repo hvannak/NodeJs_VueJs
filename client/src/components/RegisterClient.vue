@@ -90,6 +90,7 @@
 
 <script>
   import { mapGetters, mapActions } from "vuex";
+  import * as apiHelper from '../store/modules/api-helper';
 
   export default {
     data: () => ({
@@ -103,10 +104,7 @@
         "registerUser",
       ]),
       showLanguage(prop){
-        if(this.getLocalLang.length > 0){
-          let propval = this.getLocalLang.filter(x=>x.props == prop);
-          return (propval.length > 0) ? propval[0].text : 'Not Set';
-        }
+        return apiHelper.getShowLang(prop);
       },
       reset () {
         this.$refs.form.reset()

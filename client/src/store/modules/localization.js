@@ -16,7 +16,7 @@ const getters = {
   allContants: state => state.constants,
   getLocalizationMessage: state => state.message,
   getLocalizationtotalItems: state => state.totalItems,
-  getLocalLang: state => state.localLang
+  getLocalLang: state => state.localLang,
 };
 
 const actions = {

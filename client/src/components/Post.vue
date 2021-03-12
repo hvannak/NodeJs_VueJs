@@ -249,6 +249,7 @@
 </template>
 <script>
 import { mapGetters, mapActions } from "vuex";
+import * as apiHelper from '../store/modules/api-helper';
 
 export default {
   data: () => ({
@@ -303,10 +304,7 @@ export default {
       }
     },
     showLanguage(prop){
-      if(this.getLocalLang.length > 0){
-        let propval = this.getLocalLang.filter(x=>x.props == prop);
-        return (propval.length > 0) ? propval[0].text : 'Not Set';
-      }
+      return apiHelper.getShowLang(prop);
     },
     removeImage(index){
       this.urls.splice(index,1);

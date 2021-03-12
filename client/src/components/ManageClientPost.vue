@@ -103,7 +103,7 @@
                         >
                           <v-text-field
                             v-model="post.title"
-                            label="Title"
+                            :label="`${showLanguage('Title')}`"
                             outlined
                             :error-messages="errors"
                             required
@@ -121,7 +121,7 @@
                             v-model="post.price"
                             :prefix="show1 ? '$' : '៛'"
                             :append-icon="show1 ? 'mdi-alpha-c-box' : 'mdi-alpha-c-box-outline'"
-                            label="Price"
+                            :label="`${showLanguage('Price')}`"
                             outlined
                             :error-messages="errors"
                             required
@@ -138,7 +138,7 @@
                         >
                           <v-text-field
                             v-model="post.email"
-                            label="Email"
+                            :label="`${showLanguage('Email')}`"
                             outlined
                             :error-messages="errors"
                             required
@@ -154,7 +154,7 @@
                         >
                           <v-text-field
                             v-model="post.phone"
-                            label="Phone"
+                            :label="`${showLanguage('Phone')}`"
                             outlined
                             :error-messages="errors"
                             required
@@ -170,7 +170,7 @@
                         >
                           <v-text-field
                             v-model="post.location"
-                            label="Location"
+                            :label="`${showLanguage('Location')}`"
                             outlined
                             :error-messages="errors"
                             required
@@ -186,7 +186,7 @@
                         >
                           <v-textarea
                             v-model="post.description"
-                            label="Description"
+                            :label="`${showLanguage('Description')}`"
                             outlined
                             :error-messages="errors"
                             required
@@ -200,7 +200,7 @@
                           v-model="file"
                           chips
                           :error-messages="errors"
-                          label="File"
+                          :label="`${showLanguage('Fileinput')}`"
                           outlined
                           multiple
                           accept="image/*"
@@ -297,6 +297,7 @@
 <script>
 import { mapGetters, mapActions } from "vuex";
 import * as constHelper from '../store/modules/const-helper';
+import * as apiHelper from '../store/modules/api-helper';
 
 export default {
   data: () => ({
@@ -394,10 +395,7 @@ export default {
     },
 
     showLanguage(prop) {
-      if (this.getLocalLang.length > 0) {
-        let propval = this.getLocalLang.filter((x) => x.props == prop);
-        return propval.length > 0 ? propval[0].text : "Not Set";
-      }
+      return apiHelper.getShowLang(prop);
     },
 
     removeImage(index){

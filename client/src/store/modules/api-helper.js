@@ -1,3 +1,4 @@
+import store from '../../store'
 
 export function setToken (){
     const config = {
@@ -28,4 +29,11 @@ export function readBufferImg(imagedata) {
       ""
     );
     return binary;
+  }
+
+export function getShowLang(prop) {
+    if (store.getters.getLocalLang.length > 0) {
+        let propval = store.getters.getLocalLang.filter((x) => x.props == prop);
+        return propval.length > 0 ? propval[0].text : "Not Set";
+      }
   }
