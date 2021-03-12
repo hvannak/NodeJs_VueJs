@@ -33,7 +33,14 @@ export function readBufferImg(imagedata) {
 
 export function getShowLang(prop) {
     if (store.getters.getLocalLang.length > 0) {
-        let propval = store.getters.getLocalLang.filter((x) => x.props == prop);
+        let propval = store.getters.getLocalLang.filter((x) => x.props == prop && x.type == 'const');
+        return propval.length > 0 ? propval[0].text : "Not Set";
+      }
+  }
+
+export function getAppShowLang(prop) {
+    if (store.getters.getLocalLang.length > 0) {
+        let propval = store.getters.getLocalLang.filter((x) => x.props == prop && x.type == 'app');
         return propval.length > 0 ? propval[0].text : "Not Set";
       }
   }

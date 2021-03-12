@@ -9,6 +9,10 @@ const localizationSchema = mongoose.Schema({
         type:String,
         require:true
     },
+    type: {
+        type:String,
+        require:true
+    },
     lang:{ 
         type: mongoose.Schema.Types.ObjectId, ref: 'Language' 
     },

@@ -278,6 +278,7 @@ export default {
     valueOfItem: [],
     localizeObj: {},
     tab: null,
+    localtype: null
   }),
   created() {
     this.fetchAllScreen();
@@ -296,12 +297,14 @@ export default {
     showLocalization(item) {
       this.selected = true;
       this.screens = item.props;
+      this.localtype = 'app';
       this.localizeObj.parent = item.parent;
       this.$store.commit("updateMessage", "");
     },
     showConstant(item){
       this.selected = true;
       this.constants = item.props;
+      this.localtype = 'const';
       this.localizeObj.parent = item.parent;
       this.$store.commit("updateMessage", "");
     },
@@ -313,7 +316,7 @@ export default {
         this.localizeObj = Object.assign({}, this.allLocalizations[0]);
     },
     saveLocal() {
-      console.log(this.localizeObj);
+      this.localizeObj.type = this.localtype;
       if(this.localizeObj._id != null){
         this.updateLocalization(this.localizeObj);
       }else{

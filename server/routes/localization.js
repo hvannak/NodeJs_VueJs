@@ -6,9 +6,11 @@ const {updatemessage, savemessage} = require('../helper');
 const {logger} = require('../logger');
 
 router.post('/post',verify,async (req,res)=> {
+    console.log(req.body);
     const docObj = new Localization({
         parent: req.body.parent,
         props: req.body.props,
+        type: req.body.type,
         lang: req.body.lang,
         text: req.body.text
     });
@@ -78,7 +80,7 @@ router.get('/getByConstant',verify, async (req,res) => {
                     parent:'post',
                     name:'props',
                     props: ['SelectCategory','InputInformation','Category','Title','Description','Phone','Email','Location','Fileinput','Post',
-                    'Message_post_success','Contact','Address','Price','SearchHint','SearchBy','NewItem','EditItem','Save','Cancel','Ok','Delete_message']
+                    'Message_post_success','Contact','Address','Price','SearchHint','SearchBy','NewItem','EditItem','Save','Cancel','Ok','Delete_message','Actions']
                 }
             ]
         };
@@ -138,13 +140,14 @@ router.get('/getByLang/:langId', async (req,res) => {
     }
 });
 
-router.put('/put/:langId',verify, async (req,res) => {
+router.put('/put/:Id',verify, async (req,res) => {
     try{
-        const filter = { _id: req.params.langId };
+        const filter = { _id: req.params.Id };
         const update = new Localization({
             _id: req.body._id,
             parent: req.body.parent,
             props: req.body.props,
+            type: req.body.type,
             lang: req.body.langId,
             text: req.body.text    
         });

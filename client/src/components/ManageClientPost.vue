@@ -13,7 +13,7 @@
     class="elevation-1"
   >
     <template v-for="h in headers" v-slot:[`header.${h.value}`]="{ header }">
-      {{showLanguage(header.value)}}
+      {{showAppLanguage(header.value)}}
     </template>
     <template v-slot:top>
       <v-toolbar flat>
@@ -396,6 +396,14 @@ export default {
 
     showLanguage(prop) {
       return apiHelper.getShowLang(prop);
+    },
+
+    showAppLanguage(prop) {
+      if(prop == 'actions'){
+        return apiHelper.getShowLang(prop.charAt(0).toUpperCase() + prop.slice(1));
+      }
+      else
+      return apiHelper.getAppShowLang(prop);
     },
 
     removeImage(index){
