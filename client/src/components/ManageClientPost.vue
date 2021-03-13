@@ -44,7 +44,7 @@
             <v-list-item
               ripple
             >
-              {{showLanguage(item.value)}}
+              {{showAppLanguage(item.value)}}
             </v-list-item>
             <v-divider class="mt-2"></v-divider>
           </template>
