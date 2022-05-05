@@ -338,6 +338,7 @@ mongoose.connect(process.env.DB_CONNECTION,{useNewUrlParser:true,useUnifiedTopol
     }
 });
 
-app.listen(process.env.PORT,process.env.HOST,()=> {
+const PORT = process.env.PORT || 3000;
+app.listen(PORT,()=> {
     console.log("Server up and running");
 });
